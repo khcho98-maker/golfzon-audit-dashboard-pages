@@ -1,0 +1,1043 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>골프존 회계감사 진행 관리 화면</title>
+  <style>
+    :root {
+      --navy: #123a6f;
+      --blue: #1f64c8;
+      --ink: #14243a;
+      --muted: #617188;
+      --line: #d9e3f0;
+      --bg: #f4f7fb;
+      --green: #138462;
+      --amber: #ad6b00;
+      --gray: #65758b;
+      --red: #b42318;
+      --purple: #6657c8;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      background: var(--bg);
+      color: var(--ink);
+      font-family: Arial, "Pretendard", "Noto Sans KR", sans-serif;
+    }
+
+    button, a { font: inherit; }
+
+    .page {
+      width: min(100vw, 1600px);
+      min-height: 100vh;
+      margin: 0 auto;
+      padding: 24px 38px 28px;
+    }
+
+    .stage {
+      min-height: calc(100vh - 52px);
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+    }
+
+    header {
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: 24px;
+      align-items: start;
+      padding: 18px 20px;
+      background: #fff;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+    }
+
+    .proposal {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      min-width: 0;
+    }
+
+    .mark {
+      width: 42px;
+      height: 42px;
+      display: grid;
+      place-items: center;
+      flex: 0 0 auto;
+      color: #fff;
+      background: var(--navy);
+      border-radius: 8px;
+      font-weight: 800;
+      letter-spacing: 0;
+    }
+
+    .proposal-title {
+      font-size: 15px;
+      font-weight: 800;
+      color: #233a59;
+    }
+
+    .proposal-sub {
+      margin-top: 5px;
+      color: var(--muted);
+      font-size: 12px;
+    }
+
+    .doc-tag {
+      display: flex;
+      gap: 8px;
+      align-items: center;
+      justify-content: flex-end;
+      flex-wrap: wrap;
+      color: #385371;
+      font-size: 12px;
+      font-weight: 700;
+    }
+
+    .tag {
+      padding: 6px 10px;
+      border: 1px solid #c9d8ea;
+      border-radius: 999px;
+      background: #fff;
+      white-space: nowrap;
+    }
+
+    .titlebar {
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: 28px;
+      align-items: end;
+      padding: 2px 2px 0;
+    }
+
+    h1 {
+      margin: 0;
+      font-size: clamp(27px, 2.8vw, 40px);
+      line-height: 1.15;
+      letter-spacing: 0;
+      color: #10263f;
+    }
+
+    .lead {
+      margin: 7px 0 0;
+      max-width: 860px;
+      color: #53657d;
+      font-size: 14px;
+      line-height: 1.5;
+    }
+
+    .legend {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      justify-content: flex-end;
+      font-size: 12px;
+      color: #52677f;
+    }
+
+    .tabs {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 10px;
+    }
+
+    .tab {
+      min-height: 52px;
+      text-align: left;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: #fff;
+      color: #304964;
+      cursor: pointer;
+      padding: 11px 15px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      font-weight: 800;
+    }
+
+    .tab small {
+      display: block;
+      margin-top: 3px;
+      color: #77869a;
+      font-size: 11px;
+      font-weight: 600;
+    }
+
+    .tab.active {
+      color: #fff;
+      background: var(--blue);
+      border-color: var(--blue);
+      box-shadow: 0 10px 20px rgba(31, 100, 200, .18);
+    }
+
+    .tab.active small { color: rgba(255, 255, 255, .82); }
+
+    .tab-num {
+      width: 28px;
+      height: 28px;
+      display: grid;
+      place-items: center;
+      flex: 0 0 auto;
+      border-radius: 999px;
+      background: #edf4fd;
+      color: var(--blue);
+      font-size: 12px;
+      font-weight: 900;
+    }
+
+    .tab.active .tab-num {
+      background: rgba(255, 255, 255, .18);
+      color: #fff;
+    }
+
+    #screen { flex: 1; min-height: 0; }
+
+    .panel {
+      height: 100%;
+      min-height: 580px;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+      background: #fff;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+    }
+
+    .panel-head {
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: 20px;
+      align-items: center;
+      padding: 15px 18px 12px;
+      border-bottom: 1px solid #e4ebf4;
+    }
+
+    .section-kicker {
+      color: var(--blue);
+      font-size: 12px;
+      font-weight: 900;
+    }
+
+    .panel h2 {
+      margin: 4px 0 0;
+      font-size: 22px;
+      letter-spacing: 0;
+    }
+
+    .notice {
+      max-width: 540px;
+      color: #5b6f87;
+      font-size: 12px;
+      line-height: 1.45;
+      text-align: right;
+    }
+
+    .kpis {
+      display: grid;
+      grid-template-columns: repeat(5, minmax(0, 1fr));
+      gap: 9px;
+      padding: 12px 18px;
+      background: #f8fbff;
+      border-bottom: 1px solid #e4ebf4;
+    }
+
+    .kpi {
+      min-height: 68px;
+      padding: 9px 11px;
+      border: 1px solid #dce7f5;
+      border-radius: 8px;
+      background: #fff;
+    }
+
+    .kpi-label {
+      color: #718299;
+      font-size: 11px;
+      font-weight: 800;
+    }
+
+    .kpi-value {
+      margin-top: 5px;
+      color: #123a6f;
+      font-size: 20px;
+      font-weight: 900;
+      line-height: 1.1;
+    }
+
+    .kpi-note {
+      margin-top: 4px;
+      color: #697b91;
+      font-size: 11px;
+      line-height: 1.25;
+    }
+
+    .note-subtabs {
+      display: flex;
+      gap: 8px;
+      align-items: center;
+      padding: 10px 18px;
+      border-bottom: 1px solid #e4ebf4;
+      background: #fff;
+    }
+
+    .note-subtab {
+      border: 1px solid #cfddec;
+      border-radius: 999px;
+      background: #fff;
+      color: #385371;
+      cursor: pointer;
+      padding: 7px 13px;
+      font-size: 12px;
+      font-weight: 900;
+    }
+
+    .note-subtab.active {
+      border-color: var(--navy);
+      background: var(--navy);
+      color: #fff;
+    }
+
+    .note-subtab span {
+      margin-left: 6px;
+      color: inherit;
+      opacity: .76;
+      font-weight: 800;
+    }
+
+    .table-wrap {
+      flex: 1;
+      overflow: auto;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      table-layout: fixed;
+      text-align: left;
+      font-size: 12px;
+    }
+
+    th {
+      position: sticky;
+      top: 0;
+      z-index: 2;
+      padding: 10px 12px;
+      background: #eef4fb;
+      border-bottom: 1px solid #d9e4f1;
+      color: #445c77;
+      font-size: 11px;
+      font-weight: 900;
+    }
+
+    td {
+      padding: 10px 12px;
+      border-bottom: 1px solid #edf2f8;
+      color: #45596f;
+      line-height: 1.38;
+      vertical-align: top;
+      word-break: keep-all;
+    }
+
+    td:first-child {
+      color: #132a45;
+      font-weight: 900;
+    }
+
+    .material-table { min-width: 1240px; }
+    .note-table { min-width: 1320px; }
+
+    .point {
+      color: #183b68;
+      font-weight: 800;
+    }
+
+    .owner {
+      color: #52667d;
+      font-weight: 700;
+    }
+
+    .type-pill {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-width: 44px;
+      padding: 4px 8px;
+      border-radius: 999px;
+      font-size: 11px;
+      font-weight: 900;
+      white-space: nowrap;
+    }
+
+    .connected { background: #edf5ff; color: #1d5db8; }
+    .separate { background: #f1efff; color: var(--purple); }
+
+    .status {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-width: 64px;
+      padding: 4px 8px;
+      border-radius: 999px;
+      font-size: 11px;
+      font-weight: 900;
+      white-space: nowrap;
+    }
+
+    .done { background: #e9f8f2; color: var(--green); }
+    .progress { background: #fff5dd; color: var(--amber); }
+    .request { background: #edf5ff; color: #1d5db8; }
+    .ready { background: #f1f4f7; color: var(--gray); }
+    .attention { background: #fff0ee; color: var(--red); }
+
+    .footnote {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 18px;
+      padding: 11px 18px;
+      background: #f8fbff;
+      color: #5d7088;
+      border-top: 1px solid #e4ebf4;
+      font-size: 11px;
+      line-height: 1.45;
+    }
+
+    .footnote a {
+      color: #1f64c8;
+      font-weight: 800;
+      text-decoration: none;
+      white-space: nowrap;
+    }
+
+    .assets {
+      height: 100%;
+      min-height: 580px;
+      display: grid;
+      grid-template-rows: auto 1fr auto;
+      gap: 14px;
+      background: #fff;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      padding: 18px;
+    }
+
+    .asset-head {
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: 22px;
+      align-items: end;
+      padding-bottom: 14px;
+      border-bottom: 1px solid #e4ebf4;
+    }
+
+    .asset-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 14px;
+    }
+
+    .asset-card {
+      min-height: 310px;
+      display: flex;
+      flex-direction: column;
+      border: 1px solid #dbe6f3;
+      border-radius: 8px;
+      background: #fff;
+      overflow: hidden;
+    }
+
+    .asset-card-title {
+      padding: 16px;
+      border-bottom: 1px solid #e7edf5;
+      background: #f7fbff;
+    }
+
+    .asset-index {
+      color: var(--blue);
+      font-size: 12px;
+      font-weight: 900;
+    }
+
+    .asset-card h3 {
+      margin: 7px 0 0;
+      font-size: 22px;
+      line-height: 1.22;
+      letter-spacing: 0;
+    }
+
+    .asset-body {
+      flex: 1;
+      padding: 15px 16px 8px;
+    }
+
+    .asset-body ul {
+      margin: 0;
+      padding: 0;
+      list-style: none;
+      display: grid;
+      gap: 10px;
+    }
+
+    .asset-body li {
+      position: relative;
+      padding-left: 16px;
+      color: #4f647b;
+      font-size: 14px;
+      line-height: 1.5;
+    }
+
+    .asset-body li::before {
+      content: "";
+      position: absolute;
+      left: 0;
+      top: .68em;
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: var(--blue);
+    }
+
+    .asset-result {
+      margin: 0 16px 16px;
+      padding: 12px;
+      border: 1px solid #d7e6f8;
+      border-radius: 8px;
+      background: #f7fbff;
+      color: #183d6d;
+      font-size: 13px;
+      font-weight: 900;
+      line-height: 1.45;
+    }
+
+    .workflow {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 10px;
+    }
+
+    .flow-step {
+      padding: 12px 14px;
+      border: 1px solid #dbe6f3;
+      border-radius: 8px;
+      background: #f8fbff;
+      color: #3f5670;
+      font-size: 13px;
+      font-weight: 800;
+      line-height: 1.35;
+    }
+
+    .flow-step span {
+      display: block;
+      margin-bottom: 5px;
+      color: var(--blue);
+      font-size: 11px;
+      font-weight: 900;
+    }
+
+    @media (max-width: 900px) {
+      .page { padding: 18px; }
+      header, .titlebar, .panel-head, .asset-head { grid-template-columns: 1fr; }
+      .doc-tag, .legend, .notice { justify-content: flex-start; text-align: left; }
+      .tabs, .kpis, .asset-grid, .workflow { grid-template-columns: 1fr; }
+      .panel, .assets { min-height: auto; }
+      h1 { font-size: 31px; }
+    }
+  </style>
+</head>
+<body>
+  <main class="page">
+    <div class="stage">
+      <header>
+        <div class="proposal">
+          <div class="mark">S</div>
+          <div>
+            <div class="proposal-title">삼덕회계법인 / 골프존 회계감사 제안</div>
+            <div class="proposal-sub">결산 자료 요청, 별도·연결 주석 검토, 반복업무 자동화를 한 화면에서 관리</div>
+          </div>
+        </div>
+        <div class="doc-tag">
+          <span class="tag">PT 발표용 16:9 화면</span>
+          <span class="tag">공시 항목: 실제 목록</span>
+          <span class="tag">담당자명: 예시</span>
+          <span class="tag">상태: 시연용 예시</span>
+        </div>
+      </header>
+
+      <section class="titlebar">
+        <div>
+          <h1>골프존 회계팀과 감사인이 함께 보는 감사 진행 관리 화면</h1>
+          <p class="lead">요청 자료와 별도·연결 주석 검토 항목을 공시 기준으로 맞추고, 진행 상태와 보완 사항을 바로 확인하는 실무형 협업 화면입니다.</p>
+        </div>
+        <div class="legend">
+          <span class="status done">제출 완료</span>
+          <span class="status progress">검토 중</span>
+          <span class="status request">자료 요청</span>
+          <span class="status ready">요청 예정</span>
+        </div>
+      </section>
+
+      <nav class="tabs" aria-label="감사 진행 화면 탭">
+        <button class="tab active" type="button" onclick="view('materials', this)">
+          <span>회사 자료 진행 사항<small>요청자료 37개</small></span>
+          <span class="tab-num">01</span>
+        </button>
+        <button class="tab" type="button" onclick="view('notes', this)">
+          <span>골프존 주석 검토 진행 사항<small>연결 / 별도 분리 탭</small></span>
+          <span class="tab-num">02</span>
+        </button>
+        <button class="tab" type="button" onclick="view('assets', this)">
+          <span>AI 교육·자동화 자산<small>다음 결산에도 쓰는 템플릿과 매뉴얼</small></span>
+          <span class="tab-num">03</span>
+        </button>
+      </nav>
+
+      <div id="screen"></div>
+    </div>
+  </main>
+
+  <script>
+    const sourceUrl = "https://kind.krx.co.kr/external/2026/03/19/002039/20260319008528/11011.htm";
+    let currentNoteType = "연결";
+    const companyPeople = ["김민준", "박서연", "이도윤", "최지우", "정하늘", "한유진", "오지훈", "윤서아", "강태오", "서지민"];
+    const auditPeople = ["장현우", "문수아", "조은재", "임하준", "신예린", "백도현", "남지안", "권서준", "홍유나", "유지호"];
+
+    const materialRows = [
+      ["연결 패키지 총괄", "연결대상 종속기업 18개, 당기 중 3개 신규 연결 및 1개 연결 제외", "김민준", "장현우", "자료 요청", "request", "샘플: 01_GOLFZON_연결패키지_2025.xlsx"],
+      ["종속기업별 TB·재무제표", "18개 종속기업의 기말 TB와 연결 조정 전 재무제표 확인", "김민준", "장현우", "자료 요청", "request", "현지법인별 마감일, 환산 환율, 검토자 표시"],
+      ["종속기업 재무제표 승인자료", "현지 감사보고서, 이사회 승인, 결산 확정 일정 확인", "김민준", "유지호", "요청 예정", "ready", "법인별 파일명과 승인일자 표준화"],
+      ["내부거래 채권·채무 대사", "연결 내부거래 제거와 상계 차이 검토", "서지민", "장현우", "검토 중", "progress", "거래처별 불일치 항목과 조정분개 연결"],
+      ["내부매출·매입 및 미실현손익", "연결 제거분개와 재고 미실현손익 계산 확인", "서지민", "장현우", "검토 중", "progress", "품목별 마진율, 기말재고 잔량 근거 보완"],
+      ["연결조정분개 전체", "연결재무제표 작성 과정의 조정분개 모집단 확인", "김민준", "유지호", "자료 요청", "request", "분개번호, 작성자, 검토자, 근거자료 링크 포함"],
+      ["외화환산·환율 적용표", "해외사업장 환산과 외화 자산·부채 환산 검토", "한유진", "백도현", "제출 완료", "done", "환율 출처, 평균환율, 기말환율 구분"],
+      ["신규 연결·처분·사업결합 자료", "당기 신규 연결, 연결 제외, 사업결합 관련 공시 검토", "김민준", "장현우", "자료 요청", "request", "계약서, 취득대가, 지배력 취득일 확인"],
+      ["비지배지분 및 지분율 변동표", "연결 자본 변동과 비지배지분 계산 확인", "강태오", "신예린", "요청 예정", "ready", "법인별 지분율, 유상증자, 처분 내역 표시"],
+      ["연결 현금흐름 비현금거래", "현금흐름표 주석과 비현금 투자·재무활동 대사", "서지민", "유지호", "검토 중", "progress", "리스, 미지급 취득, 사업결합 비현금 효과 구분"],
+      ["매출 월별 집계표", "고객과의 계약에서 생기는 수익 4,827억원", "박서연", "문수아", "제출 완료", "done", "샘플: 10_매출월별_제품서비스별_집계.xlsx"],
+      ["상품·용역별 매출 브릿지", "한 시점 인식 2,478억원, 기간에 걸쳐 인식 2,350억원", "박서연", "문수아", "제출 완료", "done", "전표 계정과 주석 수익 구분 대사"],
+      ["주요 고객·거래처별 매출 명세", "매출 집중도, 특수관계자 거래, 대손위험 검토", "박서연", "문수아", "자료 요청", "request", "상위 거래처, 신규 거래처, 취소 거래 표시"],
+      ["계약 원장 및 계약 변경 이력", "주요 계약 조건과 수행의무 식별 확인", "박서연", "문수아", "검토 중", "progress", "계약 시작일, 변경일, 해지 조건 보완"],
+      ["계약자산·계약부채 Roll-forward", "기간 인식 수익과 선수금·계약부채 변동 대사", "박서연", "문수아", "제출 완료", "done", "이월, 증가, 수익인식, 환율효과 구분"],
+      ["매출 컷오프 표본", "한 시점 인식 매출의 출고·설치·검수 기준 확인", "박서연", "문수아", "검토 중", "progress", "12월·1월 거래 표본과 증빙 파일 연결"],
+      ["반품·할인·리베이트 산정표", "변동대가 추정과 매출 차감 항목 확인", "박서연", "문수아", "자료 요청", "request", "정책서, 승인자료, 사후정산 내역 요청"],
+      ["미청구·선수금 대사표", "미청구 수익, 선수금, 계약부채의 계정 대사", "박서연", "문수아", "검토 중", "progress", "계약별 청구일과 수익인식일 비교"],
+      ["매출채권 연령분석", "매출채권 727억원 및 대손충당금 검토", "박서연", "백도현", "자료 요청", "request", "장기미수, 회수내역, 충당금 산정표 보완"],
+      ["리스계약 마스터", "리스부채 668억원, 유동 155억원 및 비유동 513억원", "이도윤", "조은재", "검토 중", "progress", "샘플: 20_리스계약_마스터_2025.xlsx"],
+      ["신규·변경·종료 리스계약", "당기 리스 신규, 변경, 종료 계약의 완전성 확인", "이도윤", "조은재", "자료 요청", "request", "계약서 PDF와 시스템 등록번호 연결"],
+      ["사용권자산 Roll-forward", "사용권자산 취득, 감가상각, 처분 및 환산 효과 확인", "이도윤", "조은재", "검토 중", "progress", "기초, 증가, 감소, 감가상각, 기말 칼럼"],
+      ["리스부채 상환스케줄", "리스부채 상환 162억원과 잔여 만기분석 확인", "이도윤", "조은재", "제출 완료", "done", "월별 지급액, 이자, 원금, 현재가치 구분"],
+      ["할인율·리스기간 판단 근거", "연장선택권, 종료선택권, 증분차입이자율 판단 확인", "이도윤", "조은재", "자료 요청", "request", "계약별 판단 메모와 승인자 표시"],
+      ["단기·소액리스 비용 명세", "리스 인식 예외 적용의 완전성 확인", "이도윤", "조은재", "요청 예정", "ready", "소액 기준, 단기 기준, 비용 계정 대사"],
+      ["유형자산 취득·처분 명세", "유형자산 1,346억원, 당기 취득 263억원", "최지우", "임하준", "검토 중", "progress", "샘플: 30_CAPEX_취득처분_명세.xlsx"],
+      ["CAPEX 승인 품의·검수증빙", "주요 유형자산 취득의 자본적 지출 판단 확인", "최지우", "임하준", "자료 요청", "request", "품의서, 발주서, 검수확인서, 세금계산서 연결"],
+      ["건설중인자산·프로젝트별 집계", "프로젝트별 대체, 완성, 미완료 자산 검토", "최지우", "임하준", "자료 요청", "request", "프로젝트 코드, 예산, 누적투입액 표시"],
+      ["감가상각 계산 파일", "유형자산 감가상각비와 내용연수 변경 여부 확인", "최지우", "임하준", "제출 완료", "done", "자산번호별 취득일, 내용연수, 잔존가치 포함"],
+      ["유형자산 손상징후 검토", "영업장, 장비, 투자자산의 손상 징후 확인", "최지우", "임하준", "검토 중", "progress", "유휴자산, 폐점, 수익성 하락 항목 표시"],
+      ["무형자산 취득·상각 명세", "영업권및무형자산 257억원, 무형자산 취득 52억원", "최지우", "임하준", "자료 요청", "request", "샘플: 35_무형자산_취득상각_명세.xlsx"],
+      ["개발비·소프트웨어 자본화 판단", "무형자산 인식요건과 상각 개시일 확인", "최지우", "임하준", "자료 요청", "request", "프로젝트별 산출물, 승인, 사용가능일 표시"],
+      ["영업권 손상검토 자료", "영업권 손상검사 가정과 회수가능액 검토", "서지민", "임하준", "검토 중", "progress", "CGU, 할인율, 성장률, 민감도 자료 요청"],
+      ["금융기관 약정 현황", "주석 37 우발부채 및 약정사항 등: 차입 약정 확인", "한유진", "남지안", "요청 예정", "ready", "약정한도, 실행액, 만기, 담보 제공 여부 정리"],
+      ["담보제공자산·지급보증 현황", "담보 제공 자산과 지급보증의 완전성 확인", "한유진", "남지안", "자료 요청", "request", "보증처, 보증금액, 만기, 관련 채무 연결"],
+      ["법무확인서·소송 현황", "주석 37 우발부채 및 약정사항 등: 소송·우발사항 확인", "정하늘", "남지안", "요청 예정", "ready", "샘플: 40_약정우발_법무확인.zip"],
+      ["이사회·계약서·후속사건 점검", "보고기간 후 사건, 주요 계약, 약정 변경 확인", "정하늘", "남지안", "자료 요청", "request", "이사회 의사록, 계약서, 공시 전 업데이트"]
+    ];
+
+    const connectedNotes = [
+      "1. 일반사항",
+      "2. 재무제표 작성기준 및 중요한 회계정책",
+      "3. 중요한 회계추정 및 판단",
+      "4. 부문정보",
+      "5. 현금및현금성자산",
+      "6. 금융상품",
+      "7. 금융상품의 공정가치",
+      "8. 장단기투자자산",
+      "9. 사용이 제한된 금융자산",
+      "10. 매출채권 및 기타금융자산",
+      "11. 재고자산",
+      "12. 기타자산",
+      "13. 공동기업투자",
+      "14. 사용권자산 및 리스부채",
+      "15. 유형자산",
+      "16. 투자부동산",
+      "17. 영업권및무형자산",
+      "18. 담보로 제공된 자산",
+      "19. 매입채무 및 기타금융부채",
+      "20. 차입금",
+      "21. 충당부채",
+      "22. 기타부채",
+      "23. 퇴직급여",
+      "24. 자본",
+      "25. 주식기준보상",
+      "26. 기타포괄손익누계액",
+      "27. 이익잉여금",
+      "28. 배당금",
+      "29. 매출액",
+      "30. 비용의 성격별 분류",
+      "31. 판매비와관리비",
+      "32. 금융수익 및 금융비용",
+      "33. 기타영업외수익 및 기타영업외비용",
+      "34. 법인세비용",
+      "35. 주당이익",
+      "36. 특수관계자거래",
+      "37. 우발부채 및 약정사항 등",
+      "38. 종속기업의 처분",
+      "39. 현금흐름표",
+      "40. 위험관리",
+      "41. 사업결합"
+    ];
+
+    const separateNotes = [
+      "1. 당사의 개요",
+      "2. 재무제표 작성기준 및 중요한 회계정책",
+      "3. 중요한 회계추정 및 판단",
+      "4. 현금및현금성자산",
+      "5. 금융상품",
+      "6. 금융상품의 공정가치",
+      "7. 장단기투자자산",
+      "8. 사용이 제한된 금융자산",
+      "9. 매출채권 및 기타금융자산",
+      "10. 재고자산",
+      "11. 기타자산",
+      "12. 종속기업 및 공동기업 투자주식",
+      "13. 사용권자산 및 리스부채",
+      "14. 유형자산",
+      "15. 투자부동산",
+      "16. 영업권및무형자산",
+      "17. 담보로 제공된 자산",
+      "18. 매입채무 및 기타금융부채",
+      "19. 충당부채",
+      "20. 기타부채",
+      "21. 퇴직급여",
+      "22. 자본",
+      "23. 주식기준보상",
+      "24. 이익잉여금",
+      "25. 배당금",
+      "26. 매출액",
+      "27. 비용의 성격별 분류",
+      "28. 판매비와관리비",
+      "29. 금융수익 및 금융비용",
+      "30. 기타영업외수익 및 기타영업외비용",
+      "31. 법인세비용",
+      "32. 주당이익",
+      "33. 특수관계자거래",
+      "34. 우발부채 및 약정사항 등",
+      "35. 현금흐름표",
+      "36. 위험관리"
+    ];
+
+    const materialKpis = [
+      ["요청 자료", `${materialRows.length}개`, "PBC 관리 단위"],
+      ["제출 완료", "6건", "매출·리스·감가상각 등"],
+      ["검토 중", "11건", "연결·리스·자산 등"],
+      ["담당자명", "예시", "회사·감사인 시연용"],
+      ["공시 기준", "2025", "사업보고서 기준"]
+    ];
+
+    const noteKpis = [
+      ["연결 주석", `${connectedNotes.length}개`, "전체 목록 표시"],
+      ["별도 주석", `${separateNotes.length}개`, "전체 목록 표시"],
+      ["수익", "4,827억원", "연결 고객과의 계약 수익"],
+      ["리스부채", "668억원", "연결 유동+비유동"],
+      ["자산 취득", "315억원", "유형 263억 + 무형 52억"]
+    ];
+
+    const assetCards = [
+      {
+        index: "01",
+        title: "ERP·엑셀 왕복 자동화",
+        bullets: ["ERP 다운로드 자료를 표준 결산 양식으로 자동 정리", "계정별 검토 파일과 업로드 파일을 같은 기준으로 생성", "수작업 복사, 열 맞춤, 파일명 정리 시간을 축소"],
+        result: "결산 담당자는 자료 형식 정리보다 예외 항목 확인에 시간을 씁니다."
+      },
+      {
+        index: "02",
+        title: "결산·계정대사 자동화",
+        bullets: ["TB, GL, 보조부, 계정명세서를 연결해 잔액 차이를 표시", "전기 대비 변동과 월별 이상 항목을 자동 선별", "감사 요청자료와 회사 검토 파일의 대사 기준을 일치"],
+        result: "감사 대응 전에 회사 내부 검토 품질을 먼저 끌어올립니다."
+      },
+      {
+        index: "03",
+        title: "재사용 템플릿·매뉴얼",
+        bullets: ["골프존 계정 구조와 결산 일정에 맞춘 템플릿 제공", "담당자 변경에도 따라 할 수 있는 작업 매뉴얼 축적", "다음 분기·연말 결산에 바로 다시 쓰는 업무 자산화"],
+        result: "AI 교육은 일회성 강의가 아니라 회사에 남는 반복업무 감축 도구입니다."
+      }
+    ];
+
+    function noteProfile(type, item, index) {
+      const text = item.replace(/^\d+\.\s*/, "");
+      const isConnected = type === "연결";
+      let point = `${type} 재무제표 주석 원문 항목`;
+      let company = companyPeople[index % companyPeople.length];
+      let auditor = auditPeople[index % auditPeople.length];
+      let status = ["자료 요청", "검토 중", "요청 예정", "제출 완료"][index % 4];
+      let statusClass = ["request", "progress", "ready", "done"][index % 4];
+      let note = "주석 원문, 명세서, 전표 및 증빙 대사";
+
+      if (text.includes("일반사항")) {
+        point = isConnected ? "연결대상 종속기업 18개, 당기 중 3개 신규 연결 및 1개 연결 제외" : "당사의 개요와 주요 사업 내용 공시";
+        company = "김민준"; auditor = "장현우"; status = "자료 요청"; statusClass = "request";
+        note = isConnected ? "연결범위 변동 사유와 신규 취득·설립 자료 확인" : "사업 현황, 정관, 주요 조직 변경 확인";
+      } else if (text.includes("당사의 개요")) {
+        point = "당사의 개요와 주요 사업 내용 공시";
+        company = "서지민"; auditor = "유지호"; status = "자료 요청"; statusClass = "request";
+        note = "정관, 사업 현황, 주요 조직 변경 확인";
+      } else if (text.includes("작성기준") || text.includes("회계추정")) {
+        point = "K-IFRS 작성기준, 주요 회계정책, 추정과 판단 공시";
+        company = "서지민"; auditor = "유지호"; status = "검토 중"; statusClass = "progress";
+        note = "전기 대비 정책 변경과 경영진 판단 근거 확인";
+      } else if (text.includes("부문정보")) {
+        point = "영업부문과 주요 수익 구성 검토 대상";
+        company = "서지민"; auditor = "문수아"; status = "검토 중"; statusClass = "progress";
+        note = "부문별 내부보고자료와 재무제표 금액 대사";
+      } else if (text.includes("현금") || text.includes("금융상품") || text.includes("투자자산") || text.includes("제한된") || text.includes("차입금") || text.includes("위험관리")) {
+        point = text.includes("현금") && isConnected ? "연결 재무상태표상 현금및현금성자산 901억원" : `${type} 금융상품, 투자자산, 위험관리 관련 공시`;
+        company = "한유진"; auditor = "백도현"; status = text.includes("현금") ? "제출 완료" : "자료 요청"; statusClass = text.includes("현금") ? "done" : "request";
+        note = "은행조회서, 평가자료, 만기분석, 담보·제한 내역 확인";
+      } else if (text.includes("매출채권")) {
+        point = isConnected ? "연결 재무상태표상 매출채권 727억원 등 채권 명세 검토" : "별도 매출채권 및 기타금융자산 명세 검토";
+        company = "박서연"; auditor = "백도현"; status = "검토 중"; statusClass = "progress";
+        note = "연령분석, 회수내역, 대손충당금 산정 확인";
+      } else if (text.includes("재고")) {
+        point = isConnected ? "연결 재무상태표상 재고자산 534억원" : "별도 재고자산 수량·평가 명세 검토";
+        company = "최지우"; auditor = "임하준"; status = "자료 요청"; statusClass = "request";
+        note = "실사 결과, 평가충당금, 장기체화 재고 검토";
+      } else if (text.includes("기타자산")) {
+        point = `${type} 기타유동자산 및 기타비유동자산 공시`;
+        company = "서지민"; auditor = "임하준"; status = "요청 예정"; statusClass = "ready";
+        note = "선급금, 선급비용, 미수금 구성 확인";
+      } else if (text.includes("공동기업") || text.includes("종속기업 및 공동기업") || text.includes("사업결합") || text.includes("종속기업의 처분")) {
+        point = isConnected ? "공동기업, 종속기업 처분, 사업결합 관련 공시" : "종속기업 및 공동기업 투자주식 명세 공시";
+        company = "김민준"; auditor = "장현우"; status = "자료 요청"; statusClass = "request";
+        note = "계약서, 투자주식 명세, 손상 징후, 처분손익 확인";
+      } else if (text.includes("리스")) {
+        point = isConnected ? "리스부채 668억원. 유동 155억원, 비유동 513억원" : "별도 사용권자산 및 리스부채 공시";
+        company = "이도윤"; auditor = "조은재"; status = "검토 중"; statusClass = "progress";
+        note = "리스계약, 상환스케줄, 할인율, 리스기간 판단 확인";
+      } else if (text.includes("유형자산")) {
+        point = isConnected ? "연결 유형자산 1,346억원. 현금흐름표상 취득 263억원" : "별도 유형자산 취득·처분·상각 명세 공시";
+        company = "최지우"; auditor = "임하준"; status = "검토 중"; statusClass = "progress";
+        note = "취득·처분 승인, 감가상각, 손상 징후 검토";
+      } else if (text.includes("투자부동산")) {
+        point = isConnected ? "연결 투자부동산 74억원" : "별도 투자부동산 보유 및 임대수익 공시";
+        company = "최지우"; auditor = "임하준"; status = "요청 예정"; statusClass = "ready";
+        note = "임대수익, 공정가치, 담보 제공 여부 확인";
+      } else if (text.includes("영업권") || text.includes("무형자산")) {
+        point = isConnected ? "연결 영업권및무형자산 257억원. 무형자산 취득 52억원" : "별도 영업권및무형자산 취득·상각 공시";
+        company = "최지우"; auditor = "임하준"; status = "자료 요청"; statusClass = "request";
+        note = "영업권 손상검토, 개발비 자본화, 상각 개시일 확인";
+      } else if (text.includes("담보")) {
+        point = `${type} 담보 제공 자산 관련 공시`;
+        company = "한유진"; auditor = "남지안"; status = "자료 요청"; statusClass = "request";
+        note = "담보 약정서와 제공 자산 원장 대사";
+      } else if (text.includes("매입채무") || text.includes("충당부채") || text.includes("기타부채")) {
+        point = `${type} 금융부채, 충당부채, 기타부채 공시`;
+        company = "서지민"; auditor = "권서준"; status = "검토 중"; statusClass = "progress";
+        note = "거래처별 명세, 전입·사용·환입, 컷오프 확인";
+      } else if (text.includes("퇴직급여")) {
+        point = "확정급여채무, 사외적립자산, 퇴직급여비용 공시";
+        company = "윤서아"; auditor = "홍유나"; status = "자료 요청"; statusClass = "request";
+        note = "보험수리보고서, 주요 가정, 지급 내역 확인";
+      } else if (text.includes("자본") || text.includes("주식기준") || text.includes("이익잉여금") || text.includes("배당") || text.includes("주당이익")) {
+        point = `${type} 자본, 배당, 주식기준보상, 주당이익 공시`;
+        company = "강태오"; auditor = "신예린"; status = text.includes("배당") || text.includes("주당이익") ? "제출 완료" : "요청 예정"; statusClass = text.includes("배당") || text.includes("주당이익") ? "done" : "ready";
+        note = "주식수, 주총 승인, 자기주식, 희석효과 계산 확인";
+      } else if (text.includes("매출액")) {
+        point = isConnected ? "고객과의 계약에서 생기는 수익 4,827억원. 한 시점 2,478억원, 기간에 걸쳐 2,350억원" : "별도 매출액 및 고객과의 계약 수익 공시";
+        company = "박서연"; auditor = "문수아"; status = "제출 완료"; statusClass = "done";
+        note = "수익 구분, 계약부채, 주요 계약 조건과 재무제표 금액 대사";
+      } else if (text.includes("비용") || text.includes("판매비") || text.includes("기타영업외")) {
+        point = `${type} 손익 계정의 성격별 분류와 영업외손익 공시`;
+        company = "서지민"; auditor = "문수아"; status = "검토 중"; statusClass = "progress";
+        note = "월별 손익, 일회성 거래, 재분류 항목 확인";
+      } else if (text.includes("금융수익")) {
+        point = "이자수익, 이자비용, 평가손익 등 금융손익 공시";
+        company = "한유진"; auditor = "백도현"; status = "자료 요청"; statusClass = "request";
+        note = "이자계산서, 평가손익, 외화 관련 분개 확인";
+      } else if (text.includes("법인세")) {
+        point = "당기법인세, 이연법인세, 유효세율 공시";
+        company = "오지훈"; auditor = "권서준"; status = "자료 요청"; statusClass = "request";
+        note = "세무조정계산서, 이연법인세 회수가능성 확인";
+      } else if (text.includes("특수관계자")) {
+        point = "특수관계자 거래, 채권·채무, 주요 경영진 보상 공시";
+        company = "서지민"; auditor = "남지안"; status = "검토 중"; statusClass = "progress";
+        note = "거래 승인, 미결제 잔액, 누락 여부 확인";
+      } else if (text.includes("우발부채")) {
+        point = `${type} 주석의 우발부채 및 약정사항 등 전체 검토`;
+        company = "정하늘"; auditor = "남지안"; status = "요청 예정"; statusClass = "ready";
+        note = "은행조회서, 법무법인 조회, 보증·담보 변동 및 후속사건 확인";
+      } else if (text.includes("현금흐름표")) {
+        point = isConnected ? "유형자산 취득 263억원, 무형자산 취득 52억원 등 현금흐름 공시" : "별도 현금흐름표 보충정보 공시";
+        company = "서지민"; auditor = "유지호"; status = "검토 중"; statusClass = "progress";
+        note = "비현금거래, 투자·재무활동 현금흐름 대사";
+      }
+
+      return [type, item, point, company, auditor, status, statusClass, note];
+    }
+
+    const connectedNoteRows = connectedNotes.map((item, index) => noteProfile("연결", item, index));
+    const separateNoteRows = separateNotes.map((item, index) => noteProfile("별도", item, index + connectedNotes.length));
+
+    function renderKpis(kpis) {
+      return `<div class="kpis">${kpis.map(kpi => `
+        <div class="kpi">
+          <div class="kpi-label">${kpi[0]}</div>
+          <div class="kpi-value">${kpi[1]}</div>
+          <div class="kpi-note">${kpi[2]}</div>
+        </div>`).join("")}</div>`;
+    }
+
+    function renderMaterials() {
+      return `<section class="panel">
+        <div class="panel-head">
+          <div>
+            <div class="section-kicker">01 · COMPANY REQUEST TRACKER</div>
+            <h2>회사 자료 진행 사항</h2>
+          </div>
+          <div class="notice">담당자명과 요청자료 파일명은 PT 시연용 예시입니다. 실제 운영 시 골프존 제출 양식과 담당자 기준으로 변경합니다.</div>
+        </div>
+        ${renderKpis(materialKpis)}
+        <div class="table-wrap">
+          <table class="material-table">
+            <colgroup>
+              <col style="width: 18%">
+              <col style="width: 28%">
+              <col style="width: 12%">
+              <col style="width: 12%">
+              <col style="width: 10%">
+              <col style="width: 20%">
+            </colgroup>
+            <thead>
+              <tr>
+                <th>요청 자료</th>
+                <th>골프존 공시 기준 포인트</th>
+                <th>회사 담당자</th>
+                <th>감사인 담당</th>
+                <th>진행 상태</th>
+                <th>보완 사항</th>
+              </tr>
+            </thead>
+            <tbody>
+              ${materialRows.map(row => `<tr>
+                <td>${row[0]}</td>
+                <td><span class="point">${row[1]}</span></td>
+                <td class="owner">${row[2]}</td>
+                <td class="owner">${row[3]}</td>
+                <td><span class="status ${row[5]}">${row[4]}</span></td>
+                <td>${row[6]}</td>
+              </tr>`).join("")}
+            </tbody>
+          </table>
+        </div>
+        <div class="footnote">
+          <span>공시 기준 포인트는 골프존 2025 사업보고서의 별도·연결 주석 항목과 주요 수치를 반영했습니다. 담당자와 진행상태는 PT 시연용 예시입니다.</span>
+          <a target="_blank" rel="noopener" href="${sourceUrl}">2025 사업보고서 원문</a>
+        </div>
+      </section>`;
+    }
+
+    function renderNoteRows(rows) {
+      return rows.map(row => `<tr>
+        <td>${row[1]}</td>
+        <td><span class="point">${row[2]}</span></td>
+        <td class="owner">${row[3]}</td>
+        <td class="owner">${row[4]}</td>
+        <td><span class="status ${row[6]}">${row[5]}</span></td>
+        <td>${row[7]}</td>
+      </tr>`).join("");
+    }
+
+    function renderNotes() {
+      const rows = currentNoteType === "연결" ? connectedNoteRows : separateNoteRows;
+      const count = rows.length;
+      return `<section class="panel">
+        <div class="panel-head">
+          <div>
+            <div class="section-kicker">02 · DISCLOSURE NOTE REVIEW</div>
+            <h2>골프존 주석 검토 진행 사항</h2>
+          </div>
+          <div class="notice">주석명은 실제 공시 항목입니다. 담당자·진행상태·검토 사항은 PT 시연용 예시입니다.</div>
+        </div>
+        ${renderKpis(noteKpis)}
+        <div class="note-subtabs" aria-label="주석 구분">
+          <button class="note-subtab ${currentNoteType === "연결" ? "active" : ""}" type="button" onclick="switchNoteType('연결')">연결 주석<span>${connectedNoteRows.length}개</span></button>
+          <button class="note-subtab ${currentNoteType === "별도" ? "active" : ""}" type="button" onclick="switchNoteType('별도')">별도 주석<span>${separateNoteRows.length}개</span></button>
+        </div>
+        <div class="table-wrap">
+          <table class="note-table">
+            <colgroup>
+              <col style="width: 23%">
+              <col style="width: 31%">
+              <col style="width: 12%">
+              <col style="width: 12%">
+              <col style="width: 8%">
+              <col style="width: 14%">
+            </colgroup>
+            <thead>
+              <tr>
+                <th>주석 항목</th>
+                <th>2025 공시 주요 내용</th>
+                <th>회사 담당자</th>
+                <th>감사인 담당</th>
+                <th>진행 상태</th>
+                <th>검토·보완 사항</th>
+              </tr>
+            </thead>
+            <tbody>${renderNoteRows(rows)}</tbody>
+          </table>
+        </div>
+        <div class="footnote">
+          <span>출처: 골프존 2025 사업보고서. 현재 화면은 ${currentNoteType} 주석 ${count}개 전체 목록입니다.</span>
+          <a target="_blank" rel="noopener" href="${sourceUrl}">수치·주석 출처 링크</a>
+        </div>
+      </section>`;
+    }
+
+    function switchNoteType(type) {
+      currentNoteType = type;
+      document.getElementById("screen").innerHTML = renderNotes();
+    }
+
+    function renderAssets() {
+      return `<section class="assets">
+        <div class="asset-head">
+          <div>
+            <div class="section-kicker">03 · AUTOMATION ASSETS</div>
+            <h2>AI 교육·자동화 자산</h2>
+          </div>
+          <div class="notice">목표는 AI 홍보가 아니라, 회계팀 반복업무를 줄이고 다음 결산에도 계속 쓰는 회사 내부 자산을 남기는 것입니다.</div>
+        </div>
+        <div class="asset-grid">
+          ${assetCards.map(card => `<article class="asset-card">
+            <div class="asset-card-title">
+              <div class="asset-index">${card.index}</div>
+              <h3>${card.title}</h3>
+            </div>
+            <div class="asset-body">
+              <ul>${card.bullets.map(item => `<li>${item}</li>`).join("")}</ul>
+            </div>
+            <div class="asset-result">${card.result}</div>
+          </article>`).join("")}
+        </div>
+        <div class="workflow" aria-label="자동화 자산 활용 흐름">
+          <div class="flow-step"><span>INPUT</span>ERP 원장·보조부·엑셀 자료</div>
+          <div class="flow-step"><span>PROCESS</span>표준화·대사·예외 추출</div>
+          <div class="flow-step"><span>OUTPUT</span>감사 요청자료·검토 파일</div>
+          <div class="flow-step"><span>ASSET</span>템플릿·매뉴얼·재사용 규칙</div>
+        </div>
+      </section>`;
+    }
+
+    function view(id, element) {
+      document.querySelectorAll(".tab").forEach(tab => tab.classList.remove("active"));
+      element.classList.add("active");
+      document.getElementById("screen").innerHTML = id === "materials" ? renderMaterials() : id === "notes" ? renderNotes() : renderAssets();
+    }
+
+    view("materials", document.querySelector(".tab"));
+  </script>
+</body>
+</html>
+
