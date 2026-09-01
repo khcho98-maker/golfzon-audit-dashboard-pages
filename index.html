@@ -106,6 +106,19 @@
       white-space: nowrap;
     }
 
+    .tag.schedule-open {
+      color: #185bb2;
+      background: #edf5ff;
+      border-color: #b9d2f2;
+      font-weight: 900;
+      cursor: pointer;
+    }
+
+    .tag.schedule-open:hover {
+      background: #e4f0ff;
+      border-color: #8eb9ea;
+    }
+
     .titlebar {
       display: grid;
       grid-template-columns: 1fr auto;
@@ -749,6 +762,476 @@
       line-height: 1.45;
     }
 
+    .schedule-overlay[hidden] {
+      display: none;
+    }
+
+    .schedule-overlay {
+      position: fixed;
+      inset: 0;
+      z-index: 60;
+      display: grid;
+      place-items: center;
+      padding: 28px;
+      background: rgba(7, 25, 50, .50);
+    }
+
+    .schedule-card {
+      width: min(1360px, calc(100vw - 48px));
+      max-height: calc(100vh - 48px);
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+      border: 1px solid #c8d8ec;
+      border-radius: 8px;
+      background: #fff;
+      box-shadow: 0 30px 80px rgba(4, 21, 43, .28);
+    }
+
+    .schedule-topbar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      padding: 16px 20px;
+      border-bottom: 1px solid var(--line);
+      background: #fbfdff;
+    }
+
+    .schedule-brand {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      color: #314c70;
+      font-size: 12px;
+      font-weight: 900;
+    }
+
+    .schedule-mark {
+      width: 31px;
+      height: 31px;
+      display: grid;
+      place-items: center;
+      border-radius: 8px;
+      background: var(--navy);
+      color: #fff;
+      font-size: 14px;
+    }
+
+    .schedule-topright {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      color: #64768e;
+      font-size: 12px;
+      font-weight: 700;
+    }
+
+    .schedule-pill {
+      padding: 6px 10px;
+      border: 1px solid #cbdcf1;
+      border-radius: 999px;
+      color: #2e629f;
+      font-size: 11px;
+      font-weight: 900;
+    }
+
+    .schedule-close {
+      min-width: 56px;
+      min-height: 32px;
+      border: 1px solid #c6d7ec;
+      border-radius: 8px;
+      background: #fff;
+      color: #375b89;
+      font-size: 12px;
+      font-weight: 900;
+      cursor: pointer;
+    }
+
+    .schedule-close:hover {
+      background: #f5f9ff;
+    }
+
+    .schedule-close:focus-visible,
+    .schedule-open:focus-visible {
+      outline: 3px solid rgba(45, 110, 197, .28);
+      outline-offset: 2px;
+    }
+
+    .schedule-scroll {
+      overflow: auto;
+      padding: 24px 28px 26px;
+    }
+
+    .schedule-kicker {
+      color: #1b63bb;
+      font-size: 12px;
+      font-weight: 900;
+      letter-spacing: .12em;
+    }
+
+    .schedule-kicker::before {
+      content: "";
+      display: inline-block;
+      width: 8px;
+      height: 8px;
+      margin-right: 8px;
+      border-radius: 50%;
+      background: #18ad88;
+    }
+
+    .schedule-titleline {
+      display: grid;
+      grid-template-columns: 1fr minmax(340px, 470px);
+      gap: 30px;
+      align-items: end;
+      margin-top: 10px;
+      padding-bottom: 18px;
+      border-bottom: 1px solid #e5edf6;
+    }
+
+    .schedule-titleline h2 {
+      margin: 0;
+      color: #10263f;
+      font-size: 34px;
+      line-height: 1.18;
+      letter-spacing: 0;
+    }
+
+    .schedule-titleline h2 span {
+      color: var(--blue);
+    }
+
+    .schedule-titleline p {
+      margin: 0;
+      color: var(--muted);
+      font-size: 13px;
+      line-height: 1.65;
+      text-align: right;
+    }
+
+    .schedule-metrics {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 10px;
+      margin-top: 16px;
+    }
+
+    .schedule-metric {
+      min-height: 72px;
+      padding: 13px 15px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: #fbfdff;
+    }
+
+    .schedule-metric b {
+      display: block;
+      color: #5e7391;
+      font-size: 11px;
+      font-weight: 900;
+      letter-spacing: .08em;
+    }
+
+    .schedule-metric strong {
+      display: block;
+      margin-top: 6px;
+      color: #193c6f;
+      font-size: 24px;
+      font-weight: 900;
+      line-height: 1;
+      letter-spacing: 0;
+    }
+
+    .schedule-metric em {
+      color: #1f65bd;
+      font-size: 13px;
+      font-style: normal;
+    }
+
+    .schedule-metric.alert strong {
+      color: #ad6b00;
+    }
+
+    .schedule-layout {
+      display: grid;
+      grid-template-columns: minmax(0, 1.8fr) minmax(330px, .85fr);
+      gap: 14px;
+      margin-top: 14px;
+    }
+
+    .schedule-panel {
+      overflow: hidden;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: #fff;
+      box-shadow: 0 10px 26px rgba(21, 58, 108, .05);
+    }
+
+    .schedule-panel-head {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 14px;
+      padding: 16px 18px;
+      border-bottom: 1px solid #e4edf7;
+    }
+
+    .schedule-panel-kicker {
+      color: #1b63bb;
+      font-size: 11px;
+      font-weight: 900;
+      letter-spacing: .12em;
+    }
+
+    .schedule-panel h3 {
+      margin: 4px 0 0;
+      color: #122844;
+      font-size: 21px;
+      line-height: 1.2;
+      letter-spacing: 0;
+    }
+
+    .schedule-legend {
+      display: flex;
+      gap: 8px;
+      align-items: center;
+      flex-wrap: wrap;
+      color: #70839c;
+      font-size: 11px;
+      white-space: nowrap;
+    }
+
+    .schedule-dot {
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: #2b70c8;
+    }
+
+    .schedule-dot.green { background: #18a57c; }
+    .schedule-dot.orange { background: #dc9a27; }
+
+    .schedule-table-wrap {
+      padding: 0 18px 12px;
+    }
+
+    .schedule-table {
+      width: 100%;
+      border-collapse: collapse;
+      text-align: left;
+      font-size: 12px;
+    }
+
+    .schedule-table th {
+      padding: 12px 8px;
+      color: #6b809d;
+      font-size: 11px;
+      font-weight: 900;
+      letter-spacing: .03em;
+    }
+
+    .schedule-table td {
+      padding: 12px 8px;
+      border-top: 1px solid #edf2f7;
+      color: #536a89;
+      vertical-align: middle;
+    }
+
+    .schedule-table td:first-child {
+      color: #1b365f;
+      font-weight: 900;
+    }
+
+    .schedule-auditors {
+      color: #3e5c80;
+      font-weight: 800;
+    }
+
+    .schedule-status {
+      display: inline-block;
+      padding: 5px 9px;
+      border-radius: 999px;
+      font-size: 11px;
+      font-weight: 900;
+      white-space: nowrap;
+    }
+
+    .schedule-status.scheduled {
+      background: #eff6ff;
+      color: #1d5fb7;
+    }
+
+    .schedule-status.ongoing {
+      background: #fff7e8;
+      color: #ad6b00;
+    }
+
+    .schedule-status.complete,
+    .schedule-state.end {
+      background: #ecfdf5;
+      color: #087a59;
+    }
+
+    .schedule-roadmap {
+      margin: 0 18px 16px;
+      padding: 14px 16px;
+      border: 1px solid #dbe7f4;
+      border-radius: 8px;
+      background: #f8fbff;
+    }
+
+    .schedule-roadmap-top {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+    }
+
+    .schedule-roadmap-top b {
+      font-size: 12px;
+    }
+
+    .schedule-roadmap-top span {
+      color: #71849e;
+      font-size: 11px;
+    }
+
+    .schedule-months {
+      display: grid;
+      grid-template-columns: repeat(9, minmax(0, 1fr));
+      gap: 3px;
+      margin-top: 12px;
+    }
+
+    .schedule-month {
+      position: relative;
+      padding-top: 9px;
+      border-top: 2px solid #dce7f4;
+      color: #71829a;
+      font-size: 10px;
+      text-align: center;
+    }
+
+    .schedule-month.active {
+      border-color: #2b70c8;
+      color: #1c5eaf;
+      font-weight: 900;
+    }
+
+    .schedule-month.field {
+      border-color: #2b70c8;
+      color: #1c5eaf;
+      font-weight: 900;
+    }
+
+    .schedule-month.field::before {
+      position: absolute;
+      top: -4px;
+      left: 4px;
+      right: 4px;
+      height: 4px;
+      border-radius: 3px;
+      background: #2b70c8;
+      content: "";
+    }
+
+    .schedule-field-panel {
+      display: flex;
+      min-height: 480px;
+      flex-direction: column;
+    }
+
+    .schedule-field-intro {
+      padding: 15px 18px 10px;
+      color: #657a96;
+      font-size: 12px;
+      line-height: 1.6;
+    }
+
+    .schedule-field-days {
+      display: grid;
+      gap: 9px;
+      padding: 4px 18px 16px;
+    }
+
+    .schedule-field-day {
+      display: grid;
+      grid-template-columns: 58px 1fr auto;
+      gap: 10px;
+      align-items: center;
+      padding: 12px;
+      border: 1px solid #dce7f4;
+      border-radius: 8px;
+      background: #f8fbff;
+    }
+
+    .schedule-day {
+      min-height: 50px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      border-radius: 8px;
+      background: #eaf3ff;
+      color: #1d61ba;
+      font-size: 10px;
+      font-weight: 900;
+    }
+
+    .schedule-day strong {
+      margin-top: 3px;
+      font-size: 17px;
+      line-height: 1;
+      letter-spacing: 0;
+    }
+
+    .schedule-names {
+      color: #36557e;
+      font-size: 12px;
+      font-weight: 900;
+      line-height: 1.55;
+    }
+
+    .schedule-state {
+      padding: 5px 8px;
+      border-radius: 999px;
+      background: #eef6ff;
+      color: #1e61b9;
+      font-size: 10px;
+      font-weight: 900;
+      white-space: nowrap;
+    }
+
+    .schedule-field-footer {
+      margin-top: auto;
+      padding: 14px 18px;
+      border-top: 1px solid #e4edf7;
+      background: #fbfdff;
+      color: #59728f;
+      font-size: 12px;
+      line-height: 1.6;
+    }
+
+    .schedule-field-footer b {
+      color: #195eb7;
+    }
+
+    .schedule-foot {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      margin-top: 14px;
+      color: #7c8fa7;
+      font-size: 11px;
+      line-height: 1.45;
+    }
+
+    .schedule-foot strong {
+      color: #3b5f8e;
+    }
+
     .workflow {
       display: grid;
       grid-template-columns: repeat(4, minmax(0, 1fr));
@@ -812,6 +1295,16 @@
       .doc-tag, .legend, .notice { justify-content: flex-start; text-align: left; }
       .asset-lead { text-align: left; }
       .tabs, .kpis, .asset-grid, .workflow { grid-template-columns: 1fr; }
+      .schedule-overlay { padding: 14px; }
+      .schedule-topbar, .schedule-titleline, .schedule-layout, .schedule-foot { grid-template-columns: 1fr; }
+      .schedule-topbar, .schedule-foot { align-items: flex-start; flex-direction: column; }
+      .schedule-titleline p { text-align: left; }
+      .schedule-titleline h2 { font-size: 28px; }
+      .schedule-metrics { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+      .schedule-table-wrap { overflow-x: auto; }
+      .schedule-table { min-width: 760px; }
+      .schedule-months { grid-template-columns: repeat(5, minmax(0, 1fr)); }
+      .schedule-field-panel { min-height: auto; }
       .flow-step::after { display: none !important; }
       .panel, .assets { min-height: auto; }
       h1 { font-size: 31px; }
@@ -834,6 +1327,7 @@
           <span class="tag">공시 항목: 실제 목록</span>
           <span class="tag">담당자명: 예시</span>
           <span class="tag">상태: 시연용 예시</span>
+          <button class="tag schedule-open" type="button" onclick="showSchedulePlan()">감사 일정 보기</button>
         </div>
       </header>
 
@@ -868,6 +1362,97 @@
       <div id="screen"></div>
     </div>
   </main>
+
+  <div class="schedule-overlay" id="schedule-overlay" hidden onclick="if (event.target === this) hideSchedulePlan()">
+    <section class="schedule-card" role="dialog" aria-modal="true" aria-labelledby="schedule-title">
+      <div class="schedule-topbar">
+        <div class="schedule-brand"><span class="schedule-mark">S</span><span>삼덕회계법인 / 골프존 회계감사 제안</span></div>
+        <div class="schedule-topright">
+          <span>2027-2029 회계감사 제안</span>
+          <span class="schedule-pill">감사 일정·현장감사</span>
+          <button class="schedule-close" type="button" onclick="hideSchedulePlan()">닫기</button>
+        </div>
+      </div>
+      <div class="schedule-scroll">
+        <div class="schedule-kicker">AUDIT SCHEDULE & FIELDWORK PLAN</div>
+        <section class="schedule-titleline">
+          <h2 id="schedule-title">감사 일정과 현장 일정을<br><span>하나의 화면에서 관리합니다.</span></h2>
+          <p>회사와 감사인이 예정 시작일·예정 완료일·실제 완료일 및 담당자를 같은 기준으로 확인해, 자료 준비와 현장감사 일정을 예측 가능하게 관리합니다.</p>
+        </section>
+
+        <section class="schedule-metrics" aria-label="일정 현황">
+          <div class="schedule-metric"><b>전체 감사 단계</b><strong>7 <em>개</em></strong></div>
+          <div class="schedule-metric"><b>다음 예정 마감</b><strong>07.31</strong></div>
+          <div class="schedule-metric"><b>이번 현장감사</b><strong>3 <em>일</em></strong></div>
+          <div class="schedule-metric alert"><b>회사 준비 확인</b><strong>5 <em>건</em></strong></div>
+        </section>
+
+        <section class="schedule-layout">
+          <section class="schedule-panel" aria-label="2027 사업연도 감사 일정">
+            <div class="schedule-panel-head">
+              <div>
+                <div class="schedule-panel-kicker">2027 AUDIT ROADMAP</div>
+                <h3>2027 사업연도 감사 일정</h3>
+              </div>
+              <div class="schedule-legend"><span class="schedule-dot"></span> 예정 <span class="schedule-dot green"></span> 완료 <span class="schedule-dot orange"></span> 진행 중</div>
+            </div>
+            <div class="schedule-table-wrap">
+              <table class="schedule-table">
+                <thead>
+                  <tr><th>감사 단계</th><th>예정 시작</th><th>예정 완료</th><th>실제 완료</th><th>감사인</th><th>상태</th></tr>
+                </thead>
+                <tbody>
+                  <tr><td>감사계획 · PBC 1차</td><td>2027.07.15</td><td>2027.07.31</td><td>미정</td><td class="schedule-auditors">장현우 · 문수아</td><td><span class="schedule-status ongoing">진행 중</span></td></tr>
+                  <tr><td>반기검토</td><td>2027.08.02</td><td>2027.08.13</td><td>미정</td><td class="schedule-auditors">조은재 · 유지호</td><td><span class="schedule-status scheduled">예정</span></td></tr>
+                  <tr><td>PBC 2차 · 중간감사</td><td>2027.10.18</td><td>2027.11.05</td><td>미정</td><td class="schedule-auditors">장현우 · 백도현</td><td><span class="schedule-status scheduled">예정</span></td></tr>
+                  <tr><td>내부회계감사</td><td>2027.11.01</td><td>2027.12.17</td><td>미정</td><td class="schedule-auditors">문수아 · 신예린</td><td><span class="schedule-status scheduled">예정</span></td></tr>
+                  <tr><td>외부조회 · 기말 준비</td><td>2027.12.14</td><td>2028.01.20</td><td>미정</td><td class="schedule-auditors">백도현 · 유지호</td><td><span class="schedule-status scheduled">예정</span></td></tr>
+                  <tr><td>기말 현장감사</td><td>2028.02.21</td><td>2028.02.23</td><td>미정</td><td class="schedule-auditors">장현우 · 문수아</td><td><span class="schedule-status scheduled">예정</span></td></tr>
+                  <tr><td>재무제표·주석 및 보고서</td><td>2028.02.24</td><td>2028.03.20</td><td>미정</td><td class="schedule-auditors">조은재 · 유지호</td><td><span class="schedule-status scheduled">예정</span></td></tr>
+                </tbody>
+              </table>
+            </div>
+            <div class="schedule-roadmap">
+              <div class="schedule-roadmap-top"><b>연간 일정 흐름</b><span>현장감사 일정은 월·화·수 3일 연속 표시</span></div>
+              <div class="schedule-months">
+                <div class="schedule-month active">7월</div>
+                <div class="schedule-month active">8월</div>
+                <div class="schedule-month">9월</div>
+                <div class="schedule-month active">10월</div>
+                <div class="schedule-month active">11월</div>
+                <div class="schedule-month active">12월</div>
+                <div class="schedule-month active">1월</div>
+                <div class="schedule-month field">2월</div>
+                <div class="schedule-month active">3월</div>
+              </div>
+            </div>
+          </section>
+
+          <aside class="schedule-panel schedule-field-panel" aria-label="이번 현장감사 일정">
+            <div class="schedule-panel-head">
+              <div>
+                <div class="schedule-panel-kicker">FIELDWORK</div>
+                <h3>이번 현장감사</h3>
+              </div>
+              <span class="schedule-status scheduled">월·화·수</span>
+            </div>
+            <p class="schedule-field-intro">현장감사 예정일과 감사인 배정을 한 화면에서 확인합니다.</p>
+            <div class="schedule-field-days">
+              <div class="schedule-field-day"><div class="schedule-day"><span>2월</span><strong>21 월</strong></div><div class="schedule-names">장현우<br>문수아</div><span class="schedule-state">방문 예정</span></div>
+              <div class="schedule-field-day"><div class="schedule-day"><span>2월</span><strong>22 화</strong></div><div class="schedule-names">장현우<br>문수아</div><span class="schedule-state">방문 예정</span></div>
+              <div class="schedule-field-day"><div class="schedule-day"><span>2월</span><strong>23 수</strong></div><div class="schedule-names">조은재<br>유지호</div><span class="schedule-state end">마감 확인</span></div>
+            </div>
+            <div class="schedule-field-footer"><b>회사 확인 포인트</b><br>현장감사 전일까지 자료 제출 상태와 담당자 배정을 업데이트합니다.</div>
+          </aside>
+        </section>
+
+        <footer class="schedule-foot">
+          <span>※ 일정 및 감사인 배정은 제안 기준 예시이며, 수임 후 골프존 결산·공시 일정에 맞춰 확정합니다.</span>
+          <strong>언제 무엇을 준비해야 하는지, 누가 현장에 오는지를 미리 알 수 있습니다.</strong>
+        </footer>
+      </div>
+    </section>
+  </div>
 
   <script>
     const sourceUrl = "https://kind.krx.co.kr/external/2026/03/19/002039/20260319008528/11011.htm";
@@ -1471,8 +2056,25 @@
       overlay.hidden = true;
     }
 
+    function showSchedulePlan() {
+      const overlay = document.getElementById("schedule-overlay");
+      if (!overlay) return;
+      overlay.hidden = false;
+      const closeButton = overlay.querySelector(".schedule-close");
+      if (closeButton) closeButton.focus({ preventScroll: true });
+    }
+
+    function hideSchedulePlan() {
+      const overlay = document.getElementById("schedule-overlay");
+      if (!overlay) return;
+      overlay.hidden = true;
+    }
+
     document.addEventListener("keydown", event => {
-      if (event.key === "Escape") hideAssetDetail();
+      if (event.key === "Escape") {
+        hideAssetDetail();
+        hideSchedulePlan();
+      }
     });
 
     function view(id, element) {
