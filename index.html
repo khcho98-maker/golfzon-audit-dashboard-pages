@@ -1047,6 +1047,28 @@
       font-weight: 900;
     }
 
+    .schedule-row {
+      cursor: pointer;
+    }
+
+    .schedule-row:hover td {
+      background: #f6faff;
+    }
+
+    .schedule-row.active td {
+      background: #edf6ff;
+      border-top-color: #d1e3f8;
+    }
+
+    .schedule-row.active td:first-child {
+      color: #155bb0;
+    }
+
+    .schedule-row:focus-visible {
+      outline: 3px solid rgba(45, 110, 197, .28);
+      outline-offset: -3px;
+    }
+
     .schedule-auditors {
       color: #3e5c80;
       font-weight: 800;
@@ -1409,13 +1431,13 @@
                   <tr><th>감사 단계</th><th>예정 시작</th><th>예정 완료</th><th>실제 완료</th><th>감사인</th><th>상태</th></tr>
                 </thead>
                 <tbody>
-                  <tr><td>감사계획 · PBC 1차</td><td>2027.07.15</td><td>2027.07.31</td><td>미정</td><td class="schedule-auditors">장현우 · 문수아</td><td><span class="schedule-status ongoing">진행 중</span></td></tr>
-                  <tr><td>반기검토</td><td>2027.08.02</td><td>2027.08.13</td><td>미정</td><td class="schedule-auditors">조은재 · 유지호</td><td><span class="schedule-status scheduled">예정</span></td></tr>
-                  <tr><td>PBC 2차 · 중간감사</td><td>2027.10.18</td><td>2027.11.05</td><td>미정</td><td class="schedule-auditors">장현우 · 백도현</td><td><span class="schedule-status scheduled">예정</span></td></tr>
-                  <tr><td>내부회계감사</td><td>2027.11.01</td><td>2027.12.17</td><td>미정</td><td class="schedule-auditors">문수아 · 신예린</td><td><span class="schedule-status scheduled">예정</span></td></tr>
-                  <tr><td>외부조회 · 기말 준비</td><td>2027.12.14</td><td>2028.01.20</td><td>미정</td><td class="schedule-auditors">백도현 · 유지호</td><td><span class="schedule-status scheduled">예정</span></td></tr>
-                  <tr><td>기말 현장감사</td><td>2028.02.21</td><td>2028.02.23</td><td>미정</td><td class="schedule-auditors">장현우 · 문수아</td><td><span class="schedule-status scheduled">예정</span></td></tr>
-                  <tr><td>재무제표·주석 및 보고서</td><td>2028.02.24</td><td>2028.03.20</td><td>미정</td><td class="schedule-auditors">조은재 · 유지호</td><td><span class="schedule-status scheduled">예정</span></td></tr>
+                  <tr class="schedule-row" data-schedule-stage="planning" tabindex="0" aria-selected="false"><td>감사계획</td><td>2027.07.15</td><td>2027.07.31</td><td>미정</td><td class="schedule-auditors">장현우 · 문수아</td><td><span class="schedule-status ongoing">진행 중</span></td></tr>
+                  <tr class="schedule-row" data-schedule-stage="semi" tabindex="0" aria-selected="false"><td>반기검토</td><td>2027.08.02</td><td>2027.08.13</td><td>미정</td><td class="schedule-auditors">조은재 · 유지호</td><td><span class="schedule-status scheduled">예정</span></td></tr>
+                  <tr class="schedule-row" data-schedule-stage="interim" tabindex="0" aria-selected="false"><td>중간감사</td><td>2027.10.18</td><td>2027.11.05</td><td>미정</td><td class="schedule-auditors">장현우 · 백도현</td><td><span class="schedule-status scheduled">예정</span></td></tr>
+                  <tr class="schedule-row" data-schedule-stage="internal" tabindex="0" aria-selected="false"><td>내부회계감사</td><td>2027.11.01</td><td>2027.12.17</td><td>미정</td><td class="schedule-auditors">문수아 · 신예린</td><td><span class="schedule-status scheduled">예정</span></td></tr>
+                  <tr class="schedule-row" data-schedule-stage="external" tabindex="0" aria-selected="false"><td>외부조회 · 기말 준비</td><td>2027.12.14</td><td>2028.01.20</td><td>미정</td><td class="schedule-auditors">백도현 · 유지호</td><td><span class="schedule-status scheduled">예정</span></td></tr>
+                  <tr class="schedule-row active" data-schedule-stage="final" tabindex="0" aria-selected="true"><td>기말 현장감사</td><td>2028.02.21</td><td>2028.02.23</td><td>미정</td><td class="schedule-auditors">장현우 · 문수아</td><td><span class="schedule-status scheduled">예정</span></td></tr>
+                  <tr class="schedule-row" data-schedule-stage="report" tabindex="0" aria-selected="false"><td>재무제표·주석 및 보고서</td><td>2028.02.24</td><td>2028.03.20</td><td>미정</td><td class="schedule-auditors">조은재 · 유지호</td><td><span class="schedule-status scheduled">예정</span></td></tr>
                 </tbody>
               </table>
             </div>
@@ -1435,21 +1457,21 @@
             </div>
           </section>
 
-          <aside class="schedule-panel schedule-field-panel" aria-label="이번 현장감사 일정">
+          <aside class="schedule-panel schedule-field-panel" aria-label="현장감사 일정">
             <div class="schedule-panel-head">
               <div>
                 <div class="schedule-panel-kicker">FIELDWORK</div>
-                <h3>이번 현장감사</h3>
+                <h3 id="schedule-field-title">현장감사 일정</h3>
               </div>
-              <span class="schedule-status scheduled">월·화·수</span>
+              <span class="schedule-status scheduled" id="schedule-field-badge">월·화·수</span>
             </div>
-            <p class="schedule-field-intro">현장감사 예정일과 감사인 배정을 한 화면에서 확인합니다.</p>
-            <div class="schedule-field-days">
+            <p class="schedule-field-intro" id="schedule-field-intro">현장감사 예정일과 감사인 배정을 한 화면에서 확인합니다.</p>
+            <div class="schedule-field-days" id="schedule-field-days">
               <div class="schedule-field-day"><div class="schedule-day"><span>2월</span><strong>21 월</strong></div><div class="schedule-names">장현우<br>문수아</div><span class="schedule-state">방문 예정</span></div>
               <div class="schedule-field-day"><div class="schedule-day"><span>2월</span><strong>22 화</strong></div><div class="schedule-names">장현우<br>문수아</div><span class="schedule-state">방문 예정</span></div>
               <div class="schedule-field-day"><div class="schedule-day"><span>2월</span><strong>23 수</strong></div><div class="schedule-names">조은재<br>유지호</div><span class="schedule-state end">마감 확인</span></div>
             </div>
-            <div class="schedule-field-footer"><b>회사 확인 포인트</b><br>현장감사 전일까지 자료 제출 상태와 담당자 배정을 업데이트합니다.</div>
+            <div class="schedule-field-footer" id="schedule-field-footer"><b>회사 확인 포인트</b><br>현장감사 전일까지 자료 제출 상태와 담당자 배정을 업데이트합니다.</div>
           </aside>
         </section>
 
@@ -1466,8 +1488,89 @@
     let currentMaterialFilter = "all";
     let currentNoteType = "연결";
     let currentNoteStatusFilter = "all";
+    let currentScheduleStage = "final";
     const companyPeople = ["김민준", "박서연", "이도윤", "최지우", "정하늘", "한유진", "오지훈", "윤서아", "강태오", "서지민"];
     const auditPeople = ["장현우", "문수아", "조은재", "임하준", "신예린", "백도현", "남지안", "권서준", "홍유나", "유지호"];
+
+    const schedulePlans = {
+      planning: {
+        title: "감사계획 일정",
+        badge: "07.15-07.31",
+        intro: "감사계획, 주요 위험, 요청자료 기준을 확정하는 일정입니다.",
+        footer: "감사계획 단계에서는 요청자료 목록, 담당자, 제출 기준을 먼저 확정합니다.",
+        days: [
+          ["7월", "15 목", "장현우<br>문수아", "착수 회의", false],
+          ["7월", "22 목", "장현우<br>문수아", "자료 기준", false],
+          ["7월", "31 토", "조은재<br>유지호", "마감 확인", true]
+        ]
+      },
+      semi: {
+        title: "반기검토 일정",
+        badge: "08.02-08.13",
+        intro: "반기 결산자료와 주석 초안을 검토하는 일정입니다.",
+        footer: "반기검토 전에는 반기 TB, 주요 계정 변동, 주석 초안 제출 상태를 먼저 맞춥니다.",
+        days: [
+          ["8월", "02 월", "조은재<br>유지호", "착수", false],
+          ["8월", "09 월", "조은재<br>유지호", "쟁점 검토", false],
+          ["8월", "13 금", "장현우<br>문수아", "마감 확인", true]
+        ]
+      },
+      interim: {
+        title: "중간감사 일정",
+        badge: "10.18-11.05",
+        intro: "중간감사 기간의 내부통제, 주요 거래, 계정별 변동 검토 일정입니다.",
+        footer: "중간감사 전에는 매출, 리스, 자산, 약정 관련 표본과 증빙 위치를 정리합니다.",
+        days: [
+          ["10월", "18 월", "장현우<br>백도현", "착수", false],
+          ["10월", "27 수", "문수아<br>신예린", "현장 검토", false],
+          ["11월", "05 금", "장현우<br>백도현", "마감 확인", true]
+        ]
+      },
+      internal: {
+        title: "내부회계감사 일정",
+        badge: "11.01-12.17",
+        intro: "내부회계 설계·운영평가와 미비점 보완 일정을 관리합니다.",
+        footer: "내부회계감사 전에는 통제별 모집단, 샘플, 운영 증빙 담당자를 확정합니다.",
+        days: [
+          ["11월", "01 월", "문수아<br>신예린", "설계평가", false],
+          ["11월", "29 월", "문수아<br>신예린", "운영평가", false],
+          ["12월", "17 금", "장현우<br>조은재", "보완 확인", true]
+        ]
+      },
+      external: {
+        title: "외부조회·기말 준비 일정",
+        badge: "12.14-01.20",
+        intro: "외부조회 발송, 회신 추적, 기말감사 준비자료 확정 일정입니다.",
+        footer: "기말 준비 단계에서는 조회처 목록, 회신 현황, 미회신 대체절차를 함께 관리합니다.",
+        days: [
+          ["12월", "14 화", "백도현<br>유지호", "조회 발송", false],
+          ["1월", "06 목", "백도현<br>유지호", "회신 추적", false],
+          ["1월", "20 목", "장현우<br>문수아", "기말 준비", true]
+        ]
+      },
+      final: {
+        title: "현장감사 일정",
+        badge: "월·화·수",
+        intro: "현장감사 예정일과 감사인 배정을 한 화면에서 확인합니다.",
+        footer: "현장감사 전일까지 자료 제출 상태와 담당자 배정을 업데이트합니다.",
+        days: [
+          ["2월", "21 월", "장현우<br>문수아", "방문 예정", false],
+          ["2월", "22 화", "장현우<br>문수아", "방문 예정", false],
+          ["2월", "23 수", "조은재<br>유지호", "마감 확인", true]
+        ]
+      },
+      report: {
+        title: "보고서 마감 일정",
+        badge: "02.24-03.20",
+        intro: "재무제표, 주석, 감사보고서 문안 검토와 마감 일정을 표시합니다.",
+        footer: "보고서 단계에서는 주석 수치, 문안 변경, 최종 승인 이력을 한 번에 관리합니다.",
+        days: [
+          ["2월", "24 목", "조은재<br>유지호", "초안 검토", false],
+          ["3월", "09 목", "장현우<br>문수아", "쟁점 반영", false],
+          ["3월", "20 월", "조은재<br>유지호", "최종 마감", true]
+        ]
+      }
+    };
 
     const materialRows = [
       ["연결 패키지 총괄", "연결대상 종속기업 18개, 당기 중 3개 신규 연결 및 1개 연결 제외", "김민준", "장현우", "자료 요청", "request", "샘플: 01_GOLFZON_연결패키지_2025.xlsx"],
@@ -2067,6 +2170,7 @@
       const overlay = document.getElementById("schedule-overlay");
       if (!overlay) return;
       overlay.hidden = false;
+      selectScheduleStage(currentScheduleStage);
       const closeButton = overlay.querySelector(".schedule-close");
       if (closeButton) closeButton.focus({ preventScroll: true });
     }
@@ -2077,10 +2181,54 @@
       overlay.hidden = true;
     }
 
+    function renderScheduleDays(days) {
+      return days.map(([month, date, names, state, isEnd]) => `
+        <div class="schedule-field-day">
+          <div class="schedule-day"><span>${month}</span><strong>${date}</strong></div>
+          <div class="schedule-names">${names}</div>
+          <span class="schedule-state${isEnd ? " end" : ""}">${state}</span>
+        </div>
+      `).join("");
+    }
+
+    function selectScheduleStage(stageId) {
+      const plan = schedulePlans[stageId];
+      if (!plan) return;
+      currentScheduleStage = stageId;
+
+      const title = document.getElementById("schedule-field-title");
+      const badge = document.getElementById("schedule-field-badge");
+      const intro = document.getElementById("schedule-field-intro");
+      const days = document.getElementById("schedule-field-days");
+      const footer = document.getElementById("schedule-field-footer");
+
+      if (title) title.textContent = plan.title;
+      if (badge) badge.textContent = plan.badge;
+      if (intro) intro.textContent = plan.intro;
+      if (days) days.innerHTML = renderScheduleDays(plan.days);
+      if (footer) footer.innerHTML = `<b>회사 확인 포인트</b><br>${plan.footer}`;
+
+      document.querySelectorAll("[data-schedule-stage]").forEach(row => {
+        const active = row.dataset.scheduleStage === stageId;
+        row.classList.toggle("active", active);
+        row.setAttribute("aria-selected", active ? "true" : "false");
+      });
+    }
+
+    document.addEventListener("click", event => {
+      const row = event.target.closest ? event.target.closest("[data-schedule-stage]") : null;
+      if (row) selectScheduleStage(row.dataset.scheduleStage);
+    });
+
     document.addEventListener("keydown", event => {
       if (event.key === "Escape") {
         hideAssetDetail();
         hideSchedulePlan();
+      }
+      const row = event.target.closest ? event.target.closest("[data-schedule-stage]") : null;
+      if (row && (event.key === "Enter" || event.key === " ")) {
+        event.preventDefault();
+        selectScheduleStage(row.dataset.scheduleStage);
       }
     });
 
