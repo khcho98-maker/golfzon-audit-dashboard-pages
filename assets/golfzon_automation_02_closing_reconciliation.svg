@@ -1,0 +1,66 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="900" viewBox="0 0 1600 900" role="img" aria-labelledby="title desc">
+  <title id="title">결산 계정대사 자동화</title>
+  <desc id="desc">TB, GL, 보조부와 계정명세를 같은 기준으로 대사해 일치와 차이 항목을 보여주는 상세 업무 흐름</desc>
+  <style>
+    text{font-family:Arial,'Pretendard','Noto Sans KR','Malgun Gothic',sans-serif}.k{fill:#1d64be;font-size:20px;font-weight:800;letter-spacing:2px}.h{fill:#152f56;font-size:48px;font-weight:800;letter-spacing:-2px}.sub{fill:#617792;font-size:21px}.card{fill:#fff;stroke:#cfdeef;stroke-width:2}.soft{fill:#f6faff;stroke:#d6e4f3;stroke-width:2}.cap{fill:#1b5fb6;font-size:18px;font-weight:800;letter-spacing:1px}.label{fill:#173860;font-size:20px;font-weight:800}.small{fill:#637994;font-size:17px}.tiny{fill:#7186a0;font-size:14px}.white{fill:#fff;font-size:18px;font-weight:800}.pill{fill:#eaf3ff}.pilltext{fill:#1d61ba;font-size:15px;font-weight:800}.line{stroke:#2d71c8;stroke-width:4;fill:none;stroke-linecap:round;stroke-linejoin:round}.grid{stroke:#d7e5f4;stroke-width:2}.shadow{filter:url(#shadow)}
+  </style>
+  <defs>
+    <filter id="shadow" x="-10%" y="-10%" width="120%" height="130%"><feDropShadow dx="0" dy="10" stdDeviation="12" flood-color="#245184" flood-opacity=".08"/></filter>
+    <marker id="arrow" markerWidth="10" markerHeight="10" refX="9" refY="5" orient="auto"><path d="M0 0L10 5L0 10Z" fill="#2d71c8"/></marker>
+  </defs>
+  <rect width="1600" height="900" fill="#fff"/>
+  <rect x="54" y="47" width="1492" height="806" rx="28" fill="#f8fbff" stroke="#d8e5f2" stroke-width="2"/>
+  <text x="104" y="112" class="k">02 · CLOSING &amp; RECONCILIATION</text>
+  <text x="104" y="174" class="h">결산·계정대사 자동화</text>
+  <text x="104" y="211" class="sub">TB·GL·보조부·계정명세를 같은 기준으로 비교하고, 차이 항목만 검토 목록으로 남깁니다.</text>
+  <rect x="1090" y="92" width="390" height="44" rx="22" class="pill"/>
+  <text x="1120" y="120" class="pilltext">시연 예시 · 대사 계정 125개 / 확인 필요 6개</text>
+
+  <!-- inputs -->
+  <g class="shadow">
+    <rect x="105" y="276" width="318" height="366" rx="22" class="card"/>
+    <path d="M127 276H401a22 22 0 0 1 22 22v48H105v-48a22 22 0 0 1 22-22Z" fill="#2162bc"/>
+    <text x="136" y="320" class="white">결산 입력 자료</text>
+    <text x="136" y="383" class="cap">01. 대사 대상 연결</text>
+    <rect x="136" y="409" width="256" height="42" rx="9" fill="#f2f7fd"/><text x="157" y="437" class="label">TB · 시산표</text><circle cx="366" cy="430" r="10" fill="#dceafa"/>
+    <rect x="136" y="463" width="256" height="42" rx="9" fill="#f2f7fd"/><text x="157" y="491" class="label">GL · 총계정원장</text><circle cx="366" cy="484" r="10" fill="#dceafa"/>
+    <rect x="136" y="517" width="256" height="42" rx="9" fill="#f2f7fd"/><text x="157" y="545" class="label">보조부 · 계정명세</text><circle cx="366" cy="538" r="10" fill="#dceafa"/>
+    <rect x="136" y="578" width="256" height="37" rx="9" fill="#eaf3ff"/><text x="157" y="603" class="pilltext">법인·월·계정코드 기준 통일</text>
+  </g>
+
+  <!-- rules -->
+  <path d="M425 455H560" class="line" marker-end="url(#arrow)"/>
+  <text x="454" y="431" class="pilltext">기준 통일</text>
+  <g>
+    <rect x="580" y="293" width="315" height="327" rx="22" class="soft"/>
+    <text x="612" y="338" class="cap">AUTOMATED CHECKS</text>
+    <circle cx="737" cy="423" r="68" fill="#eaf3ff" stroke="#b9d0ef" stroke-width="2"/>
+    <path d="M702 423h63M734 392l31 31-31 31" class="line" stroke-width="5"/>
+    <text x="680" y="518" class="label">자동 대사</text>
+    <rect x="612" y="550" width="251" height="39" rx="10" fill="#fff" stroke="#d7e5f4"/><text x="635" y="576" class="small">잔액 · 증감 · 증빙 비교</text>
+  </g>
+  <path d="M897 455H1015" class="line" marker-end="url(#arrow)"/>
+  <text x="920" y="431" class="pilltext">차이 추출</text>
+
+  <!-- review results -->
+  <g class="shadow">
+    <rect x="1035" y="276" width="461" height="366" rx="22" class="card"/>
+    <path d="M1057 276H1474a22 22 0 0 1 22 22v48H1035v-48a22 22 0 0 1 22-22Z" fill="#168c68"/>
+    <text x="1066" y="320" class="white">계정대사 결과</text>
+    <text x="1067" y="382" class="cap">02. 차이 항목만 검토</text>
+    <rect x="1067" y="405" width="397" height="35" fill="#edf6f1"/>
+    <text x="1082" y="429" class="tiny">계정</text><text x="1175" y="429" class="tiny">TB</text><text x="1262" y="429" class="tiny">보조부</text><text x="1360" y="429" class="tiny">차이</text><text x="1423" y="429" class="tiny">상태</text>
+    <path d="M1067 440H1464M1067 480H1464M1067 520H1464M1067 560H1464M1160 405V600M1245 405V600M1345 405V600M1414 405V600" class="grid"/>
+    <text x="1082" y="467" class="small">매출채권</text><text x="1175" y="467" class="small">84.1</text><text x="1262" y="467" class="small">84.1</text><text x="1360" y="467" class="small">-</text><circle cx="1438" cy="460" r="11" fill="#19a47c"/><path d="M1433 460l4 4 7-9" stroke="#fff" stroke-width="3" fill="none"/>
+    <text x="1082" y="507" class="small">리스부채</text><text x="1175" y="507" class="small">66.8</text><text x="1262" y="507" class="small">66.2</text><text x="1360" y="507" fill="#bb7613" font-size="17" font-weight="800">0.6</text><circle cx="1438" cy="500" r="11" fill="#e59a20"/><text x="1435" y="505" fill="#fff" font-size="16" font-weight="800">!</text>
+    <text x="1082" y="547" class="small">유형자산</text><text x="1175" y="547" class="small">212.3</text><text x="1262" y="547" class="small">212.3</text><text x="1360" y="547" class="small">-</text><circle cx="1438" cy="540" r="11" fill="#19a47c"/><path d="M1433 540l4 4 7-9" stroke="#fff" stroke-width="3" fill="none"/>
+    <rect x="1067" y="579" width="397" height="22" rx="11" fill="#fff5df"/><text x="1084" y="595" fill="#bb7613" font-size="12" font-weight="800">차이 항목은 별도 검토 목록으로 자동 분리</text>
+  </g>
+
+  <!-- bottom outcomes -->
+  <rect x="105" y="731" width="1390" height="88" rx="16" fill="#eaf3ff"/>
+  <rect x="132" y="752" width="265" height="45" rx="12" fill="#fff" stroke="#d6e5f4"/><circle cx="157" cy="774" r="10" fill="#19a47c"/><path d="M153 774l3 3 6-8" stroke="#fff" stroke-width="2.5" fill="none"/><text x="181" y="781" class="label">일치 항목 자동 정리</text>
+  <rect x="423" y="752" width="265" height="45" rx="12" fill="#fff" stroke="#d6e5f4"/><circle cx="448" cy="774" r="10" fill="#e59a20"/><text x="445" y="779" fill="#fff" font-size="14" font-weight="800">!</text><text x="472" y="781" class="label">차이 항목 별도 목록화</text>
+  <rect x="714" y="752" width="265" height="45" rx="12" fill="#fff" stroke="#d6e5f4"/><circle cx="739" cy="774" r="10" fill="#2162bc"/><path d="M734 774h10" stroke="#fff" stroke-width="2.5"/><text x="763" y="781" class="label">검토 결과 월별 저장</text>
+  <text x="1014" y="781" fill="#17467f" font-size="22" font-weight="800">대사 작업이 아니라, 차이의 원인 확인에 집중합니다.</text>
+</svg>

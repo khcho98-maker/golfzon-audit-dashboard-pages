@@ -564,44 +564,6 @@
       letter-spacing: 0;
     }
 
-    .asset-visual {
-      height: 168px;
-      margin: 13px 16px 0;
-      overflow: hidden;
-      border: 1px solid #d9e7f6;
-      border-radius: 12px;
-      background: #f6faff;
-    }
-
-    .asset-visual svg {
-      display: block;
-      width: 100%;
-      height: 100%;
-    }
-
-    .asset-visual text {
-      font-family: Arial, "Pretendard", "Noto Sans KR", sans-serif;
-    }
-
-    .svg-cap {
-      fill: #1e64bd;
-      font-size: 11px;
-      font-weight: 900;
-      letter-spacing: .08em;
-    }
-
-    .svg-label {
-      fill: #163b70;
-      font-size: 11px;
-      font-weight: 800;
-    }
-
-    .svg-tiny {
-      fill: #6a819f;
-      font-size: 9px;
-      font-weight: 700;
-    }
-
     .asset-body {
       flex: 1;
       padding: 21px 20px 8px;
@@ -645,28 +607,6 @@
       color: #1f61bd;
     }
 
-    .asset-action {
-      margin: 0 17px 12px;
-    }
-
-    .asset-action button {
-      width: 100%;
-      min-height: 36px;
-      border: 1px solid #bfd7f4;
-      border-radius: 10px;
-      background: #eef6ff;
-      color: #185bb2;
-      font-size: 12px;
-      font-weight: 900;
-      cursor: pointer;
-    }
-
-    .asset-action button:hover {
-      border-color: #8eb9ea;
-      background: #e5f1ff;
-    }
-
-    .asset-action button:focus-visible,
     .asset-result button:focus-visible,
     .asset-detail-close:focus-visible {
       outline: 3px solid rgba(45, 110, 197, .28);
@@ -729,7 +669,7 @@
     }
 
     .asset-detail-card {
-      width: min(820px, calc(100vw - 48px));
+      width: min(1280px, calc(100vw - 48px));
       max-height: calc(100vh - 48px);
       display: flex;
       flex-direction: column;
@@ -1782,6 +1722,30 @@
       }
     ];
 
+    const assetDetails = {
+      erp: {
+        kicker: "01 · ERP ↔ EXCEL",
+        title: "ERP·엑셀 왕복 자동화 상세",
+        src: "assets/golfzon_automation_01_erp_excel.svg",
+        alt: "ERP 자료를 표준 엑셀 양식으로 자동 정리하고 검토 결과를 업로드 파일로 되돌리는 상세 업무 흐름",
+        caption: "ERP 원장·보조부 다운로드, 표준 결산 양식 변환, 검토 후 업로드 파일 생성까지의 왕복 자동화 흐름입니다."
+      },
+      closing: {
+        kicker: "02 · CLOSING & RECONCILIATION",
+        title: "결산·계정대사 자동화 상세",
+        src: "assets/golfzon_automation_02_closing_reconciliation.svg",
+        alt: "TB, GL, 보조부와 계정명세를 같은 기준으로 대사해 일치와 차이 항목을 보여주는 상세 업무 흐름",
+        caption: "TB, GL, 보조부, 계정명세서를 같은 기준으로 연결해 잔액 차이와 이상 항목을 빠르게 확인하는 흐름입니다."
+      },
+      templates: {
+        kicker: "03 · REUSABLE ASSETS",
+        title: "재사용 템플릿·매뉴얼 상세",
+        src: "assets/golfzon_automation_03_reusable_templates.svg",
+        alt: "골프존의 계정 구조와 결산 절차를 반영한 템플릿과 매뉴얼을 다음 결산에 재사용하는 상세 업무 흐름",
+        caption: "교육 이후에도 회사에 남는 계정별 템플릿, 작업 매뉴얼, 재사용 기준을 다음 결산에 다시 쓰는 흐름입니다."
+      }
+    };
+
     function noteProfile(type, item, index) {
       const text = item.replace(/^\d+\.\s*/, "");
       const isConnected = type === "연결";
@@ -2097,7 +2061,7 @@
               </ul>
             </div>
             <div class="asset-example"><b>예시</b> 매출·리스·자산 자료 다운로드 → 형식 변환 → ERP 업로드</div>
-            <div class="asset-result with-action"><span>결산 담당자는 자료 형식 정리보다 예외 항목 확인에 시간을 씁니다.</span><button type="button" onclick="showAssetDetail()">상세 이미지 보기</button></div>
+            <div class="asset-result with-action"><span>결산 담당자는 자료 형식 정리보다 예외 항목 확인에 시간을 씁니다.</span><button type="button" onclick="showAssetDetail('erp')">상세 이미지 보기</button></div>
           </article>
 
           <article class="asset-card">
@@ -2114,7 +2078,7 @@
               </ul>
             </div>
             <div class="asset-example"><b>예시</b> 잔액·증빙·전기 대비 변동을 자동 비교하고 차이 항목 선별</div>
-            <div class="asset-result">감사 대응 전에 회사 내부 검토 품질을 먼저 끌어올립니다.</div>
+            <div class="asset-result with-action"><span>감사 대응 전에 회사 내부 검토 품질을 먼저 끌어올립니다.</span><button type="button" onclick="showAssetDetail('closing')">상세 이미지 보기</button></div>
           </article>
 
           <article class="asset-card">
@@ -2131,21 +2095,21 @@
               </ul>
             </div>
             <div class="asset-example"><b>예시</b> 계정·컬럼 매핑, 대사 기준, 담당자별 작업 순서와 사용법 축적</div>
-            <div class="asset-result">AI 교육은 일회성 강의가 아니라 회사에 남는 반복업무 감축 도구입니다.</div>
+            <div class="asset-result with-action"><span>AI 교육은 일회성 강의가 아니라 회사에 남는 반복업무 감축 도구입니다.</span><button type="button" onclick="showAssetDetail('templates')">상세 이미지 보기</button></div>
           </article>
         </div>
         <div class="asset-detail-overlay" id="asset-detail-overlay" hidden onclick="if (event.target === this) hideAssetDetail()">
           <div class="asset-detail-card" role="dialog" aria-modal="true" aria-labelledby="asset-detail-title">
             <div class="asset-detail-head">
               <div>
-                <div class="asset-detail-kicker">ERP ↔ EXCEL DETAIL</div>
-                <div class="asset-detail-title" id="asset-detail-title">ERP·엑셀 왕복 자동화 상세 예시</div>
+                <div class="asset-detail-kicker" id="asset-detail-kicker">01 · ERP ↔ EXCEL</div>
+                <div class="asset-detail-title" id="asset-detail-title">ERP·엑셀 왕복 자동화 상세</div>
               </div>
               <button class="asset-detail-close" type="button" onclick="hideAssetDetail()">닫기</button>
             </div>
             <div class="asset-detail-body">
-              <img src="assets/erp-excel-automation-detail.png" alt="ERP 다운로드 자료를 표준 결산 양식으로 변환하고 ERP 업로드 파일로 되돌리는 자동화 상세 이미지">
-              <div class="asset-detail-caption">발표 시 ERP 원장·보조부 다운로드, 결산 표준양식 변환, 검토 결과 업로드 파일 생성 흐름을 한 화면으로 설명하는 상세 이미지입니다.</div>
+              <img id="asset-detail-img" src="assets/golfzon_automation_01_erp_excel.svg" alt="ERP 자료를 표준 엑셀 양식으로 자동 정리하고 검토 결과를 업로드 파일로 되돌리는 상세 업무 흐름">
+              <div class="asset-detail-caption" id="asset-detail-caption">ERP 원장·보조부 다운로드, 표준 결산 양식 변환, 검토 후 업로드 파일 생성까지의 왕복 자동화 흐름입니다.</div>
             </div>
           </div>
         </div>
@@ -2162,9 +2126,23 @@
       </section>`;
     }
 
-    function showAssetDetail() {
+    function showAssetDetail(detailId = "erp") {
+      const detail = assetDetails[detailId] || assetDetails.erp;
       const overlay = document.getElementById("asset-detail-overlay");
       if (!overlay) return;
+      const kicker = document.getElementById("asset-detail-kicker");
+      const title = document.getElementById("asset-detail-title");
+      const image = document.getElementById("asset-detail-img");
+      const caption = document.getElementById("asset-detail-caption");
+
+      if (kicker) kicker.textContent = detail.kicker;
+      if (title) title.textContent = detail.title;
+      if (image) {
+        image.src = detail.src;
+        image.alt = detail.alt;
+      }
+      if (caption) caption.textContent = detail.caption;
+
       overlay.hidden = false;
       const closeButton = overlay.querySelector(".asset-detail-close");
       if (closeButton) closeButton.focus({ preventScroll: true });

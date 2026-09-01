@@ -1,0 +1,72 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="900" viewBox="0 0 1600 900" role="img" aria-labelledby="title desc">
+  <title id="title">ERP 엑셀 왕복 자동화</title>
+  <desc id="desc">ERP 자료를 표준 엑셀 양식으로 자동 정리하고 검토 결과를 업로드 파일로 되돌리는 상세 업무 흐름</desc>
+  <style>
+    text{font-family:Arial,'Pretendard','Noto Sans KR','Malgun Gothic',sans-serif}.k{fill:#1d64be;font-size:20px;font-weight:800;letter-spacing:2px}.h{fill:#152f56;font-size:48px;font-weight:800;letter-spacing:-2px}.sub{fill:#617792;font-size:21px}.card{fill:#fff;stroke:#cfdeef;stroke-width:2}.soft{fill:#f6faff;stroke:#d6e4f3;stroke-width:2}.cap{fill:#1b5fb6;font-size:18px;font-weight:800;letter-spacing:1px}.label{fill:#173860;font-size:20px;font-weight:800}.small{fill:#637994;font-size:17px}.tiny{fill:#7186a0;font-size:14px}.white{fill:#fff;font-size:18px;font-weight:800}.pill{fill:#eaf3ff}.pilltext{fill:#1d61ba;font-size:15px;font-weight:800}.blue{fill:#1d61ba}.green{fill:#148a68}.line{stroke:#2d71c8;stroke-width:4;fill:none;stroke-linecap:round;stroke-linejoin:round}.grid{stroke:#d7e5f4;stroke-width:2}.shadow{filter:url(#shadow)}
+  </style>
+  <defs>
+    <filter id="shadow" x="-10%" y="-10%" width="120%" height="130%"><feDropShadow dx="0" dy="10" stdDeviation="12" flood-color="#245184" flood-opacity=".08"/></filter>
+    <marker id="arrow" markerWidth="10" markerHeight="10" refX="9" refY="5" orient="auto"><path d="M0 0L10 5L0 10Z" fill="#2d71c8"/></marker>
+  </defs>
+  <rect width="1600" height="900" fill="#fff"/>
+  <rect x="54" y="47" width="1492" height="806" rx="28" fill="#f8fbff" stroke="#d8e5f2" stroke-width="2"/>
+  <text x="104" y="112" class="k">01 · ERP ↔ EXCEL</text>
+  <text x="104" y="174" class="h">ERP·엑셀 왕복 자동화</text>
+  <text x="104" y="211" class="sub">자료 다운로드부터 표준화·검토·업로드 파일 생성까지, 반복 작업을 하나의 흐름으로 만듭니다.</text>
+  <rect x="1248" y="94" width="232" height="42" rx="21" class="pill"/>
+  <text x="1283" y="121" class="pilltext">업무 흐름 예시</text>
+
+  <!-- ERP source -->
+  <g class="shadow">
+    <rect x="105" y="275" width="350" height="365" rx="22" class="card"/>
+    <path d="M127 275H433a22 22 0 0 1 22 22v48H105v-48a22 22 0 0 1 22-22Z" fill="#2162bc"/>
+    <text x="135" y="319" class="white">ERP 원장·보조부</text>
+    <circle cx="422" cy="310" r="8" fill="#9ed1ff"/>
+    <text x="136" y="381" class="cap">01. 원본 자료 선택</text>
+    <rect x="136" y="405" width="288" height="42" rx="8" fill="#f2f7fd"/>
+    <text x="154" y="432" class="label">총계정원장 · 거래내역</text>
+    <rect x="136" y="462" width="288" height="42" rx="8" fill="#f2f7fd"/>
+    <text x="154" y="489" class="label">매출 · 리스 · 자산 보조부</text>
+    <rect x="136" y="519" width="288" height="78" rx="10" fill="#eaf3ff"/>
+    <text x="155" y="549" class="tiny">원본 형식은 그대로</text>
+    <text x="155" y="576" class="label">다운로드 파일 생성</text>
+  </g>
+
+  <!-- transformation -->
+  <g>
+    <path d="M457 400H579" class="line" marker-end="url(#arrow)"/>
+    <text x="484" y="378" class="pilltext">다운로드</text>
+    <rect x="594" y="313" width="350" height="293" rx="22" class="soft"/>
+    <text x="626" y="357" class="cap">AUTOMATION ENGINE</text>
+    <circle cx="769" cy="448" r="74" fill="#eaf3ff" stroke="#b9d0ef" stroke-width="2"/>
+    <path d="M735 448h58M776 421l27 27-27 27" class="line" stroke-width="5"/>
+    <text x="713" y="551" class="label">자동 변환</text>
+    <rect x="625" y="572" width="91" height="31" rx="15.5" class="pill"/><text x="647" y="594" class="pilltext">형식 정리</text>
+    <rect x="728" y="572" width="91" height="31" rx="15.5" class="pill"/><text x="750" y="594" class="pilltext">컬럼 매핑</text>
+    <rect x="831" y="572" width="83" height="31" rx="15.5" class="pill"/><text x="851" y="594" class="pilltext">검토 표시</text>
+  </g>
+
+  <!-- Excel result -->
+  <g class="shadow">
+    <rect x="1066" y="275" width="430" height="365" rx="22" class="card"/>
+    <path d="M1088 275H1474a22 22 0 0 1 22 22v48H1066v-48a22 22 0 0 1 22-22Z" fill="#168c68"/>
+    <text x="1096" y="319" class="white">결산 표준양식</text>
+    <text x="1097" y="380" class="cap">02. 자동 정리된 검토 파일</text>
+    <rect x="1097" y="404" width="368" height="37" fill="#edf6f1"/>
+    <text x="1112" y="429" class="tiny">계정</text><text x="1219" y="429" class="tiny">거래처</text><text x="1330" y="429" class="tiny">금액</text><text x="1421" y="429" class="tiny">상태</text>
+    <path d="M1097 441H1465M1097 480H1465M1097 519H1465M1097 558H1465M1200 404V597M1309 404V597M1404 404V597" class="grid"/>
+    <text x="1112" y="468" class="small">매출</text><text x="1219" y="468" class="small">골프장 A</text><text x="1330" y="468" class="small">12,300</text><circle cx="1436" cy="461" r="11" fill="#19a47c"/><path d="M1431 461l4 4 7-9" stroke="#fff" stroke-width="3" fill="none"/>
+    <text x="1112" y="507" class="small">리스</text><text x="1219" y="507" class="small">장비 B</text><text x="1330" y="507" class="small">3,200</text><circle cx="1436" cy="500" r="11" fill="#19a47c"/><path d="M1431 500l4 4 7-9" stroke="#fff" stroke-width="3" fill="none"/>
+    <text x="1112" y="546" class="small">유형자산</text><text x="1219" y="546" class="small">본사</text><text x="1330" y="546" class="small">980</text><circle cx="1436" cy="539" r="11" fill="#e59a20"/><text x="1433" y="544" fill="#fff" font-size="16" font-weight="800">!</text>
+    <rect x="1097" y="579" width="368" height="18" rx="9" fill="#fff5df"/><text x="1112" y="593" fill="#bb7613" font-size="12" font-weight="800">예외 항목만 별도 표시</text>
+  </g>
+  <path d="M946 400H1060" class="line" marker-end="url(#arrow)"/>
+  <text x="968" y="378" class="pilltext">표준화</text>
+  <path d="M1060 675H462" class="line" marker-end="url(#arrow)"/>
+  <text x="704" y="707" class="pilltext">검토 결과를 ERP 업로드 파일로 다시 생성</text>
+
+  <!-- bottom result -->
+  <rect x="105" y="748" width="1390" height="70" rx="16" fill="#eaf3ff"/>
+  <circle cx="143" cy="783" r="18" fill="#2162bc"/><path d="M134 783l6 6 12-15" stroke="#fff" stroke-width="4" fill="none"/>
+  <text x="180" y="792" fill="#17467f" font-size="24" font-weight="800">자료 형식 정리는 자동화하고, 담당자는 예외 항목 확인에 집중합니다.</text>
+</svg>
