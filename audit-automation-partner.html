@@ -1,0 +1,327 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>삼덕회계법인 | 감사자동화 사업개발 파트너 모집</title>
+  <meta name="description" content="회계감사의 새로운 방식을 함께 시장에 알릴 감사자동화 사업개발 파트너 모집 1분 영상">
+  <meta property="og:title" content="감사자동화 사업개발 파트너 모집">
+  <meta property="og:description" content="자료 요청부터 분석, 감사조서 작성과 진행관리까지 반복업무를 줄이는 감사자동화 시스템을 기업에 전달할 파트너를 찾습니다.">
+  <meta property="og:image" content="assets/audit_automation_partner_poster.png">
+  <meta property="og:type" content="website">
+  <link rel="icon" href="favicon.ico">
+  <style>
+    :root {
+      --navy: #082653;
+      --blue: #155ec8;
+      --blue-2: #2f78d8;
+      --text: #243b5a;
+      --muted: #5b708f;
+      --line: #cfe0f5;
+      --panel: #ffffff;
+      --soft: #eef5ff;
+      --bg: #f5f8fc;
+      --green: #118764;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      font-family: "Malgun Gothic", "Segoe UI", Arial, sans-serif;
+      color: var(--navy);
+      background:
+        radial-gradient(circle at 86% 4%, #e7f1ff 0 20rem, transparent 20.2rem),
+        linear-gradient(180deg, #f7faff 0%, #eef5ff 100%);
+      letter-spacing: 0;
+    }
+
+    .page {
+      width: min(1180px, calc(100vw - 48px));
+      margin: 0 auto;
+      padding: 42px 0 48px;
+    }
+
+    header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 24px;
+      padding-bottom: 30px;
+      border-bottom: 1px solid var(--line);
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 18px;
+      min-width: 0;
+    }
+
+    .brand img {
+      width: 154px;
+      height: auto;
+      flex: 0 0 auto;
+    }
+
+    .eyebrow {
+      margin: 0 0 6px;
+      color: var(--blue);
+      font-size: 13px;
+      font-weight: 900;
+      text-transform: uppercase;
+    }
+
+    .brand-title {
+      margin: 0;
+      font-size: 22px;
+      line-height: 1.25;
+      font-weight: 900;
+      white-space: nowrap;
+    }
+
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      height: 36px;
+      padding: 0 14px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: rgba(255, 255, 255, 0.76);
+      color: var(--blue);
+      font-size: 14px;
+      font-weight: 900;
+    }
+
+    .hero {
+      display: grid;
+      grid-template-columns: minmax(0, 0.85fr) minmax(0, 1.15fr);
+      gap: 34px;
+      align-items: center;
+      padding: 42px 0 30px;
+    }
+
+    h1 {
+      margin: 0;
+      font-size: clamp(40px, 3.6vw, 58px);
+      line-height: 1.12;
+      font-weight: 900;
+      word-break: keep-all;
+    }
+
+    h1 span {
+      display: block;
+    }
+
+    .lead {
+      margin: 28px 0 0;
+      color: var(--text);
+      font-size: 21px;
+      line-height: 1.72;
+      font-weight: 700;
+      word-break: keep-all;
+    }
+
+    .chips {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 28px;
+    }
+
+    .chip {
+      display: inline-flex;
+      align-items: center;
+      min-height: 40px;
+      padding: 0 15px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: #fff;
+      color: var(--navy);
+      font-size: 15px;
+      font-weight: 900;
+    }
+
+    .video-wrap {
+      overflow: hidden;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: #081d3f;
+      box-shadow: 0 22px 55px rgba(17, 61, 120, 0.16);
+    }
+
+    video {
+      display: block;
+      width: 100%;
+      aspect-ratio: 16 / 9;
+      background: #081d3f;
+    }
+
+    .video-caption {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      padding: 14px 16px;
+      background: #fff;
+      border-top: 1px solid var(--line);
+      color: var(--muted);
+      font-size: 13px;
+      font-weight: 700;
+    }
+
+    .download {
+      color: var(--blue);
+      text-decoration: none;
+      font-weight: 900;
+    }
+
+    .download:hover {
+      text-decoration: underline;
+    }
+
+    .summary {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 16px;
+      margin-top: 18px;
+    }
+
+    .card {
+      min-height: 132px;
+      padding: 22px 22px 20px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: rgba(255, 255, 255, 0.8);
+    }
+
+    .num {
+      color: var(--blue);
+      font-size: 18px;
+      font-weight: 900;
+    }
+
+    .card h2 {
+      margin: 18px 0 8px;
+      color: var(--navy);
+      font-size: 22px;
+      line-height: 1.25;
+    }
+
+    .card p {
+      margin: 0;
+      color: var(--text);
+      font-size: 15px;
+      line-height: 1.55;
+      font-weight: 700;
+    }
+
+    footer {
+      margin-top: 32px;
+      padding-top: 18px;
+      border-top: 1px solid var(--line);
+      color: var(--muted);
+      font-size: 12px;
+      line-height: 1.6;
+    }
+
+    @media (max-width: 900px) {
+      .page {
+        width: min(100% - 28px, 720px);
+        padding-top: 24px;
+      }
+
+      header,
+      .hero {
+        display: block;
+      }
+
+      .brand-title {
+        white-space: normal;
+      }
+
+      .badge {
+        margin-top: 20px;
+      }
+
+      .video-wrap {
+        margin-top: 30px;
+      }
+
+      .summary {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+  <main class="page">
+    <header>
+      <div class="brand">
+        <img src="assets/samduk-ci.png" alt="Nexia Samduk">
+        <div>
+          <p class="eyebrow">Audit Automation Partner</p>
+          <p class="brand-title">삼덕회계법인 감사자동화 사업개발 파트너 모집</p>
+        </div>
+      </div>
+      <span class="badge">1분 소개 영상</span>
+    </header>
+
+    <section class="hero" aria-label="감사자동화 사업개발 파트너 영상">
+      <div>
+        <h1>
+          <span>회계감사의</span>
+          <span>새로운 방식을</span>
+          <span>함께 시장에 알릴 사람</span>
+        </h1>
+        <p class="lead">
+          자료 요청부터 분석, 감사조서 작성과 진행관리까지 반복업무를 줄이는 감사자동화 시스템을
+          기업에 제대로 전달할 파트너를 찾습니다.
+        </p>
+        <div class="chips" aria-label="모집 키워드">
+          <span class="chip">B2B 영업</span>
+          <span class="chip">ERP·재무솔루션</span>
+          <span class="chip">CFO·회계팀 미팅</span>
+          <span class="chip">제안자료 기획</span>
+        </div>
+      </div>
+
+      <div class="video-wrap">
+        <video controls preload="metadata" poster="assets/audit_automation_partner_poster.png">
+          <source src="assets/audit_automation_partner_1min.mp4" type="video/mp4">
+          브라우저에서 MP4 영상을 재생할 수 없습니다.
+        </video>
+        <div class="video-caption">
+          <span>Full HD · 60초 · 무음 자막형</span>
+          <a class="download" href="assets/audit_automation_partner_1min.mp4" download>MP4 다운로드</a>
+        </div>
+      </div>
+    </section>
+
+    <section class="summary" aria-label="역할 요약">
+      <article class="card">
+        <span class="num">01</span>
+        <h2>첫 문을 엽니다</h2>
+        <p>CFO와 회계팀장을 만나 감사자동화의 필요성을 기업의 언어로 설명합니다.</p>
+      </article>
+      <article class="card">
+        <span class="num">02</span>
+        <h2>영업 구조를 만듭니다</h2>
+        <p>콘텐츠, 제안자료, 미팅 흐름이 반복적으로 이어지는 구조를 설계합니다.</p>
+      </article>
+      <article class="card">
+        <span class="num">03</span>
+        <h2>새 시장을 만듭니다</h2>
+        <p>ERP·재무솔루션·B2B 영업 경험을 바탕으로 감사자동화 시장을 함께 넓힙니다.</p>
+      </article>
+    </section>
+
+    <footer>
+      이 페이지는 감사자동화 사업개발 파트너 모집 영상 공유를 위한 GitHub Pages 화면입니다.
+    </footer>
+  </main>
+</body>
+</html>
