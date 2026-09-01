@@ -1210,6 +1210,12 @@
       font-size: 17px;
       line-height: 1;
       letter-spacing: 0;
+      white-space: nowrap;
+    }
+
+    .schedule-day span {
+      display: block;
+      margin-bottom: 2px;
     }
 
     .schedule-names {
@@ -1467,9 +1473,9 @@
             </div>
             <p class="schedule-field-intro" id="schedule-field-intro">현장감사 예정일과 감사인 배정을 한 화면에서 확인합니다.</p>
             <div class="schedule-field-days" id="schedule-field-days">
-              <div class="schedule-field-day"><div class="schedule-day"><span>2월</span><strong>21 월</strong></div><div class="schedule-names">장현우<br>문수아</div><span class="schedule-state">방문 예정</span></div>
-              <div class="schedule-field-day"><div class="schedule-day"><span>2월</span><strong>22 화</strong></div><div class="schedule-names">장현우<br>문수아</div><span class="schedule-state">방문 예정</span></div>
-              <div class="schedule-field-day"><div class="schedule-day"><span>2월</span><strong>23 수</strong></div><div class="schedule-names">조은재<br>유지호</div><span class="schedule-state end">마감 확인</span></div>
+              <div class="schedule-field-day"><div class="schedule-day"><span>2월</span><strong>21일(월)</strong></div><div class="schedule-names">장현우<br>문수아</div><span class="schedule-state">방문 예정</span></div>
+              <div class="schedule-field-day"><div class="schedule-day"><span>2월</span><strong>22일(화)</strong></div><div class="schedule-names">장현우<br>문수아</div><span class="schedule-state">방문 예정</span></div>
+              <div class="schedule-field-day"><div class="schedule-day"><span>2월</span><strong>23일(수)</strong></div><div class="schedule-names">조은재<br>유지호</div><span class="schedule-state end">마감 확인</span></div>
             </div>
             <div class="schedule-field-footer" id="schedule-field-footer"><b>회사 확인 포인트</b><br>현장감사 전일까지 자료 제출 상태와 담당자 배정을 업데이트합니다.</div>
           </aside>
@@ -1499,9 +1505,9 @@
         intro: "감사계획, 주요 위험, 요청자료 기준을 확정하는 일정입니다.",
         footer: "감사계획 단계에서는 요청자료 목록, 담당자, 제출 기준을 먼저 확정합니다.",
         days: [
-          ["7월", "15 목", "장현우<br>문수아", "착수 회의", false],
-          ["7월", "22 목", "장현우<br>문수아", "자료 기준", false],
-          ["7월", "31 토", "조은재<br>유지호", "마감 확인", true]
+          ["7월", "15일(목)", "장현우<br>문수아", "착수 회의", false],
+          ["7월", "22일(목)", "장현우<br>문수아", "자료 기준", false],
+          ["7월", "31일(토)", "조은재<br>유지호", "마감 확인", true]
         ]
       },
       semi: {
@@ -1510,20 +1516,22 @@
         intro: "반기 결산자료와 주석 초안을 검토하는 일정입니다.",
         footer: "반기검토 전에는 반기 TB, 주요 계정 변동, 주석 초안 제출 상태를 먼저 맞춥니다.",
         days: [
-          ["8월", "02 월", "조은재<br>유지호", "착수", false],
-          ["8월", "09 월", "조은재<br>유지호", "쟁점 검토", false],
-          ["8월", "13 금", "장현우<br>문수아", "마감 확인", true]
+          ["8월", "02일(월)", "조은재<br>유지호", "착수", false],
+          ["8월", "09일(월)", "조은재<br>유지호", "쟁점 검토", false],
+          ["8월", "13일(금)", "장현우<br>문수아", "마감 확인", true]
         ]
       },
       interim: {
         title: "중간감사 일정",
-        badge: "10.18-11.05",
-        intro: "중간감사 기간의 내부통제, 주요 거래, 계정별 변동 검토 일정입니다.",
-        footer: "중간감사 전에는 매출, 리스, 자산, 약정 관련 표본과 증빙 위치를 정리합니다.",
+        badge: "10.18-10.22",
+        intro: "중간감사 현장 투입 기간의 내부통제, 주요 거래, 계정별 변동 검토 일정입니다.",
+        footer: "중간감사 현장 투입 전에는 매출, 리스, 자산, 약정 관련 표본과 증빙 위치를 정리합니다.",
         days: [
-          ["10월", "18 월", "장현우<br>백도현", "착수", false],
-          ["10월", "27 수", "문수아<br>신예린", "현장 검토", false],
-          ["11월", "05 금", "장현우<br>백도현", "마감 확인", true]
+          ["10월", "18일(월)", "장현우<br>백도현", "착수", false],
+          ["10월", "19일(화)", "장현우<br>백도현", "매출·계약", false],
+          ["10월", "20일(수)", "문수아<br>신예린", "리스·자산", false],
+          ["10월", "21일(목)", "문수아<br>신예린", "내부통제", false],
+          ["10월", "22일(금)", "장현우<br>백도현", "마감 확인", true]
         ]
       },
       internal: {
@@ -1532,9 +1540,9 @@
         intro: "내부회계 설계·운영평가와 미비점 보완 일정을 관리합니다.",
         footer: "내부회계감사 전에는 통제별 모집단, 샘플, 운영 증빙 담당자를 확정합니다.",
         days: [
-          ["11월", "01 월", "문수아<br>신예린", "설계평가", false],
-          ["11월", "29 월", "문수아<br>신예린", "운영평가", false],
-          ["12월", "17 금", "장현우<br>조은재", "보완 확인", true]
+          ["11월", "01일(월)", "문수아<br>신예린", "설계평가", false],
+          ["11월", "29일(월)", "문수아<br>신예린", "운영평가", false],
+          ["12월", "17일(금)", "장현우<br>조은재", "보완 확인", true]
         ]
       },
       external: {
@@ -1543,9 +1551,9 @@
         intro: "외부조회 발송, 회신 추적, 기말감사 준비자료 확정 일정입니다.",
         footer: "기말 준비 단계에서는 조회처 목록, 회신 현황, 미회신 대체절차를 함께 관리합니다.",
         days: [
-          ["12월", "14 화", "백도현<br>유지호", "조회 발송", false],
-          ["1월", "06 목", "백도현<br>유지호", "회신 추적", false],
-          ["1월", "20 목", "장현우<br>문수아", "기말 준비", true]
+          ["12월", "14일(화)", "백도현<br>유지호", "조회 발송", false],
+          ["1월", "06일(목)", "백도현<br>유지호", "회신 추적", false],
+          ["1월", "20일(목)", "장현우<br>문수아", "기말 준비", true]
         ]
       },
       final: {
@@ -1554,9 +1562,9 @@
         intro: "현장감사 예정일과 감사인 배정을 한 화면에서 확인합니다.",
         footer: "현장감사 전일까지 자료 제출 상태와 담당자 배정을 업데이트합니다.",
         days: [
-          ["2월", "21 월", "장현우<br>문수아", "방문 예정", false],
-          ["2월", "22 화", "장현우<br>문수아", "방문 예정", false],
-          ["2월", "23 수", "조은재<br>유지호", "마감 확인", true]
+          ["2월", "21일(월)", "장현우<br>문수아", "방문 예정", false],
+          ["2월", "22일(화)", "장현우<br>문수아", "방문 예정", false],
+          ["2월", "23일(수)", "조은재<br>유지호", "마감 확인", true]
         ]
       },
       report: {
@@ -1565,9 +1573,9 @@
         intro: "재무제표, 주석, 감사보고서 문안 검토와 마감 일정을 표시합니다.",
         footer: "보고서 단계에서는 주석 수치, 문안 변경, 최종 승인 이력을 한 번에 관리합니다.",
         days: [
-          ["2월", "24 목", "조은재<br>유지호", "초안 검토", false],
-          ["3월", "09 목", "장현우<br>문수아", "쟁점 반영", false],
-          ["3월", "20 월", "조은재<br>유지호", "최종 마감", true]
+          ["2월", "24일(목)", "조은재<br>유지호", "초안 검토", false],
+          ["3월", "09일(목)", "장현우<br>문수아", "쟁점 반영", false],
+          ["3월", "20일(월)", "조은재<br>유지호", "최종 마감", true]
         ]
       }
     };
