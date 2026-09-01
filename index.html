@@ -402,7 +402,7 @@
       font-weight: 900;
     }
 
-    .material-table { min-width: 1240px; }
+    .material-table { min-width: 1480px; }
     .note-table { min-width: 1320px; }
 
     .point {
@@ -413,6 +413,21 @@
     .owner {
       color: #52667d;
       font-weight: 700;
+    }
+
+    .date-cell {
+      color: #2c4a6c;
+      font-size: 12px;
+      font-weight: 800;
+      white-space: nowrap;
+    }
+
+    .date-cell.missing {
+      color: var(--red);
+    }
+
+    .date-cell.pending {
+      color: var(--amber);
     }
 
     .type-pill {
@@ -1892,6 +1907,31 @@
       document.getElementById("screen").innerHTML = renderMaterials();
     }
 
+    function formatMaterialDate(offset) {
+      const date = new Date(2027, 6, 15 + offset);
+      const year = date.getFullYear();
+      const month = String(date.getMonth() + 1).padStart(2, "0");
+      const day = String(date.getDate()).padStart(2, "0");
+      return `${year}.${month}.${day}`;
+    }
+
+    function materialTimeline(row) {
+      const index = Math.max(materialRows.indexOf(row), 0);
+      const requestOffset = Math.floor(index / 2);
+      const requestDate = formatMaterialDate(requestOffset);
+
+      if (row[4] === "요청 예정") {
+        return { requestDate, providedDate: "예정", providedClass: "pending" };
+      }
+
+      if (row[4] === "자료 요청") {
+        return { requestDate, providedDate: "미제공", providedClass: "missing" };
+      }
+
+      const lag = row[4] === "제출 완료" ? (index % 3) + 1 : (index % 4) + 2;
+      return { requestDate, providedDate: formatMaterialDate(requestOffset + lag), providedClass: "" };
+    }
+
     function renderMaterials() {
       const rows = materialFilterRows();
       return `<section class="panel">
@@ -1900,23 +1940,27 @@
             <div class="section-kicker">01 · COMPANY REQUEST TRACKER</div>
             <h2>회사 자료 진행 사항</h2>
           </div>
-          <div class="notice">담당자명과 요청자료 파일명은 PT 시연용 예시입니다. 현재 ${materialFilterLabel()} ${rows.length}건을 표시합니다.</div>
+          <div class="notice">담당자명, 요청자료 파일명, 요청·제공일자는 PT 시연용 예시입니다. 현재 ${materialFilterLabel()} ${rows.length}건을 표시합니다.</div>
         </div>
         ${renderKpis(materialKpis(), "materials")}
         <div class="table-wrap">
           <table class="material-table">
             <colgroup>
-              <col style="width: 18%">
-              <col style="width: 28%">
-              <col style="width: 12%">
-              <col style="width: 12%">
+              <col style="width: 15%">
+              <col style="width: 25%">
+              <col style="width: 8%">
+              <col style="width: 8%">
               <col style="width: 10%">
-              <col style="width: 20%">
+              <col style="width: 10%">
+              <col style="width: 8%">
+              <col style="width: 16%">
             </colgroup>
             <thead>
               <tr>
                 <th>요청 자료</th>
                 <th>골프존 공시 기준 포인트</th>
+                <th>요청일자</th>
+                <th>제공일자</th>
                 <th>회사 담당자</th>
                 <th>감사인 담당</th>
                 <th>진행 상태</th>
@@ -1924,19 +1968,24 @@
               </tr>
             </thead>
             <tbody>
-              ${rows.map(row => `<tr>
+              ${rows.map(row => {
+                const timeline = materialTimeline(row);
+                return `<tr>
                 <td>${row[0]}</td>
                 <td><span class="point">${row[1]}</span></td>
+                <td class="date-cell">${timeline.requestDate}</td>
+                <td class="date-cell ${timeline.providedClass}">${timeline.providedDate}</td>
                 <td class="owner">${row[2]}</td>
                 <td class="owner">${row[3]}</td>
                 <td><span class="status ${row[5]}">${row[4]}</span></td>
                 <td>${row[6]}</td>
-              </tr>`).join("")}
+              </tr>`;
+              }).join("")}
             </tbody>
           </table>
         </div>
         <div class="footnote">
-          <span>미제출은 자료 요청 또는 요청 예정 상태입니다. 공시 기준 포인트는 골프존 2025 사업보고서의 별도·연결 주석 항목과 주요 수치를 반영했습니다.</span>
+          <span>미제출은 자료 요청 또는 요청 예정 상태입니다. 요청일자·제공일자는 발표 시연용 예시이며, 공시 기준 포인트는 골프존 2025 사업보고서의 별도·연결 주석 항목과 주요 수치를 반영했습니다.</span>
           <a target="_blank" rel="noopener" href="${sourceUrl}">2025 사업보고서 원문</a>
         </div>
       </section>`;
