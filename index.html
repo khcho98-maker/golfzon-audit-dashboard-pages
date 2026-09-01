@@ -255,6 +255,29 @@
       background: #fff;
     }
 
+    .kpi-button {
+      width: 100%;
+      text-align: left;
+      cursor: pointer;
+    }
+
+    .kpi-button:hover {
+      border-color: #9bbde8;
+      background: #fbfdff;
+    }
+
+    .kpi-button.active {
+      border-color: var(--blue);
+      box-shadow: inset 0 0 0 1px var(--blue);
+      background: #f4f8ff;
+    }
+
+    .kpi-button.missing.active {
+      border-color: var(--red);
+      box-shadow: inset 0 0 0 1px var(--red);
+      background: #fff6f5;
+    }
+
     .kpi-label {
       color: #718299;
       font-size: 11px;
@@ -280,6 +303,7 @@
       display: flex;
       gap: 8px;
       align-items: center;
+      flex-wrap: wrap;
       padding: 10px 18px;
       border-bottom: 1px solid #e4ebf4;
       background: #fff;
@@ -307,6 +331,19 @@
       color: inherit;
       opacity: .76;
       font-weight: 800;
+    }
+
+    .filter-divider {
+      width: 1px;
+      height: 24px;
+      background: #dbe6f3;
+      margin: 0 4px;
+    }
+
+    .filter-label {
+      color: #64758b;
+      font-size: 11px;
+      font-weight: 900;
     }
 
     .table-wrap {
@@ -602,7 +639,9 @@
 
   <script>
     const sourceUrl = "https://kind.krx.co.kr/external/2026/03/19/002039/20260319008528/11011.htm";
+    let currentMaterialFilter = "all";
     let currentNoteType = "연결";
+    let currentNoteStatusFilter = "all";
     const companyPeople = ["김민준", "박서연", "이도윤", "최지우", "정하늘", "한유진", "오지훈", "윤서아", "강태오", "서지민"];
     const auditPeople = ["장현우", "문수아", "조은재", "임하준", "신예린", "백도현", "남지안", "권서준", "홍유나", "유지호"];
 
@@ -729,13 +768,22 @@
       "36. 위험관리"
     ];
 
-    const materialKpis = [
-      ["요청 자료", `${materialRows.length}개`, "PBC 관리 단위"],
-      ["제출 완료", "6건", "매출·리스·감가상각 등"],
-      ["검토 중", "11건", "연결·리스·자산 등"],
-      ["담당자명", "예시", "회사·감사인 시연용"],
-      ["공시 기준", "2025", "사업보고서 기준"]
-    ];
+    function countMaterialStatus(statuses) {
+      return materialRows.filter(row => statuses.includes(row[4])).length;
+    }
+
+    function materialKpis() {
+      const done = countMaterialStatus(["제출 완료"]);
+      const progress = countMaterialStatus(["검토 중"]);
+      const missing = countMaterialStatus(["자료 요청", "요청 예정"]);
+      return [
+        { label: "요청 자료", value: `${materialRows.length}개`, note: "전체 PBC 관리 단위", filter: "all" },
+        { label: "제출 완료", value: `${done}건`, note: "매출·리스·감가상각 등", filter: "done" },
+        { label: "미제출", value: `${missing}건`, note: "자료 요청·요청 예정", filter: "missing", tone: "missing" },
+        { label: "검토 중", value: `${progress}건`, note: "연결·리스·자산 등", filter: "progress" },
+        { label: "공시 기준", value: "2025", note: "사업보고서 기준" }
+      ];
+    }
 
     const noteKpis = [
       ["연결 주석", `${connectedNotes.length}개`, "전체 목록 표시"],
@@ -880,25 +928,49 @@
     const connectedNoteRows = connectedNotes.map((item, index) => noteProfile("연결", item, index));
     const separateNoteRows = separateNotes.map((item, index) => noteProfile("별도", item, index + connectedNotes.length));
 
-    function renderKpis(kpis) {
-      return `<div class="kpis">${kpis.map(kpi => `
-        <div class="kpi">
-          <div class="kpi-label">${kpi[0]}</div>
-          <div class="kpi-value">${kpi[1]}</div>
-          <div class="kpi-note">${kpi[2]}</div>
-        </div>`).join("")}</div>`;
+    function renderKpis(kpis, scope) {
+      return `<div class="kpis">${kpis.map(kpi => {
+        const label = kpi.label ?? kpi[0];
+        const value = kpi.value ?? kpi[1];
+        const note = kpi.note ?? kpi[2];
+        const active = scope === "materials" && kpi.filter && currentMaterialFilter === kpi.filter;
+        const tone = kpi.tone ? ` ${kpi.tone}` : "";
+        const body = `<div class="kpi-label">${label}</div><div class="kpi-value">${value}</div><div class="kpi-note">${note}</div>`;
+        if (!kpi.filter) return `<div class="kpi">${body}</div>`;
+        return `<button class="kpi kpi-button${tone} ${active ? "active" : ""}" type="button" onclick="setMaterialFilter('${kpi.filter}')">${body}</button>`;
+      }).join("")}</div>`;
+    }
+
+    function materialFilterRows() {
+      if (currentMaterialFilter === "done") return materialRows.filter(row => row[4] === "제출 완료");
+      if (currentMaterialFilter === "progress") return materialRows.filter(row => row[4] === "검토 중");
+      if (currentMaterialFilter === "missing") return materialRows.filter(row => ["자료 요청", "요청 예정"].includes(row[4]));
+      return materialRows;
+    }
+
+    function materialFilterLabel() {
+      if (currentMaterialFilter === "done") return "제출 완료";
+      if (currentMaterialFilter === "progress") return "검토 중";
+      if (currentMaterialFilter === "missing") return "미제출";
+      return "전체";
+    }
+
+    function setMaterialFilter(filter) {
+      currentMaterialFilter = filter;
+      document.getElementById("screen").innerHTML = renderMaterials();
     }
 
     function renderMaterials() {
+      const rows = materialFilterRows();
       return `<section class="panel">
         <div class="panel-head">
           <div>
             <div class="section-kicker">01 · COMPANY REQUEST TRACKER</div>
             <h2>회사 자료 진행 사항</h2>
           </div>
-          <div class="notice">담당자명과 요청자료 파일명은 PT 시연용 예시입니다. 실제 운영 시 골프존 제출 양식과 담당자 기준으로 변경합니다.</div>
+          <div class="notice">담당자명과 요청자료 파일명은 PT 시연용 예시입니다. 현재 ${materialFilterLabel()} ${rows.length}건을 표시합니다.</div>
         </div>
-        ${renderKpis(materialKpis)}
+        ${renderKpis(materialKpis(), "materials")}
         <div class="table-wrap">
           <table class="material-table">
             <colgroup>
@@ -920,7 +992,7 @@
               </tr>
             </thead>
             <tbody>
-              ${materialRows.map(row => `<tr>
+              ${rows.map(row => `<tr>
                 <td>${row[0]}</td>
                 <td><span class="point">${row[1]}</span></td>
                 <td class="owner">${row[2]}</td>
@@ -932,7 +1004,7 @@
           </table>
         </div>
         <div class="footnote">
-          <span>공시 기준 포인트는 골프존 2025 사업보고서의 별도·연결 주석 항목과 주요 수치를 반영했습니다. 담당자와 진행상태는 PT 시연용 예시입니다.</span>
+          <span>미제출은 자료 요청 또는 요청 예정 상태입니다. 공시 기준 포인트는 골프존 2025 사업보고서의 별도·연결 주석 항목과 주요 수치를 반영했습니다.</span>
           <a target="_blank" rel="noopener" href="${sourceUrl}">2025 사업보고서 원문</a>
         </div>
       </section>`;
@@ -949,8 +1021,33 @@
       </tr>`).join("");
     }
 
+    function noteStatusRows(rows) {
+      if (currentNoteStatusFilter === "all") return rows;
+      return rows.filter(row => row[5] === currentNoteStatusFilter);
+    }
+
+    function countNoteStatus(rows, status) {
+      return rows.filter(row => row[5] === status).length;
+    }
+
+    function renderNoteStatusFilters(rows) {
+      const filters = [
+        ["all", "전체", rows.length],
+        ["제출 완료", "제출 완료", countNoteStatus(rows, "제출 완료")],
+        ["검토 중", "검토 중", countNoteStatus(rows, "검토 중")],
+        ["자료 요청", "자료 요청", countNoteStatus(rows, "자료 요청")],
+        ["요청 예정", "요청 예정", countNoteStatus(rows, "요청 예정")]
+      ];
+      return filters.map(filter => `<button class="note-subtab ${currentNoteStatusFilter === filter[0] ? "active" : ""}" type="button" onclick="switchNoteStatus('${filter[0]}')">${filter[1]}<span>${filter[2]}개</span></button>`).join("");
+    }
+
+    function noteStatusLabel() {
+      return currentNoteStatusFilter === "all" ? "전체" : currentNoteStatusFilter;
+    }
+
     function renderNotes() {
-      const rows = currentNoteType === "연결" ? connectedNoteRows : separateNoteRows;
+      const allRows = currentNoteType === "연결" ? connectedNoteRows : separateNoteRows;
+      const rows = noteStatusRows(allRows);
       const count = rows.length;
       return `<section class="panel">
         <div class="panel-head">
@@ -958,12 +1055,15 @@
             <div class="section-kicker">02 · DISCLOSURE NOTE REVIEW</div>
             <h2>골프존 주석 검토 진행 사항</h2>
           </div>
-          <div class="notice">주석명은 실제 공시 항목입니다. 담당자·진행상태·검토 사항은 PT 시연용 예시입니다.</div>
+          <div class="notice">주석명은 실제 공시 항목입니다. 현재 ${currentNoteType} 주석 중 ${noteStatusLabel()} ${count}개를 표시합니다.</div>
         </div>
         ${renderKpis(noteKpis)}
         <div class="note-subtabs" aria-label="주석 구분">
           <button class="note-subtab ${currentNoteType === "연결" ? "active" : ""}" type="button" onclick="switchNoteType('연결')">연결 주석<span>${connectedNoteRows.length}개</span></button>
           <button class="note-subtab ${currentNoteType === "별도" ? "active" : ""}" type="button" onclick="switchNoteType('별도')">별도 주석<span>${separateNoteRows.length}개</span></button>
+          <span class="filter-divider"></span>
+          <span class="filter-label">진행 상태</span>
+          ${renderNoteStatusFilters(allRows)}
         </div>
         <div class="table-wrap">
           <table class="note-table">
@@ -989,7 +1089,7 @@
           </table>
         </div>
         <div class="footnote">
-          <span>출처: 골프존 2025 사업보고서. 현재 화면은 ${currentNoteType} 주석 ${count}개 전체 목록입니다.</span>
+          <span>출처: 골프존 2025 사업보고서. 현재 화면은 ${currentNoteType} 주석의 ${noteStatusLabel()} 상태 ${count}개 목록입니다.</span>
           <a target="_blank" rel="noopener" href="${sourceUrl}">수치·주석 출처 링크</a>
         </div>
       </section>`;
@@ -997,6 +1097,11 @@
 
     function switchNoteType(type) {
       currentNoteType = type;
+      document.getElementById("screen").innerHTML = renderNotes();
+    }
+
+    function switchNoteStatus(status) {
+      currentNoteStatusFilter = status;
       document.getElementById("screen").innerHTML = renderNotes();
     }
 
