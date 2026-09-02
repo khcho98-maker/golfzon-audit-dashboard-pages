@@ -784,20 +784,6 @@
       line-height: 1.45;
     }
 
-    .schedule-overlay[hidden] {
-      display: none;
-    }
-
-    .schedule-overlay {
-      position: fixed;
-      inset: 0;
-      z-index: 60;
-      display: grid;
-      place-items: center;
-      padding: 28px;
-      background: rgba(7, 25, 50, .50);
-    }
-
     .schedule-card {
       width: min(1360px, calc(100vw - 48px));
       max-height: calc(100vh - 48px);
@@ -810,74 +796,16 @@
       box-shadow: 0 30px 80px rgba(4, 21, 43, .28);
     }
 
-    .schedule-topbar {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 16px;
-      padding: 16px 20px;
-      border-bottom: 1px solid var(--line);
-      background: #fbfdff;
+    .schedule-card.schedule-page {
+      width: 100%;
+      min-height: 580px;
+      max-height: none;
+      height: 100%;
+      box-shadow: none;
     }
 
-    .schedule-brand {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      color: #314c70;
-      font-size: 12px;
-      font-weight: 900;
-    }
-
-    .schedule-mark {
-      width: 31px;
-      height: 31px;
-      display: grid;
-      place-items: center;
-      border-radius: 8px;
-      background: var(--navy);
-      color: #fff;
-      font-size: 14px;
-    }
-
-    .schedule-topright {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      color: #64768e;
-      font-size: 12px;
-      font-weight: 700;
-    }
-
-    .schedule-pill {
-      padding: 6px 10px;
-      border: 1px solid #cbdcf1;
-      border-radius: 999px;
-      color: #2e629f;
-      font-size: 11px;
-      font-weight: 900;
-    }
-
-    .schedule-close {
-      min-width: 56px;
-      min-height: 32px;
-      border: 1px solid #c6d7ec;
-      border-radius: 8px;
-      background: #fff;
-      color: #375b89;
-      font-size: 12px;
-      font-weight: 900;
-      cursor: pointer;
-    }
-
-    .schedule-close:hover {
-      background: #f5f9ff;
-    }
-
-    .schedule-close:focus-visible,
-    .schedule-open:focus-visible {
-      outline: 3px solid rgba(45, 110, 197, .28);
-      outline-offset: 2px;
+    .schedule-card.schedule-page .schedule-scroll {
+      flex: 1;
     }
 
     .schedule-scroll {
@@ -1345,9 +1273,8 @@
       .doc-tag, .legend, .notice { justify-content: flex-start; text-align: left; }
       .asset-lead { text-align: left; }
       .tabs, .kpis, .asset-grid, .workflow { grid-template-columns: 1fr; }
-      .schedule-overlay { padding: 14px; }
-      .schedule-topbar, .schedule-titleline, .schedule-layout, .schedule-foot { grid-template-columns: 1fr; }
-      .schedule-topbar, .schedule-foot { align-items: flex-start; flex-direction: column; }
+      .schedule-titleline, .schedule-layout, .schedule-foot { grid-template-columns: 1fr; }
+      .schedule-foot { align-items: flex-start; flex-direction: column; }
       .schedule-titleline p { text-align: left; }
       .schedule-titleline h2 { font-size: 28px; }
       .schedule-metrics { grid-template-columns: repeat(2, minmax(0, 1fr)); }
@@ -1401,7 +1328,7 @@
       </section>
 
       <nav class="tabs" aria-label="감사 진행 화면 탭">
-        <button class="tab schedule-launch" type="button" onclick="showSchedulePlan()">
+        <button class="tab schedule-launch" type="button" onclick="view('schedule', this)">
           <span>감사 일정 보기<small>연간 로드맵 / 현장감사</small></span>
           <span class="tab-num">일정</span>
         </button>
@@ -1422,97 +1349,6 @@
       <div id="screen"></div>
     </div>
   </main>
-
-  <div class="schedule-overlay" id="schedule-overlay" hidden onclick="if (event.target === this) hideSchedulePlan()">
-    <section class="schedule-card" role="dialog" aria-modal="true" aria-labelledby="schedule-title">
-      <div class="schedule-topbar">
-        <div class="schedule-brand"><span class="schedule-mark">S</span><span>삼덕회계법인 / 골프존 회계감사 제안</span></div>
-        <div class="schedule-topright">
-          <span>2027-2029 회계감사 제안</span>
-          <span class="schedule-pill">감사 일정·현장감사</span>
-          <button class="schedule-close" type="button" onclick="hideSchedulePlan()">닫기</button>
-        </div>
-      </div>
-      <div class="schedule-scroll">
-        <div class="schedule-kicker">AUDIT SCHEDULE & FIELDWORK PLAN</div>
-        <section class="schedule-titleline">
-          <h2 id="schedule-title">감사 일정과 현장 일정을<br><span>하나의 화면에서 관리합니다.</span></h2>
-          <p>회사와 감사인이 예정 시작일·예정 완료일·실제 완료일 및 담당자를 같은 기준으로 확인해, 자료 준비와 현장감사 일정을 예측 가능하게 관리합니다.</p>
-        </section>
-
-        <section class="schedule-metrics" aria-label="일정 현황">
-          <div class="schedule-metric"><b>전체 감사 단계</b><strong>7 <em>개</em></strong></div>
-          <div class="schedule-metric"><b>다음 예정 마감</b><strong>07.31</strong></div>
-          <div class="schedule-metric"><b>이번 현장감사</b><strong>3 <em>일</em></strong></div>
-          <div class="schedule-metric alert"><b>회사 준비 확인</b><strong>5 <em>건</em></strong></div>
-        </section>
-
-        <section class="schedule-layout">
-          <section class="schedule-panel" aria-label="2027 사업연도 감사 일정">
-            <div class="schedule-panel-head">
-              <div>
-                <div class="schedule-panel-kicker">2027 AUDIT ROADMAP</div>
-                <h3>2027 사업연도 감사 일정</h3>
-              </div>
-              <div class="schedule-legend"><span class="schedule-dot"></span> 예정 <span class="schedule-dot green"></span> 완료 <span class="schedule-dot orange"></span> 진행 중</div>
-            </div>
-            <div class="schedule-table-wrap">
-              <table class="schedule-table">
-                <thead>
-                  <tr><th>감사 단계</th><th>예정 시작</th><th>예정 완료</th><th>실제 완료</th><th>감사인</th><th>상태</th></tr>
-                </thead>
-                <tbody>
-                  <tr class="schedule-row" data-schedule-stage="planning" tabindex="0" aria-selected="false"><td>감사계획</td><td>2027.07.15</td><td>2027.07.31</td><td>미정</td><td class="schedule-auditors">장현우 · 문수아</td><td><span class="schedule-status ongoing">진행 중</span></td></tr>
-                  <tr class="schedule-row" data-schedule-stage="semi" tabindex="0" aria-selected="false"><td>반기검토</td><td>2027.08.02</td><td>2027.08.13</td><td>미정</td><td class="schedule-auditors">조은재 · 유지호</td><td><span class="schedule-status scheduled">예정</span></td></tr>
-                  <tr class="schedule-row" data-schedule-stage="interim" tabindex="0" aria-selected="false"><td>중간감사</td><td>2027.10.18</td><td>2027.11.05</td><td>미정</td><td class="schedule-auditors">장현우 · 백도현</td><td><span class="schedule-status scheduled">예정</span></td></tr>
-                  <tr class="schedule-row" data-schedule-stage="internal" tabindex="0" aria-selected="false"><td>내부회계감사</td><td>2027.11.01</td><td>2027.12.17</td><td>미정</td><td class="schedule-auditors">문수아 · 신예린</td><td><span class="schedule-status scheduled">예정</span></td></tr>
-                  <tr class="schedule-row" data-schedule-stage="external" tabindex="0" aria-selected="false"><td>외부조회 · 기말 준비</td><td>2027.12.14</td><td>2028.01.20</td><td>미정</td><td class="schedule-auditors">백도현 · 유지호</td><td><span class="schedule-status scheduled">예정</span></td></tr>
-                  <tr class="schedule-row active" data-schedule-stage="final" tabindex="0" aria-selected="true"><td>기말 현장감사</td><td>2028.02.21</td><td>2028.02.23</td><td>미정</td><td class="schedule-auditors">장현우 · 문수아</td><td><span class="schedule-status scheduled">예정</span></td></tr>
-                  <tr class="schedule-row" data-schedule-stage="report" tabindex="0" aria-selected="false"><td>재무제표·주석 및 보고서</td><td>2028.02.24</td><td>2028.03.20</td><td>미정</td><td class="schedule-auditors">조은재 · 유지호</td><td><span class="schedule-status scheduled">예정</span></td></tr>
-                </tbody>
-              </table>
-            </div>
-            <div class="schedule-roadmap">
-              <div class="schedule-roadmap-top"><b>연간 일정 흐름</b><span>현장감사 일정은 월·화·수 3일 연속 표시</span></div>
-              <div class="schedule-months">
-                <div class="schedule-month active">7월</div>
-                <div class="schedule-month active">8월</div>
-                <div class="schedule-month">9월</div>
-                <div class="schedule-month active">10월</div>
-                <div class="schedule-month active">11월</div>
-                <div class="schedule-month active">12월</div>
-                <div class="schedule-month active">1월</div>
-                <div class="schedule-month field">2월</div>
-                <div class="schedule-month active">3월</div>
-              </div>
-            </div>
-          </section>
-
-          <aside class="schedule-panel schedule-field-panel" aria-label="현장감사 일정">
-            <div class="schedule-panel-head">
-              <div>
-                <div class="schedule-panel-kicker">FIELDWORK</div>
-                <h3 id="schedule-field-title">현장감사 일정</h3>
-              </div>
-              <span class="schedule-status scheduled" id="schedule-field-badge">월·화·수</span>
-            </div>
-            <p class="schedule-field-intro" id="schedule-field-intro">현장감사 예정일과 감사인 배정을 한 화면에서 확인합니다.</p>
-            <div class="schedule-field-days" id="schedule-field-days">
-              <div class="schedule-field-day"><div class="schedule-day"><span>2월</span><strong>21일(월)</strong></div><div class="schedule-names">장현우<br>문수아</div><span class="schedule-state">방문 예정</span></div>
-              <div class="schedule-field-day"><div class="schedule-day"><span>2월</span><strong>22일(화)</strong></div><div class="schedule-names">장현우<br>문수아</div><span class="schedule-state">방문 예정</span></div>
-              <div class="schedule-field-day"><div class="schedule-day"><span>2월</span><strong>23일(수)</strong></div><div class="schedule-names">조은재<br>유지호</div><span class="schedule-state end">마감 확인</span></div>
-            </div>
-            <div class="schedule-field-footer" id="schedule-field-footer"><b>회사 확인 포인트</b><br>현장감사 전일까지 자료 제출 상태와 담당자 배정을 업데이트합니다.</div>
-          </aside>
-        </section>
-
-        <footer class="schedule-foot">
-          <span>※ 일정 및 감사인 배정은 제안 기준 예시이며, 수임 후 골프존 결산·공시 일정에 맞춰 확정합니다.</span>
-          <strong>언제 무엇을 준비해야 하는지, 누가 현장에 오는지를 미리 알 수 있습니다.</strong>
-        </footer>
-      </div>
-    </section>
-  </div>
 
   <script>
     const sourceUrl = "https://kind.krx.co.kr/external/2026/03/19/002039/20260319008528/11011.htm";
@@ -1969,6 +1805,89 @@
       return { requestDate, providedDate: formatMaterialDate(requestOffset + lag), providedClass: "" };
     }
 
+    function renderSchedule() {
+      return `<section class="schedule-card schedule-page" aria-labelledby="schedule-title">
+        <div class="schedule-scroll">
+          <div class="schedule-kicker">AUDIT SCHEDULE & FIELDWORK PLAN</div>
+          <section class="schedule-titleline">
+            <h2 id="schedule-title">감사 일정과 현장 일정을<br><span>하나의 화면에서 관리합니다.</span></h2>
+            <p>회사와 감사인이 예정 시작일·예정 완료일·실제 완료일 및 담당자를 같은 기준으로 확인해, 자료 준비와 현장감사 일정을 예측 가능하게 관리합니다.</p>
+          </section>
+
+          <section class="schedule-metrics" aria-label="일정 현황">
+            <div class="schedule-metric"><b>전체 감사 단계</b><strong>7 <em>개</em></strong></div>
+            <div class="schedule-metric"><b>다음 예정 마감</b><strong>07.31</strong></div>
+            <div class="schedule-metric"><b>이번 현장감사</b><strong>3 <em>일</em></strong></div>
+            <div class="schedule-metric alert"><b>회사 준비 확인</b><strong>5 <em>건</em></strong></div>
+          </section>
+
+          <section class="schedule-layout">
+            <section class="schedule-panel" aria-label="2027 사업연도 감사 일정">
+              <div class="schedule-panel-head">
+                <div>
+                  <div class="schedule-panel-kicker">2027 AUDIT ROADMAP</div>
+                  <h3>2027 사업연도 감사 일정</h3>
+                </div>
+                <div class="schedule-legend"><span class="schedule-dot"></span> 예정 <span class="schedule-dot green"></span> 완료 <span class="schedule-dot orange"></span> 진행 중</div>
+              </div>
+              <div class="schedule-table-wrap">
+                <table class="schedule-table">
+                  <thead>
+                    <tr><th>감사 단계</th><th>예정 시작</th><th>예정 완료</th><th>실제 완료</th><th>감사인</th><th>상태</th></tr>
+                  </thead>
+                  <tbody>
+                    <tr class="schedule-row" data-schedule-stage="planning" tabindex="0" aria-selected="false"><td>감사계획</td><td>2027.07.15</td><td>2027.07.31</td><td>미정</td><td class="schedule-auditors">장현우 · 문수아</td><td><span class="schedule-status ongoing">진행 중</span></td></tr>
+                    <tr class="schedule-row" data-schedule-stage="semi" tabindex="0" aria-selected="false"><td>반기검토</td><td>2027.08.02</td><td>2027.08.13</td><td>미정</td><td class="schedule-auditors">조은재 · 유지호</td><td><span class="schedule-status scheduled">예정</span></td></tr>
+                    <tr class="schedule-row" data-schedule-stage="interim" tabindex="0" aria-selected="false"><td>중간감사</td><td>2027.10.18</td><td>2027.10.22</td><td>미정</td><td class="schedule-auditors">장현우 · 백도현</td><td><span class="schedule-status scheduled">예정</span></td></tr>
+                    <tr class="schedule-row" data-schedule-stage="internal" tabindex="0" aria-selected="false"><td>내부회계감사</td><td>2027.11.01</td><td>2027.12.17</td><td>미정</td><td class="schedule-auditors">문수아 · 신예린</td><td><span class="schedule-status scheduled">예정</span></td></tr>
+                    <tr class="schedule-row" data-schedule-stage="external" tabindex="0" aria-selected="false"><td>외부조회 · 기말 준비</td><td>2027.12.14</td><td>2028.01.20</td><td>미정</td><td class="schedule-auditors">백도현 · 유지호</td><td><span class="schedule-status scheduled">예정</span></td></tr>
+                    <tr class="schedule-row active" data-schedule-stage="final" tabindex="0" aria-selected="true"><td>기말 현장감사</td><td>2028.02.21</td><td>2028.02.23</td><td>미정</td><td class="schedule-auditors">장현우 · 문수아</td><td><span class="schedule-status scheduled">예정</span></td></tr>
+                    <tr class="schedule-row" data-schedule-stage="report" tabindex="0" aria-selected="false"><td>재무제표·주석 및 보고서</td><td>2028.02.24</td><td>2028.03.20</td><td>미정</td><td class="schedule-auditors">조은재 · 유지호</td><td><span class="schedule-status scheduled">예정</span></td></tr>
+                  </tbody>
+                </table>
+              </div>
+              <div class="schedule-roadmap">
+                <div class="schedule-roadmap-top"><b>연간 일정 흐름</b><span>현장감사 일정은 월·화·수 3일 연속 표시</span></div>
+                <div class="schedule-months">
+                  <div class="schedule-month active">7월</div>
+                  <div class="schedule-month active">8월</div>
+                  <div class="schedule-month">9월</div>
+                  <div class="schedule-month active">10월</div>
+                  <div class="schedule-month active">11월</div>
+                  <div class="schedule-month active">12월</div>
+                  <div class="schedule-month active">1월</div>
+                  <div class="schedule-month field">2월</div>
+                  <div class="schedule-month active">3월</div>
+                </div>
+              </div>
+            </section>
+
+            <aside class="schedule-panel schedule-field-panel" aria-label="현장감사 일정">
+              <div class="schedule-panel-head">
+                <div>
+                  <div class="schedule-panel-kicker">FIELDWORK</div>
+                  <h3 id="schedule-field-title">현장감사 일정</h3>
+                </div>
+                <span class="schedule-status scheduled" id="schedule-field-badge">월·화·수</span>
+              </div>
+              <p class="schedule-field-intro" id="schedule-field-intro">현장감사 예정일과 감사인 배정을 한 화면에서 확인합니다.</p>
+              <div class="schedule-field-days" id="schedule-field-days">
+                <div class="schedule-field-day"><div class="schedule-day"><span>2월</span><strong>21일(월)</strong></div><div class="schedule-names">장현우<br>문수아</div><span class="schedule-state">방문 예정</span></div>
+                <div class="schedule-field-day"><div class="schedule-day"><span>2월</span><strong>22일(화)</strong></div><div class="schedule-names">장현우<br>문수아</div><span class="schedule-state">방문 예정</span></div>
+                <div class="schedule-field-day"><div class="schedule-day"><span>2월</span><strong>23일(수)</strong></div><div class="schedule-names">조은재<br>유지호</div><span class="schedule-state end">마감 확인</span></div>
+              </div>
+              <div class="schedule-field-footer" id="schedule-field-footer"><b>회사 확인 포인트</b><br>현장감사 전일까지 자료 제출 상태와 담당자 배정을 업데이트합니다.</div>
+            </aside>
+          </section>
+
+          <footer class="schedule-foot">
+            <span>※ 일정 및 감사인 배정은 제안 기준 예시이며, 수임 후 골프존 결산·공시 일정에 맞춰 확정합니다.</span>
+            <strong>언제 무엇을 준비해야 하는지, 누가 현장에 오는지를 미리 알 수 있습니다.</strong>
+          </footer>
+        </div>
+      </section>`;
+    }
+
     function renderMaterials() {
       const rows = materialFilterRows();
       return `<section class="panel">
@@ -2240,21 +2159,6 @@
       overlay.hidden = true;
     }
 
-    function showSchedulePlan() {
-      const overlay = document.getElementById("schedule-overlay");
-      if (!overlay) return;
-      overlay.hidden = false;
-      selectScheduleStage(currentScheduleStage);
-      const closeButton = overlay.querySelector(".schedule-close");
-      if (closeButton) closeButton.focus({ preventScroll: true });
-    }
-
-    function hideSchedulePlan() {
-      const overlay = document.getElementById("schedule-overlay");
-      if (!overlay) return;
-      overlay.hidden = true;
-    }
-
     function renderScheduleDays(days) {
       return days.map(([month, date, names, state, isEnd]) => `
         <div class="schedule-field-day">
@@ -2297,7 +2201,6 @@
     document.addEventListener("keydown", event => {
       if (event.key === "Escape") {
         hideAssetDetail();
-        hideSchedulePlan();
       }
       const row = event.target.closest ? event.target.closest("[data-schedule-stage]") : null;
       if (row && (event.key === "Enter" || event.key === " ")) {
@@ -2309,7 +2212,8 @@
     function view(id, element) {
       document.querySelectorAll(".tab").forEach(tab => tab.classList.remove("active"));
       element.classList.add("active");
-      document.getElementById("screen").innerHTML = id === "materials" ? renderMaterials() : id === "notes" ? renderNotes() : renderAssets();
+      document.getElementById("screen").innerHTML = id === "schedule" ? renderSchedule() : id === "materials" ? renderMaterials() : id === "notes" ? renderNotes() : renderAssets();
+      if (id === "schedule") selectScheduleStage(currentScheduleStage);
     }
 
     view("materials", document.querySelector(".tab.active"));
