@@ -1,7 +1,7 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="ko">
 <head>
-  <meta charset="utf-8">
+  <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>삼덕회계법인 | 골프존 회계감사 진행 관리</title>
   <link rel="icon" href="favicon.ico" sizes="any">
@@ -10,1606 +10,222 @@
   <meta name="theme-color" content="#0b2c60">
   <meta property="og:title" content="삼덕회계법인 | 골프존 회계감사 진행 관리">
   <meta property="og:image" content="https://khcho98-maker.github.io/golfzon-audit-dashboard-pages/assets/samduk-ci.png">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://code.iconify.design/iconify-icon/1.0.7/iconify-icon.min.js"></script>
   <style>
-    :root {
-      --navy: #0b2c60;
-      --blue: #0b2c60;
-      --ink: #14243a;
-      --muted: #617188;
-      --line: #d9e3f0;
-      --bg: #f4f7fb;
-      --green: #138462;
-      --amber: #ad6b00;
-      --gray: #65758b;
-      --red: #b42318;
-      --purple: #6657c8;
-    }
-
-    * { box-sizing: border-box; }
-
-    body {
-      margin: 0;
-      background: var(--bg);
-      color: var(--ink);
-      font-family: Arial, "Pretendard", "Noto Sans KR", sans-serif;
-      overflow-x: hidden;
-    }
-
-    button, a { font: inherit; }
-
-    .page {
-      width: min(100%, 1600px);
-      min-height: 100vh;
-      margin: 0 auto;
-      padding: 24px 38px 28px;
-    }
-
-    .stage {
-      min-height: calc(100vh - 52px);
-      display: flex;
-      flex-direction: column;
-      gap: 14px;
-    }
-
-    header {
-      display: grid;
-      grid-template-columns: 1fr auto;
-      gap: 24px;
-      align-items: start;
-      padding: 18px 20px;
-      background: #fff;
-      border: 1px solid var(--line);
-      border-radius: 8px;
-    }
-
-    .proposal {
-      display: flex;
-      align-items: center;
-      gap: 14px;
-      min-width: 0;
-    }
-
-    .mark {
-      width: 42px;
-      height: 42px;
-      display: grid;
-      place-items: center;
-      flex: 0 0 auto;
-      color: #fff;
-      background: var(--navy);
-      border-radius: 8px;
-      font-weight: 800;
-      letter-spacing: 0;
-    }
-
-    .proposal-title {
-      font-size: 15px;
-      font-weight: 800;
-      color: #233a59;
-    }
-
-    .proposal-sub {
-      margin-top: 5px;
-      color: var(--muted);
-      font-size: 12px;
-    }
-
-    .doc-tag {
-      display: flex;
-      gap: 8px;
-      align-items: center;
-      justify-content: flex-end;
-      flex-wrap: wrap;
-      color: #385371;
-      font-size: 12px;
-      font-weight: 700;
-    }
-
-    .tag {
-      padding: 6px 10px;
-      border: 1px solid #c9d8ea;
-      border-radius: 999px;
-      background: #fff;
-      white-space: nowrap;
-    }
-
-    .titlebar {
-      display: grid;
-      grid-template-columns: 1fr auto;
-      gap: 28px;
-      align-items: end;
-      padding: 2px 2px 0;
-    }
-
-    h1 {
-      margin: 0;
-      font-size: clamp(27px, 2.8vw, 40px);
-      line-height: 1.15;
-      letter-spacing: 0;
-      color: #10263f;
-    }
-
-    .lead {
-      margin: 7px 0 0;
-      max-width: 860px;
-      color: #53657d;
-      font-size: 14px;
-      line-height: 1.5;
-    }
-
-    .legend {
-      display: flex;
-      gap: 8px;
-      flex-wrap: wrap;
-      justify-content: flex-end;
-      font-size: 12px;
-      color: #52677f;
-    }
-
-    .reference-preview {
-      overflow: hidden;
-      padding: 10px;
-      border: 1px solid var(--line);
-      border-radius: 8px;
-      background: #fff;
-    }
-
-    .reference-preview a {
-      display: block;
-      overflow: hidden;
-      border: 1px solid #dbe6f3;
-      border-radius: 7px;
-      background: #fff;
-    }
-
-    .reference-preview img {
-      display: block;
-      width: 100%;
-      height: clamp(160px, 24vh, 230px);
-      object-fit: cover;
-      object-position: center center;
-    }
-
-    .tabs {
-      display: grid;
-      grid-template-columns: minmax(190px, .75fr) repeat(3, minmax(0, 1fr));
-      gap: 10px;
-    }
-
-    .tab {
-      min-height: 52px;
-      text-align: left;
-      border: 1px solid var(--line);
-      border-radius: 8px;
-      background: #fff;
-      color: #304964;
-      cursor: pointer;
-      padding: 11px 15px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 12px;
-      font-weight: 800;
-    }
-
-    .tab small {
-      display: block;
-      margin-top: 3px;
-      color: #77869a;
-      font-size: 11px;
-      font-weight: 600;
-    }
-
-    .tab.active {
-      color: #fff;
-      background: var(--blue);
-      border-color: var(--blue);
-      box-shadow: 0 10px 20px rgba(11, 44, 96, .18);
-    }
-
-    .tab.active small { color: rgba(255, 255, 255, .82); }
-
-    .tab-num {
-      width: 28px;
-      height: 28px;
-      display: grid;
-      place-items: center;
-      flex: 0 0 auto;
-      border-radius: 999px;
-      background: #edf4fd;
-      color: var(--blue);
-      font-size: 12px;
-      font-weight: 900;
-    }
-
-    .tab.active .tab-num {
-      background: rgba(255, 255, 255, .18);
-      color: #fff;
-    }
-
-    .schedule-launch {
-      border-color: #b8d4f5;
-      background: #edf6ff;
-      color: var(--blue);
-    }
-
-    .schedule-launch:hover {
-      border-color: #8eb9ea;
-      background: #e4f0ff;
-    }
-
-    .schedule-launch .tab-num {
-      width: 38px;
-      background: #e8f8f2;
-      color: #168d68;
-    }
-
-    #screen { flex: 1; min-height: 0; }
-
-    .panel {
-      height: 100%;
-      min-height: 580px;
-      display: flex;
-      flex-direction: column;
-      overflow: hidden;
-      background: #fff;
-      border: 1px solid var(--line);
-      border-radius: 8px;
-    }
-
-    .panel-head {
-      display: grid;
-      grid-template-columns: 1fr auto;
-      gap: 20px;
-      align-items: center;
-      padding: 15px 18px 12px;
-      border-bottom: 1px solid #e4ebf4;
-    }
-
-    .section-kicker {
-      color: var(--blue);
-      font-size: 12px;
-      font-weight: 900;
-    }
-
-    .panel h2 {
-      margin: 4px 0 0;
-      font-size: 22px;
-      letter-spacing: 0;
-    }
-
-    .notice {
-      max-width: 540px;
-      color: #5b6f87;
-      font-size: 12px;
-      line-height: 1.45;
-      text-align: right;
-    }
-
-    .kpis {
-      display: grid;
-      grid-template-columns: repeat(5, minmax(0, 1fr));
-      gap: 9px;
-      padding: 12px 18px;
-      background: #f8fbff;
-      border-bottom: 1px solid #e4ebf4;
-    }
-
-    .kpi {
-      min-height: 68px;
-      padding: 9px 11px;
-      border: 1px solid #dce7f5;
-      border-radius: 8px;
-      background: #fff;
-    }
-
-    .kpi-button {
-      width: 100%;
-      text-align: left;
-      cursor: pointer;
-    }
-
-    .kpi-button:hover {
-      border-color: #9bbde8;
-      background: #fbfdff;
-    }
-
-    .kpi-button.active {
-      border-color: var(--blue);
-      box-shadow: inset 0 0 0 1px var(--blue);
-      background: #f4f8ff;
-    }
-
-    .kpi-button.missing.active {
-      border-color: var(--red);
-      box-shadow: inset 0 0 0 1px var(--red);
-      background: #fff6f5;
-    }
-
-    .kpi-label {
-      color: #718299;
-      font-size: 11px;
-      font-weight: 800;
-    }
-
-    .kpi-value {
-      margin-top: 5px;
-      color: #123a6f;
-      font-size: 20px;
-      font-weight: 900;
-      line-height: 1.1;
-    }
-
-    .kpi-note {
-      margin-top: 4px;
-      color: #697b91;
-      font-size: 11px;
-      line-height: 1.25;
-    }
-
-    .note-subtabs {
-      display: flex;
-      gap: 8px;
-      align-items: center;
-      flex-wrap: wrap;
-      padding: 10px 18px;
-      border-bottom: 1px solid #e4ebf4;
-      background: #fff;
-    }
-
-    .note-subtab {
-      border: 1px solid #cfddec;
-      border-radius: 999px;
-      background: #fff;
-      color: #385371;
-      cursor: pointer;
-      padding: 7px 13px;
-      font-size: 12px;
-      font-weight: 900;
-    }
-
-    .note-subtab.active {
-      border-color: var(--navy);
-      background: var(--navy);
-      color: #fff;
-    }
-
-    .note-subtab span {
-      margin-left: 6px;
-      color: inherit;
-      opacity: .76;
-      font-weight: 800;
-    }
-
-    .filter-divider {
-      width: 1px;
-      height: 24px;
-      background: #dbe6f3;
-      margin: 0 4px;
-    }
-
-    .filter-label {
-      color: #64758b;
-      font-size: 11px;
-      font-weight: 900;
-    }
-
-    .table-wrap {
-      flex: 1;
-      overflow: auto;
-    }
-
-    table {
-      width: 100%;
-      border-collapse: collapse;
-      table-layout: fixed;
-      text-align: left;
-      font-size: 12px;
-    }
-
-    th {
-      position: sticky;
-      top: 0;
-      z-index: 2;
-      padding: 10px 12px;
-      background: #eef4fb;
-      border-bottom: 1px solid #d9e4f1;
-      color: #445c77;
-      font-size: 11px;
-      font-weight: 900;
-    }
-
-    td {
-      padding: 10px 12px;
-      border-bottom: 1px solid #edf2f8;
-      color: #45596f;
-      line-height: 1.38;
-      vertical-align: top;
-      word-break: keep-all;
-    }
-
-    td:first-child {
-      color: #132a45;
-      font-weight: 900;
-    }
-
-    .material-table { min-width: 1480px; }
-    .note-table { min-width: 1320px; }
-
-    .point {
-      color: #183b68;
-      font-weight: 800;
-    }
-
-    .owner {
-      color: #52667d;
-      font-weight: 700;
-    }
-
-    .date-cell {
-      color: #2c4a6c;
-      font-size: 12px;
-      font-weight: 800;
-      white-space: nowrap;
-    }
-
-    .date-cell.missing {
-      color: var(--red);
-    }
-
-    .date-cell.pending {
-      color: var(--amber);
-    }
-
-    .type-pill {
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      min-width: 44px;
-      padding: 4px 8px;
-      border-radius: 999px;
-      font-size: 11px;
-      font-weight: 900;
-      white-space: nowrap;
-    }
-
-    .connected { background: #edf5ff; color: var(--blue); }
-    .separate { background: #f1efff; color: var(--purple); }
-
-    .status {
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      min-width: 64px;
-      padding: 4px 8px;
-      border-radius: 999px;
-      font-size: 11px;
-      font-weight: 900;
-      white-space: nowrap;
-    }
-
-    .done { background: #e9f8f2; color: var(--green); }
-    .progress { background: #fff5dd; color: var(--amber); }
-    .request { background: #edf5ff; color: var(--blue); }
-    .ready { background: #f1f4f7; color: var(--gray); }
-    .attention { background: #fff0ee; color: var(--red); }
-
-    .footnote {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 18px;
-      padding: 11px 18px;
-      background: #f8fbff;
-      color: #5d7088;
-      border-top: 1px solid #e4ebf4;
-      font-size: 11px;
-      line-height: 1.45;
-    }
-
-    .footnote a {
-      color: var(--blue);
-      font-weight: 800;
-      text-decoration: none;
-      white-space: nowrap;
-    }
-
-    .assets {
-      height: 100%;
-      min-height: 580px;
-      display: flex;
-      flex-direction: column;
-      gap: 13px;
-      background: #fff;
-      border: 1px solid var(--line);
-      border-radius: 8px;
-      padding: 18px;
-      overflow: hidden;
-    }
-
-    .asset-head {
-      display: grid;
-      grid-template-columns: 1fr auto;
-      gap: 26px;
-      align-items: end;
-      padding-bottom: 13px;
-      border-bottom: 1px solid #e4ebf4;
-    }
-
-    .asset-headline {
-      margin-top: 4px;
-      font-size: 30px;
-      line-height: 1.18;
-      font-weight: 900;
-      color: #10263f;
-    }
-
-    .asset-headline span {
-      color: var(--blue);
-    }
-
-    .asset-lead {
-      max-width: 510px;
-      color: #5a6f88;
-      font-size: 13px;
-      line-height: 1.65;
-      text-align: right;
-    }
-
-    .asset-grid {
-      display: grid;
-      grid-template-columns: repeat(3, minmax(0, 1fr));
-      gap: 14px;
-      min-height: 0;
-      flex: 1;
-    }
-
-    .asset-card {
-      display: flex;
-      flex-direction: column;
-      border: 1px solid #dbe6f3;
-      border-radius: 8px;
-      background: #fff;
-      overflow: hidden;
-      box-shadow: 0 10px 26px rgba(20, 59, 112, .05);
-    }
-
-    .asset-card-title {
-      position: relative;
-      padding: 17px 18px 14px;
-      border-bottom: 1px solid #e7edf5;
-      background: #f7fbff;
-    }
-
-    .asset-index {
-      color: var(--blue);
-      font-size: 12px;
-      font-weight: 900;
-    }
-
-    .asset-num {
-      position: absolute;
-      top: 14px;
-      right: 16px;
-      width: 36px;
-      height: 36px;
-      display: grid;
-      place-items: center;
-      border-radius: 50%;
-      background: #e8f2ff;
-      color: var(--blue);
-      font-size: 12px;
-      font-weight: 900;
-    }
-
-    .asset-card h3 {
-      max-width: 260px;
-      margin: 8px 0 0;
-      font-size: 21px;
-      line-height: 1.22;
-      letter-spacing: 0;
-    }
-
-    .asset-body {
-      flex: 1;
-      padding: 21px 20px 8px;
-    }
-
-    .asset-body ul {
-      margin: 0;
-      padding: 0;
-      list-style: none;
-      display: grid;
-      gap: 10px;
-    }
-
-    .asset-body li {
-      position: relative;
-      padding-left: 16px;
-      color: #4f647b;
-      font-size: 13px;
-      line-height: 1.45;
-    }
-
-    .asset-body li::before {
-      content: "";
-      position: absolute;
-      left: 0;
-      top: .68em;
-      width: 6px;
-      height: 6px;
-      border-radius: 50%;
-      background: var(--blue);
-    }
-
-    .asset-example {
-      margin: 0 20px 12px;
-      color: #5a769b;
-      font-size: 12px;
-      line-height: 1.45;
-    }
-
-    .asset-example b {
-      color: #1f61bd;
-    }
-
-    .asset-result button:focus-visible,
-    .asset-detail-close:focus-visible {
-      outline: 3px solid rgba(45, 110, 197, .28);
-      outline-offset: 2px;
-    }
-
-    .asset-result {
-      margin: auto 20px 20px;
-      padding: 13px 15px;
-      border: 1px solid #d7e8fb;
-      border-radius: 8px;
-      background: #f7fbff;
-      color: #1c5cb3;
-      font-size: 13px;
-      font-weight: 900;
-      line-height: 1.45;
-    }
-
-    .asset-result.with-action {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 10px;
-    }
-
-    .asset-result.with-action span {
-      min-width: 0;
-    }
-
-    .asset-result button {
-      flex: 0 0 auto;
-      min-height: 30px;
-      padding: 0 10px;
-      border: 1px solid #b8d4f5;
-      border-radius: 8px;
-      background: #fff;
-      color: var(--blue);
-      font-size: 11px;
-      font-weight: 900;
-      cursor: pointer;
-    }
-
-    .asset-result button:hover {
-      background: #edf6ff;
-      border-color: #8eb9ea;
-    }
-
-    .asset-detail-overlay[hidden] {
-      display: none;
-    }
-
-    .asset-detail-overlay {
-      position: fixed;
-      inset: 0;
-      z-index: 50;
-      display: grid;
-      place-items: center;
-      padding: 30px;
-      background: rgba(7, 25, 50, .46);
-    }
-
-    .asset-detail-card {
-      width: min(1280px, calc(100vw - 48px));
-      max-height: calc(100vh - 48px);
-      display: flex;
-      flex-direction: column;
-      overflow: hidden;
-      border: 1px solid #c7d9ef;
-      border-radius: 14px;
-      background: #fff;
-      box-shadow: 0 30px 80px rgba(4, 21, 43, .28);
-    }
-
-    .asset-detail-head {
-      display: flex;
-      justify-content: space-between;
-      gap: 16px;
-      align-items: flex-start;
-      padding: 15px 18px;
-      border-bottom: 1px solid #e1eaf5;
-      background: #f7fbff;
-    }
-
-    .asset-detail-kicker {
-      margin-bottom: 5px;
-      color: var(--blue);
-      font-size: 11px;
-      font-weight: 900;
-      letter-spacing: .08em;
-    }
-
-    .asset-detail-title {
-      color: #10263f;
-      font-size: 18px;
-      font-weight: 900;
-    }
-
-    .asset-detail-close {
-      min-width: 56px;
-      min-height: 32px;
-      border: 1px solid #c6d7ec;
-      border-radius: 9px;
-      background: #fff;
-      color: #375b89;
-      font-size: 12px;
-      font-weight: 900;
-      cursor: pointer;
-    }
-
-    .asset-detail-body {
-      overflow: auto;
-      padding: 18px;
-      background: #f3f8ff;
-    }
-
-    .asset-detail-body img {
-      display: block;
-      width: 100%;
-      height: auto;
-      border: 1px solid #d2e1f3;
-      border-radius: 12px;
-      background: #fff;
-    }
-
-    .asset-detail-caption {
-      margin-top: 10px;
-      color: #55708f;
-      font-size: 12px;
-      line-height: 1.45;
-    }
-
-    .schedule-card {
-      width: min(1360px, calc(100vw - 48px));
-      max-height: calc(100vh - 48px);
-      display: flex;
-      flex-direction: column;
-      overflow: hidden;
-      border: 1px solid #c8d8ec;
-      border-radius: 8px;
-      background: #fff;
-      box-shadow: 0 30px 80px rgba(4, 21, 43, .28);
-    }
-
-    .schedule-card.schedule-page {
-      width: 100%;
-      min-height: 580px;
-      max-height: none;
-      height: 100%;
-      box-shadow: none;
-    }
-
-    .schedule-card.schedule-page .schedule-scroll {
-      flex: 1;
-    }
-
-    .schedule-scroll {
-      overflow: auto;
-      padding: 24px 28px 26px;
-    }
-
-    .schedule-kicker {
-      color: var(--blue);
-      font-size: 12px;
-      font-weight: 900;
-      letter-spacing: .12em;
-    }
-
-    .schedule-kicker::before {
-      content: "";
-      display: inline-block;
-      width: 8px;
-      height: 8px;
-      margin-right: 8px;
-      border-radius: 50%;
-      background: #18ad88;
-    }
-
-    .schedule-titleline {
-      display: grid;
-      grid-template-columns: 1fr minmax(340px, 470px);
-      gap: 30px;
-      align-items: end;
-      margin-top: 10px;
-      padding-bottom: 18px;
-      border-bottom: 1px solid #e5edf6;
-    }
-
-    .schedule-titleline h2 {
-      margin: 0;
-      color: #10263f;
-      font-size: 34px;
-      line-height: 1.18;
-      letter-spacing: 0;
-    }
-
-    .schedule-titleline h2 span {
-      color: var(--blue);
-    }
-
-    .schedule-titleline p {
-      margin: 0;
-      color: var(--muted);
-      font-size: 13px;
-      line-height: 1.65;
-      text-align: right;
-    }
-
-    .schedule-metrics {
-      display: grid;
-      grid-template-columns: repeat(4, minmax(0, 1fr));
-      gap: 10px;
-      margin-top: 16px;
-    }
-
-    .schedule-metric {
-      min-height: 72px;
-      padding: 13px 15px;
-      border: 1px solid var(--line);
-      border-radius: 8px;
-      background: #fbfdff;
-    }
-
-    .schedule-metric b {
-      display: block;
-      color: #5e7391;
-      font-size: 11px;
-      font-weight: 900;
-      letter-spacing: .08em;
-    }
-
-    .schedule-metric strong {
-      display: block;
-      margin-top: 6px;
-      color: #193c6f;
-      font-size: 24px;
-      font-weight: 900;
-      line-height: 1;
-      letter-spacing: 0;
-    }
-
-    .schedule-metric em {
-      color: var(--blue);
-      font-size: 13px;
-      font-style: normal;
-    }
-
-    .schedule-metric.alert strong {
-      color: #ad6b00;
-    }
-
-    .schedule-layout {
-      display: grid;
-      grid-template-columns: minmax(0, 1.8fr) minmax(330px, .85fr);
-      gap: 14px;
-      margin-top: 14px;
-    }
-
-    .schedule-panel {
-      overflow: hidden;
-      border: 1px solid var(--line);
-      border-radius: 8px;
-      background: #fff;
-      box-shadow: 0 10px 26px rgba(21, 58, 108, .05);
-    }
-
-    .schedule-panel-head {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 14px;
-      padding: 16px 18px;
-      border-bottom: 1px solid #e4edf7;
-    }
-
-    .schedule-panel-kicker {
-      color: var(--blue);
-      font-size: 11px;
-      font-weight: 900;
-      letter-spacing: .12em;
-    }
-
-    .schedule-panel h3 {
-      margin: 4px 0 0;
-      color: #122844;
-      font-size: 21px;
-      line-height: 1.2;
-      letter-spacing: 0;
-    }
-
-    .schedule-legend {
-      display: flex;
-      gap: 8px;
-      align-items: center;
-      flex-wrap: wrap;
-      color: #70839c;
-      font-size: 11px;
-      white-space: nowrap;
-    }
-
-    .schedule-dot {
-      width: 7px;
-      height: 7px;
-      border-radius: 50%;
-      background: var(--blue);
-    }
-
-    .schedule-dot.green { background: #18a57c; }
-    .schedule-dot.orange { background: #dc9a27; }
-
-    .schedule-table-wrap {
-      padding: 0 18px 12px;
-    }
-
-    .schedule-table {
-      width: 100%;
-      border-collapse: collapse;
-      text-align: left;
-      font-size: 12px;
-    }
-
-    .schedule-table th {
-      padding: 12px 8px;
-      color: #6b809d;
-      font-size: 11px;
-      font-weight: 900;
-      letter-spacing: .03em;
-    }
-
-    .schedule-table td {
-      padding: 12px 8px;
-      border-top: 1px solid #edf2f7;
-      color: #536a89;
-      vertical-align: middle;
-    }
-
-    .schedule-table td:first-child {
-      color: #1b365f;
-      font-weight: 900;
-    }
-
-    .schedule-row {
-      cursor: pointer;
-    }
-
-    .schedule-row:hover td {
-      background: #f6faff;
-    }
-
-    .schedule-row.active td {
-      background: #edf6ff;
-      border-top-color: #d1e3f8;
-    }
-
-    .schedule-row.active td:first-child {
-      color: var(--blue);
-    }
-
-    .schedule-row:focus-visible {
-      outline: 3px solid rgba(45, 110, 197, .28);
-      outline-offset: -3px;
-    }
-
-    .schedule-auditors {
-      color: #3e5c80;
-      font-weight: 800;
-    }
-
-    .schedule-status {
-      display: inline-block;
-      padding: 5px 9px;
-      border-radius: 999px;
-      font-size: 11px;
-      font-weight: 900;
-      white-space: nowrap;
-    }
-
-    .schedule-status.scheduled {
-      background: #eff6ff;
-      color: #1d5fb7;
-    }
-
-    .schedule-status.ongoing {
-      background: #fff7e8;
-      color: #ad6b00;
-    }
-
-    .schedule-status.complete,
-    .schedule-state.end {
-      background: #ecfdf5;
-      color: #087a59;
-    }
-
-    .schedule-roadmap {
-      margin: 0 18px 16px;
-      padding: 14px 16px;
-      border: 1px solid #dbe7f4;
-      border-radius: 8px;
-      background: #f8fbff;
-    }
-
-    .schedule-roadmap-top {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 10px;
-    }
-
-    .schedule-roadmap-top b {
-      font-size: 12px;
-    }
-
-    .schedule-roadmap-top span {
-      color: #71849e;
-      font-size: 11px;
-    }
-
-    .schedule-months {
-      display: grid;
-      grid-template-columns: repeat(9, minmax(0, 1fr));
-      gap: 3px;
-      margin-top: 12px;
-    }
-
-    .schedule-month {
-      position: relative;
-      padding-top: 9px;
-      border-top: 2px solid #dce7f4;
-      color: #71829a;
-      font-size: 10px;
-      text-align: center;
-    }
-
-    .schedule-month.active {
-      border-color: var(--blue);
-      color: var(--blue);
-      font-weight: 900;
-    }
-
-    .schedule-month.field {
-      border-color: var(--blue);
-      color: var(--blue);
-      font-weight: 900;
-    }
-
-    .schedule-month.field::before {
-      position: absolute;
-      top: -4px;
-      left: 4px;
-      right: 4px;
-      height: 4px;
-      border-radius: 3px;
-      background: var(--blue);
-      content: "";
-    }
-
-    .schedule-field-panel {
-      display: flex;
-      min-height: 480px;
-      flex-direction: column;
-    }
-
-    .schedule-field-intro {
-      padding: 15px 18px 10px;
-      color: #657a96;
-      font-size: 12px;
-      line-height: 1.6;
-    }
-
-    .schedule-field-days {
-      display: grid;
-      gap: 9px;
-      padding: 4px 18px 16px;
-    }
-
-    .schedule-field-day {
-      display: grid;
-      grid-template-columns: 58px 1fr auto;
-      gap: 10px;
-      align-items: center;
-      padding: 12px;
-      border: 1px solid #dce7f4;
-      border-radius: 8px;
-      background: #f8fbff;
-    }
-
-    .schedule-day {
-      min-height: 50px;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      border-radius: 8px;
-      background: #eaf3ff;
-      color: var(--blue);
-      font-size: 10px;
-      font-weight: 900;
-    }
-
-    .schedule-day strong {
-      margin-top: 3px;
-      font-size: 17px;
-      line-height: 1;
-      letter-spacing: 0;
-      white-space: nowrap;
-    }
-
-    .schedule-day span {
-      display: block;
-      margin-bottom: 2px;
-    }
-
-    .schedule-names {
-      color: #36557e;
-      font-size: 12px;
-      font-weight: 900;
-      line-height: 1.55;
-    }
-
-    .schedule-state {
-      padding: 5px 8px;
-      border-radius: 999px;
-      background: #eef6ff;
-      color: var(--blue);
-      font-size: 10px;
-      font-weight: 900;
-      white-space: nowrap;
-    }
-
-    .schedule-field-footer {
-      margin-top: auto;
-      padding: 14px 18px;
-      border-top: 1px solid #e4edf7;
-      background: #fbfdff;
-      color: #59728f;
-      font-size: 12px;
-      line-height: 1.6;
-    }
-
-    .schedule-field-footer b {
-      color: var(--blue);
-    }
-
-    .schedule-foot {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 16px;
-      margin-top: 14px;
-      color: #7c8fa7;
-      font-size: 11px;
-      line-height: 1.45;
-    }
-
-    .schedule-foot strong {
-      color: #3b5f8e;
-    }
-
-    .workflow {
-      display: grid;
-      grid-template-columns: repeat(4, minmax(0, 1fr));
-      gap: 10px;
-    }
-
-    .flow-step {
-      position: relative;
-      padding: 12px 14px;
-      border: 1px solid #dce8f6;
-      border-radius: 12px;
-      background: #f8fbff;
-      color: #3f5670;
-      font-size: 13px;
-      font-weight: 800;
-      line-height: 1.35;
-    }
-
-    .flow-step:not(:last-child)::after {
-      content: "›";
-      position: absolute;
-      right: -15px;
-      top: 50%;
-      z-index: 2;
-      width: 19px;
-      height: 19px;
-      display: grid;
-      place-items: center;
-      transform: translateY(-50%);
-      border-radius: 50%;
-      background: var(--blue);
-      color: #fff;
-      font-size: 17px;
-      font-weight: 900;
-    }
-
-    .flow-step span {
-      display: block;
-      margin-bottom: 5px;
-      color: var(--blue);
-      font-size: 11px;
-      font-weight: 900;
-    }
-
-    .asset-foot {
-      display: flex;
-      justify-content: space-between;
-      gap: 16px;
-      color: #7b8ea6;
-      font-size: 11px;
-      line-height: 1.45;
-    }
-
-    .asset-foot strong {
-      color: #375b89;
-    }
-
-    @media (max-width: 900px) {
-      .page { padding: 18px; }
-      header, .titlebar, .panel-head, .asset-head { grid-template-columns: 1fr; }
-      .doc-tag, .legend, .notice { justify-content: flex-start; text-align: left; }
-      .asset-lead { text-align: left; }
-      .tabs, .kpis, .asset-grid, .workflow { grid-template-columns: 1fr; }
-      .schedule-titleline, .schedule-layout, .schedule-foot { grid-template-columns: 1fr; }
-      .schedule-foot { align-items: flex-start; flex-direction: column; }
-      .schedule-titleline p { text-align: left; }
-      .schedule-titleline h2 { font-size: 28px; }
-      .schedule-metrics { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-      .schedule-table-wrap { overflow-x: auto; }
-      .schedule-table { min-width: 760px; }
-      .schedule-months { grid-template-columns: repeat(5, minmax(0, 1fr)); }
-      .schedule-field-panel { min-height: auto; }
-      .asset-result.with-action { align-items: flex-start; flex-direction: column; }
-      .flow-step::after { display: none !important; }
-      .panel, .assets { min-height: auto; }
-      h1 { font-size: 31px; }
-    }
+    .main-tab.active { color: #fff; border-bottom-color: #fff; font-weight: 800; }
+    .main-tab { border-bottom: 3px solid transparent; }
+    .panel[hidden] { display: none; }
+    .status-submitted { background: #e8f7ef; color: #08734e; }
+    .status-review { background: #edf5ff; color: #0b2c60; }
+    .status-request { background: #fff3e8; color: #9a4b00; }
+    .status-missing { background: #fff0f0; color: #b42318; }
+    .filter-btn.active, .note-type.active, .stage-btn.active { background: #0b2c60; border-color: #0b2c60; color: #fff; }
+    .asset-overlay[hidden] { display: none; }
   </style>
 </head>
 <body>
-  <main class="page">
-    <div class="stage">
-      <header>
-        <div class="proposal">
-          <div class="mark">S</div>
-          <div>
-            <div class="proposal-title">삼덕회계법인 / 골프존 회계감사 제안</div>
-            <div class="proposal-sub">결산 자료 요청, 별도·연결 주석 검토, 반복업무 자동화를 한 화면에서 관리</div>
-          </div>
+  <div class="min-h-screen bg-[#f4f7fb] text-[#14243a] font-sans">
+    <header class="bg-[#0b2c60] text-white">
+      <div class="h-[58px] px-7 flex items-center justify-between gap-4">
+        <div class="flex items-center gap-4 min-w-0">
+          <img src="assets/samduk-ci.png" class="h-9 w-auto object-contain brightness-0 invert shrink-0" alt="삼덕회계법인 로고">
+          <div class="h-6 w-px bg-white/30"></div>
+          <div class="text-[18px] font-bold truncate">삼덕회계법인 | 골프존 회계감사 진행 관리</div>
         </div>
-        <div class="doc-tag">
-          <span class="tag">PT 발표용 16:9 화면</span>
-          <span class="tag">공시 항목: 실제 목록</span>
-          <span class="tag">담당자명: 예시</span>
-          <span class="tag">상태: 시연용 예시</span>
+        <div class="flex items-center gap-5 text-[15px] shrink-0">
+          <span>2027 회계감사</span>
+          <span class="border border-white/70 rounded px-3 py-1 text-[12px]">DEMO</span>
+          <button class="text-white/80 hover:text-white" aria-label="알림"><iconify-icon icon="lucide:bell" class="text-lg"></iconify-icon></button>
         </div>
-      </header>
-
-      <section class="titlebar">
-        <div>
-          <h1>골프존 회계팀과 감사인이 함께 보는 감사 진행 관리 화면</h1>
-          <p class="lead">요청 자료와 별도·연결 주석 검토 항목을 공시 기준으로 맞추고, 진행 상태와 보완 사항을 바로 확인하는 실무형 협업 화면입니다.</p>
+      </div>
+      <nav class="border-t border-white/15 bg-[#092653] px-7 overflow-x-auto" aria-label="주요 화면 탭">
+        <div class="mx-auto max-w-[1600px] flex items-center gap-1 min-w-max">
+          <button class="main-tab active px-5 py-3 text-[13px] text-white/70 hover:text-white" type="button" data-tab="dashboard">메인 대시보드</button>
+          <button class="main-tab px-5 py-3 text-[13px] text-white/70 hover:text-white" type="button" data-tab="schedule">감사 일정 보기</button>
+          <button class="main-tab px-5 py-3 text-[13px] text-white/70 hover:text-white" type="button" data-tab="materials">회사 자료 진행 사항</button>
+          <button class="main-tab px-5 py-3 text-[13px] text-white/70 hover:text-white" type="button" data-tab="notes">주석 검토 사항</button>
+          <button class="main-tab px-5 py-3 text-[13px] text-white/70 hover:text-white" type="button" data-tab="automation">교육·자동화</button>
+          <span class="ml-auto pl-8 text-[11px] text-white/50 flex items-center gap-2"><iconify-icon icon="lucide:layout-dashboard"></iconify-icon> ※ 제안 기준 데모 화면</span>
         </div>
-        <div class="legend">
-          <span class="status done">제출 완료</span>
-          <span class="status progress">검토 중</span>
-          <span class="status request">자료 요청</span>
-          <span class="status ready">요청 예정</span>
-        </div>
-      </section>
-
-      <section class="reference-preview" aria-label="감사 운영 화면 미리보기">
-        <a href="assets/audit-operations-landing-preview.png" target="_blank" rel="noopener" aria-label="감사 운영 화면 미리보기 원본 열기">
-          <img src="assets/audit-operations-landing-preview.png" alt="감사 운영 화면 제안 기준 데모 이미지">
-        </a>
-      </section>
-
-      <nav class="tabs" aria-label="감사 진행 화면 탭">
-        <button class="tab schedule-launch" type="button" onclick="view('schedule', this)">
-          <span>감사 일정 보기<small>연간 로드맵 / 현장감사</small></span>
-          <span class="tab-num">일정</span>
-        </button>
-        <button class="tab active" type="button" onclick="view('materials', this)">
-          <span>회사 자료 진행 사항<small>요청자료 37개</small></span>
-          <span class="tab-num">01</span>
-        </button>
-        <button class="tab" type="button" onclick="view('notes', this)">
-          <span>골프존 주석 검토 진행 사항<small>연결 / 별도 분리 탭</small></span>
-          <span class="tab-num">02</span>
-        </button>
-        <button class="tab" type="button" onclick="view('assets', this)">
-          <span>AI 교육·자동화 자산<small>다음 결산에도 쓰는 템플릿과 매뉴얼</small></span>
-          <span class="tab-num">03</span>
-        </button>
       </nav>
+    </header>
 
-      <div id="screen"></div>
+    <main class="mx-auto max-w-[1600px] px-7 py-5">
+      <section id="tab-dashboard" class="panel" data-panel="dashboard">
+        <div class="flex items-center gap-7 mb-4">
+          <h1 class="text-[23px] font-bold">2027 감사 진행 현황</h1>
+          <span class="text-[12px] text-[#617188]">보고기준일: 2027.07.10</span>
+        </div>
+        <div class="grid grid-cols-3 gap-4 mb-4">
+          <article class="h-[115px] bg-white border border-[#d9e3f0] rounded-md px-5 flex items-center gap-5">
+            <div class="w-14 h-14 rounded-full bg-[#eaf1ff] flex items-center justify-center text-[#0b4fc5]"><iconify-icon icon="lucide:clipboard-list" class="text-3xl"></iconify-icon></div>
+            <div class="flex-1"><div class="font-bold text-[14px]">PBC 제출 현황</div><div class="flex items-baseline gap-3 mt-1"><b class="text-[30px] text-[#0b4fc5]">68<small class="text-[17px]">%</small></b><span class="text-[12px]">(153 / 225)</span></div><div class="h-2 bg-[#e8edf5] rounded-full mt-1"><div class="h-2 rounded-full bg-[#1456cf] w-[68%]"></div></div></div>
+          </article>
+          <article class="h-[115px] bg-white border border-[#d9e3f0] rounded-md px-5 flex items-center gap-5">
+            <div class="w-14 h-14 rounded-full bg-[#eaf1ff] flex items-center justify-center text-[#0b4fc5]"><iconify-icon icon="lucide:calendar-days" class="text-3xl"></iconify-icon></div>
+            <div><div class="font-bold text-[14px]">다음 일정</div><b class="block text-[30px] text-[#0b4fc5] mt-1">07.31</b><span class="text-[12px]">감사계획 마감 및 자료 준비 확인</span></div>
+          </article>
+          <article class="h-[115px] bg-white border border-[#d9e3f0] rounded-md px-5 flex items-center gap-5">
+            <div class="w-14 h-14 rounded-full bg-[#fff0f0] flex items-center justify-center text-[#c52228]"><iconify-icon icon="lucide:triangle-alert" class="text-3xl"></iconify-icon></div>
+            <div><div class="font-bold text-[14px]">미결 쟁점</div><div class="flex items-baseline gap-3 mt-1"><b class="text-[30px] text-[#b42318]">3</b><span>건</span></div><span class="text-[12px]">모두 중요(High) 쟁점</span></div>
+          </article>
+        </div>
+        <section class="bg-white border border-[#d9e3f0] rounded-md p-5 mb-4">
+          <div class="flex items-center justify-between mb-4"><h2 class="font-bold text-[15px]">연간 감사 타임라인</h2><span class="text-[11px] text-[#617188]">현재 단계: 감사계획 진행 중</span></div>
+          <div class="flex items-start justify-between text-center">
+            <div class="w-[14%] text-[13px] font-bold text-[#1456cf]">감사계획<br><span class="font-normal text-[12px] text-[#14243a]">07.15 ~ 07.31</span></div>
+            <div class="w-[14%] text-[13px] font-bold">반기검토<br><span class="font-normal text-[12px]">08.02 ~ 08.13</span></div>
+            <div class="w-[14%] text-[13px] font-bold">중간감사<br><span class="font-normal text-[12px]">10.18 ~ 10.22</span></div>
+            <div class="w-[14%] text-[13px] font-bold">내부회계<br><span class="font-normal text-[12px]">11.01 ~ 12.17</span></div>
+            <div class="w-[14%] text-[13px] font-bold">외부조회<br><span class="font-normal text-[12px]">12.14 ~ 01.20</span></div>
+            <div class="w-[14%] text-[13px] font-bold">기말 현장감사<br><span class="font-normal text-[12px]">02.21 ~ 02.23</span></div>
+            <div class="w-[14%] text-[13px] font-bold">보고서<br><span class="font-normal text-[12px]">02.24 ~ 03.20</span></div>
+          </div>
+          <div class="relative mx-7 mt-4 h-9">
+            <div class="absolute top-3 left-0 right-0 h-px bg-[#cfd8e5]"></div>
+            <div class="absolute top-3 left-0 w-[10%] h-0.5 bg-[#1248a8]"></div>
+            <div class="relative flex justify-between"><span class="w-7 h-7 rounded-full border-2 border-[#1456cf] bg-white flex items-center justify-center"><span class="w-4 h-4 rounded-full bg-[#1456cf]"></span></span><span class="w-7 h-7 rounded-full bg-[#c4ccd9]"></span><span class="w-7 h-7 rounded-full bg-[#c4ccd9]"></span><span class="w-7 h-7 rounded-full bg-[#c4ccd9]"></span><span class="w-7 h-7 rounded-full bg-[#c4ccd9]"></span><span class="w-7 h-7 rounded-full bg-[#c4ccd9]"></span><span class="w-7 h-7 rounded-full bg-[#c4ccd9]"></span></div>
+          </div>
+        </section>
+        <div class="grid grid-cols-2 gap-4">
+          <section class="bg-white border border-[#d9e3f0] rounded-md overflow-hidden">
+            <div class="px-4 py-3 border-b border-[#d9e3f0] font-bold">PBC 요청 현황</div>
+            <table class="w-full text-[11px] text-left"><thead class="bg-[#f4f7fb]"><tr><th class="p-2">No.</th><th>PBC 항목</th><th>담당</th><th>기한</th><th>상태</th></tr></thead><tbody class="divide-y divide-[#e1e7ef]"><tr><td class="p-2">1</td><td>매출 월별 집계표</td><td>박서연</td><td>07.22</td><td><span class="status-submitted px-2 py-1 rounded-full">제출</span></td></tr><tr><td class="p-2">2</td><td>리스계약 마스터</td><td>이도윤</td><td>07.24</td><td><span class="status-review px-2 py-1 rounded-full">검토</span></td></tr><tr><td class="p-2">3</td><td>감가상각 계산 파일</td><td>최지우</td><td>07.25</td><td><span class="status-missing px-2 py-1 rounded-full">미제출</span></td></tr><tr><td class="p-2">4</td><td>우발부채 법무확인</td><td>정하늘</td><td>07.26</td><td><span class="status-request px-2 py-1 rounded-full">요청</span></td></tr></tbody></table>
+            <div class="p-2 border-t text-[12px]">회사 자료 상세는 상단 `회사 자료 진행 사항` 탭에서 확인</div>
+          </section>
+          <section class="bg-white border border-[#d9e3f0] rounded-md overflow-hidden">
+            <div class="px-4 py-3 border-b border-[#d9e3f0] font-bold">중요 쟁점</div>
+            <div class="flex p-4 gap-5"><div class="w-28 h-28 rounded-full border-[14px] border-[#e43b40] flex flex-col items-center justify-center shrink-0"><b class="text-2xl">3</b><span class="text-[11px]">건</span></div><table class="w-full text-[11px]"><tbody class="divide-y divide-[#e1e7ef]"><tr><td class="py-2">가맹계약 수익 인식</td><td>K-IFRS 15</td><td class="text-red-600">06.30</td></tr><tr><td class="py-2">영업권 손상평가 가정</td><td>주석 17</td><td class="text-red-600">06.30</td></tr><tr><td class="py-2">우발부채 및 약정사항</td><td>주석 37</td><td class="text-red-600">06.25</td></tr></tbody></table></div>
+          </section>
+          <section class="bg-white border border-[#d9e3f0] rounded-md overflow-hidden">
+            <div class="px-4 py-3 border-b border-[#d9e3f0] font-bold">금주 Action</div>
+            <table class="w-full text-[11px]"><tbody class="divide-y divide-[#e1e7ef]"><tr><td class="p-2">07.15</td><td>감사계획 착수 회의</td><td>장현우 · 문수아</td></tr><tr><td class="p-2">07.18</td><td>요청자료 1차 현황 확인</td><td>김민준 · 조은재</td></tr><tr><td class="p-2">07.22</td><td>매출·리스 미제출 follow-up</td><td>박서연 · 이도윤</td></tr></tbody></table>
+          </section>
+          <section class="bg-white border border-[#d9e3f0] rounded-md overflow-hidden">
+            <div class="px-4 py-3 border-b border-[#d9e3f0] font-bold">담당자</div>
+            <table class="w-full text-[11px]"><tbody class="divide-y divide-[#e1e7ef]"><tr><td class="p-2 font-bold text-[#0b2c60]">Audit Team</td><td>장현우, 문수아, 조은재, 백도현</td></tr><tr><td class="p-2 font-bold text-[#0b2c60]">Finance Team</td><td>김민준, 박서연, 이도윤, 최지우</td></tr><tr><td class="p-2 font-bold text-[#0b2c60]">공시·법무</td><td>정하늘, 한유진, 서지민</td></tr></tbody></table>
+          </section>
+        </div>
+      </section>
+
+      <section id="tab-schedule" class="panel" data-panel="schedule" hidden>
+        <div class="flex items-end justify-between mb-4"><div><p class="text-[12px] font-bold text-[#1456cf]">2027 AUDIT ROADMAP</p><h1 class="text-[24px] font-bold mt-1">감사 일정 보기</h1><p class="text-[13px] text-[#617188] mt-1">연간 로드맵과 현장감사 일정을 별도 화면에서 관리합니다.</p></div><span class="text-[11px] text-[#718096]">일정 및 감사인 배정은 제안 기준 예시</span></div>
+        <div class="grid grid-cols-4 gap-4 mb-4"><div class="bg-white border border-[#d9e3f0] rounded-md p-4"><b class="text-[12px]">전체 감사 단계</b><strong class="block text-[28px] text-[#0b4fc5]">7개</strong></div><div class="bg-white border border-[#d9e3f0] rounded-md p-4"><b class="text-[12px]">다음 예정 마감</b><strong class="block text-[28px] text-[#0b4fc5]">07.31</strong></div><div class="bg-white border border-[#d9e3f0] rounded-md p-4"><b class="text-[12px]">이번 현장감사</b><strong class="block text-[28px] text-[#0b4fc5]">3일</strong></div><div class="bg-white border border-[#d9e3f0] rounded-md p-4"><b class="text-[12px]">회사 준비 확인</b><strong class="block text-[28px] text-[#0b4fc5]">5건</strong></div></div>
+        <div class="grid grid-cols-[1.35fr_.65fr] gap-4">
+          <section class="bg-white border border-[#d9e3f0] rounded-md overflow-hidden">
+            <div class="px-4 py-3 border-b border-[#d9e3f0] font-bold">2027 사업연도 감사 일정</div>
+            <table class="w-full text-[12px] text-left"><thead class="bg-[#f4f7fb]"><tr><th class="p-2">감사 단계</th><th>예정 시작</th><th>예정 완료</th><th>실제 완료</th><th>감사인</th><th>상태</th></tr></thead><tbody class="divide-y divide-[#e1e7ef]"><tr><td class="p-2"><button class="stage-btn active border border-[#b9cbe4] rounded px-2 py-1" type="button" data-schedule="planning">감사계획</button></td><td>2027.07.15</td><td>2027.07.31</td><td>미정</td><td>장현우 · 문수아</td><td>진행 중</td></tr><tr><td class="p-2"><button class="stage-btn border border-[#b9cbe4] rounded px-2 py-1" type="button" data-schedule="semi">반기검토</button></td><td>2027.08.02</td><td>2027.08.13</td><td>미정</td><td>조은재 · 유지호</td><td>예정</td></tr><tr><td class="p-2"><button class="stage-btn border border-[#b9cbe4] rounded px-2 py-1" type="button" data-schedule="interim">중간감사</button></td><td>2027.10.18</td><td>2027.10.22</td><td>미정</td><td>장현우 · 백도현</td><td>예정</td></tr><tr><td class="p-2"><button class="stage-btn border border-[#b9cbe4] rounded px-2 py-1" type="button" data-schedule="internal">내부회계감사</button></td><td>2027.11.01</td><td>2027.12.17</td><td>미정</td><td>문수아 · 신예린</td><td>예정</td></tr><tr><td class="p-2"><button class="stage-btn border border-[#b9cbe4] rounded px-2 py-1" type="button" data-schedule="external">외부조회·기말 준비</button></td><td>2027.12.14</td><td>2028.01.20</td><td>미정</td><td>백도현 · 유지호</td><td>예정</td></tr><tr><td class="p-2"><button class="stage-btn border border-[#b9cbe4] rounded px-2 py-1" type="button" data-schedule="final">기말 현장감사</button></td><td>2028.02.21</td><td>2028.02.23</td><td>미정</td><td>장현우 · 문수아</td><td>예정</td></tr><tr><td class="p-2"><button class="stage-btn border border-[#b9cbe4] rounded px-2 py-1" type="button" data-schedule="report">재무제표·주석 및 보고서</button></td><td>2028.02.24</td><td>2028.03.20</td><td>미정</td><td>조은재 · 유지호</td><td>예정</td></tr></tbody></table>
+            <div class="px-4 py-4 border-t border-[#d9e3f0]"><div class="text-[12px] font-bold mb-3">연간 일정 흐름</div><div class="grid grid-cols-9 gap-2 text-center text-[12px]"><span class="bg-[#0b2c60] text-white rounded py-2">7월</span><span class="bg-[#edf5ff] text-[#0b2c60] rounded py-2">8월</span><span class="bg-[#f4f7fb] rounded py-2">9월</span><span class="bg-[#edf5ff] text-[#0b2c60] rounded py-2">10월</span><span class="bg-[#edf5ff] text-[#0b2c60] rounded py-2">11월</span><span class="bg-[#edf5ff] text-[#0b2c60] rounded py-2">12월</span><span class="bg-[#edf5ff] text-[#0b2c60] rounded py-2">1월</span><span class="bg-[#edf5ff] text-[#0b2c60] rounded py-2">2월</span><span class="bg-[#edf5ff] text-[#0b2c60] rounded py-2">3월</span></div></div>
+          </section>
+          <aside class="bg-white border border-[#d9e3f0] rounded-md overflow-hidden">
+            <div class="px-4 py-3 border-b border-[#d9e3f0]"><p class="text-[11px] font-bold text-[#1456cf]">FIELDWORK</p><h2 id="schedule-title" class="font-bold text-[20px] mt-1">감사계획 일정</h2><span id="schedule-badge" class="inline-block mt-2 text-[12px] border border-[#b9cbe4] rounded px-3 py-1 text-[#0b2c60]">07.15-07.31</span></div>
+            <div class="p-4"><p id="schedule-intro" class="text-[13px] text-[#617188] mb-4">감사계획, 주요 위험, 요청자료 기준을 확정하는 일정입니다.</p><div id="schedule-days" class="space-y-3"></div><div id="schedule-footer" class="mt-4 bg-[#f4f7fb] border border-[#d9e3f0] rounded p-3 text-[12px] font-bold text-[#0b2c60]">감사계획 단계에서는 요청자료 목록, 담당자, 제출 기준을 먼저 확정합니다.</div></div>
+          </aside>
+        </div>
+      </section>
+
+      <section id="tab-materials" class="panel" data-panel="materials" hidden>
+        <div class="flex items-end justify-between mb-4"><div><p class="text-[12px] font-bold text-[#1456cf]">01 · COMPANY PBC</p><h1 class="text-[24px] font-bold mt-1">회사 자료 진행 사항</h1><p class="text-[13px] text-[#617188] mt-1">요청 자료, 공시 기준 포인트, 요청일자와 제공일자를 같은 표에서 관리합니다.</p></div><span class="text-[11px] text-[#718096]">요청일자·제공일자는 발표 시연용 예시</span></div>
+        <div id="material-kpis" class="grid grid-cols-4 gap-4 mb-4"></div>
+        <section class="bg-white border border-[#d9e3f0] rounded-md overflow-hidden">
+          <div class="px-4 py-3 border-b border-[#d9e3f0] flex items-center justify-between"><h2 class="font-bold">요청 자료 목록</h2><div class="flex gap-2"><button class="filter-btn active border border-[#b9cbe4] rounded px-3 py-1 text-[12px]" type="button" data-material-filter="all">전체</button><button class="filter-btn border border-[#b9cbe4] rounded px-3 py-1 text-[12px]" type="button" data-material-filter="done">제출 완료</button><button class="filter-btn border border-[#b9cbe4] rounded px-3 py-1 text-[12px]" type="button" data-material-filter="missing">미제출</button><button class="filter-btn border border-[#b9cbe4] rounded px-3 py-1 text-[12px]" type="button" data-material-filter="progress">검토 중</button></div></div>
+          <div class="max-h-[610px] overflow-auto"><table class="w-full min-w-[1280px] text-[11px] text-left"><thead class="bg-[#f4f7fb] sticky top-0"><tr><th class="p-2">요청 자료</th><th>골프존 공시 기준 포인트</th><th>요청일자</th><th>제공일자</th><th>회사 담당자</th><th>감사인 담당</th><th>진행 상태</th><th>보완 사항</th></tr></thead><tbody id="material-body" class="divide-y divide-[#e1e7ef]"></tbody></table></div>
+        </section>
+      </section>
+
+      <section id="tab-notes" class="panel" data-panel="notes" hidden>
+        <div class="flex items-end justify-between mb-4"><div><p class="text-[12px] font-bold text-[#1456cf]">02 · DISCLOSURE REVIEW</p><h1 class="text-[24px] font-bold mt-1">주석 검토 사항</h1><p class="text-[13px] text-[#617188] mt-1">연결 주석과 별도 주석을 분리해 전체 리스트로 검토합니다.</p></div><span class="text-[11px] text-[#718096]">담당자·상태는 PT 시연용 예시</span></div>
+        <div class="grid grid-cols-5 gap-4 mb-4"><div class="bg-white border border-[#d9e3f0] rounded-md p-4"><b class="text-[12px]">연결 주석</b><strong class="block text-[28px] text-[#0b4fc5]">41개</strong></div><div class="bg-white border border-[#d9e3f0] rounded-md p-4"><b class="text-[12px]">별도 주석</b><strong class="block text-[28px] text-[#0b4fc5]">36개</strong></div><div class="bg-white border border-[#d9e3f0] rounded-md p-4"><b class="text-[12px]">고객과의 계약 수익</b><strong class="block text-[28px] text-[#0b4fc5]">4,827억</strong></div><div class="bg-white border border-[#d9e3f0] rounded-md p-4"><b class="text-[12px]">리스부채</b><strong class="block text-[28px] text-[#0b4fc5]">668억</strong></div><div class="bg-white border border-[#d9e3f0] rounded-md p-4"><b class="text-[12px]">유형·무형 취득</b><strong class="block text-[28px] text-[#0b4fc5]">315억</strong></div></div>
+        <section class="bg-white border border-[#d9e3f0] rounded-md overflow-hidden">
+          <div class="px-4 py-3 border-b border-[#d9e3f0] flex items-center justify-between"><h2 class="font-bold">주석 리스트</h2><div class="flex gap-2"><button class="note-type active border border-[#b9cbe4] rounded px-4 py-1 text-[12px]" type="button" data-note-type="connected">연결 주석</button><button class="note-type border border-[#b9cbe4] rounded px-4 py-1 text-[12px]" type="button" data-note-type="separate">별도 주석</button></div></div>
+          <div class="max-h-[610px] overflow-auto"><table class="w-full min-w-[1180px] text-[11px] text-left"><thead class="bg-[#f4f7fb] sticky top-0"><tr><th class="p-2">주석 항목</th><th>2025 공시 주요 내용</th><th>회사 담당자</th><th>감사인 담당</th><th>진행 상태</th><th>검토·보완 사항</th></tr></thead><tbody id="note-body" class="divide-y divide-[#e1e7ef]"></tbody></table></div>
+        </section>
+      </section>
+
+      <section id="tab-automation" class="panel" data-panel="automation" hidden>
+        <div class="flex items-end justify-between mb-4"><div><p class="text-[12px] font-bold text-[#1456cf]">03 · AUTOMATION ASSETS</p><h1 class="text-[24px] font-bold mt-1">AI 교육·자동화 자산</h1><p class="text-[13px] text-[#617188] mt-1">AI 교육 자체가 아니라 다음 결산에도 계속 쓰는 회계팀 업무 자산입니다.</p></div><span class="text-[11px] text-[#718096]">반복업무 감축 중심</span></div>
+        <div class="grid grid-cols-3 gap-4 mb-4">
+          <article class="bg-white border border-[#d9e3f0] rounded-md overflow-hidden"><div class="bg-[#f8fbff] border-b border-[#d9e3f0] p-5"><span class="text-[12px] font-bold text-[#1456cf]">01</span><h2 class="text-[22px] font-bold mt-2">ERP·엑셀 왕복 자동화</h2></div><div class="p-5 text-[14px] space-y-3"><p>ERP 다운로드 자료를 표준 결산 양식으로 자동 정리</p><p>검토 결과를 ERP 업로드 파일로 다시 생성</p><p>수작업 복사, 열 맞춤, 파일명 정리 시간을 축소</p><div class="mt-8 bg-[#f4f7fb] border border-[#d9e3f0] rounded p-4 flex items-center justify-between gap-3"><strong class="text-[#0b2c60]">담당자는 예외 항목 확인에 집중합니다.</strong><button class="shrink-0 rounded bg-[#0b2c60] px-4 py-2 text-[12px] font-bold text-white" type="button" data-asset-detail="erp">상세 이미지 보기</button></div></div></article>
+          <article class="bg-white border border-[#d9e3f0] rounded-md overflow-hidden"><div class="bg-[#f8fbff] border-b border-[#d9e3f0] p-5"><span class="text-[12px] font-bold text-[#1456cf]">02</span><h2 class="text-[22px] font-bold mt-2">결산·계정대사 자동화</h2></div><div class="p-5 text-[14px] space-y-3"><p>TB, GL, 보조부, 계정명세서를 연결</p><p>전기 대비 변동과 월별 이상 항목 자동 선별</p><p>감사 요청자료와 회사 검토 기준을 일치</p><div class="mt-8 bg-[#f4f7fb] border border-[#d9e3f0] rounded p-4 flex items-center justify-between gap-3"><strong class="text-[#0b2c60]">감사 대응 전 회사 검토 품질을 높입니다.</strong><button class="shrink-0 rounded bg-[#0b2c60] px-4 py-2 text-[12px] font-bold text-white" type="button" data-asset-detail="closing">상세 이미지 보기</button></div></div></article>
+          <article class="bg-white border border-[#d9e3f0] rounded-md overflow-hidden"><div class="bg-[#f8fbff] border-b border-[#d9e3f0] p-5"><span class="text-[12px] font-bold text-[#1456cf]">03</span><h2 class="text-[22px] font-bold mt-2">재사용 템플릿·매뉴얼</h2></div><div class="p-5 text-[14px] space-y-3"><p>골프존 계정 구조와 결산 일정에 맞춘 템플릿</p><p>담당자 변경에도 따라 할 수 있는 작업 매뉴얼</p><p>다음 분기·연말 결산에 다시 쓰는 업무 자산화</p><div class="mt-8 bg-[#f4f7fb] border border-[#d9e3f0] rounded p-4 flex items-center justify-between gap-3"><strong class="text-[#0b2c60]">일회성 강의가 아니라 회사에 남는 도구입니다.</strong><button class="shrink-0 rounded bg-[#0b2c60] px-4 py-2 text-[12px] font-bold text-white" type="button" data-asset-detail="templates">상세 이미지 보기</button></div></div></article>
+        </div>
+        <section class="bg-white border border-[#d9e3f0] rounded-md p-5"><h2 class="font-bold text-[16px] mb-4">자동화 흐름 예시</h2><div class="grid grid-cols-3 gap-4 text-[13px]"><div class="border border-[#d9e3f0] rounded p-4"><b class="text-[#0b2c60]">ERP 자료 추출</b><p class="mt-2 text-[#617188]">원장, 보조부, 계정명세를 표준 이름으로 저장</p></div><div class="border border-[#d9e3f0] rounded p-4"><b class="text-[#0b2c60]">검토 파일 생성</b><p class="mt-2 text-[#617188]">결산 대사, 차이 표시, 보완 요청 목록 자동 정리</p></div><div class="border border-[#d9e3f0] rounded p-4"><b class="text-[#0b2c60]">다음 결산 재사용</b><p class="mt-2 text-[#617188]">템플릿, 매뉴얼, 파일명 규칙을 내부 자산으로 축적</p></div></div></section>
+      </section>
+    </main>
+
+    <div id="asset-overlay" class="asset-overlay fixed inset-0 z-50 flex items-center justify-center bg-[#071a36]/60 p-6" hidden>
+      <div class="max-h-[88vh] w-full max-w-[1040px] overflow-auto rounded-md border border-[#b9cbe4] bg-white">
+        <div class="flex items-center justify-between border-b border-[#d9e3f0] bg-[#f8fbff] px-5 py-4">
+          <div>
+            <p id="asset-kicker" class="text-[12px] font-bold text-[#1456cf]">01 · ERP ↔ EXCEL</p>
+            <h2 id="asset-title" class="mt-1 text-[22px] font-bold text-[#0b2c60]">ERP·엑셀 왕복 자동화 상세</h2>
+          </div>
+          <button class="rounded border border-[#b9cbe4] px-4 py-2 text-[12px] font-bold text-[#0b2c60]" type="button" data-close-asset>닫기</button>
+        </div>
+        <div class="p-5">
+          <img id="asset-image" class="w-full rounded border border-[#d9e3f0] bg-[#f4f7fb]" src="assets/golfzon_automation_01_erp_excel.svg" alt="ERP 자료를 표준 엑셀 양식으로 자동 정리하고 검토 결과를 업로드 파일로 되돌리는 상세 업무 흐름">
+          <p id="asset-caption" class="mt-4 rounded border border-[#d9e3f0] bg-[#f8fbff] p-4 text-[14px] font-bold text-[#0b2c60]">ERP 원장·보조부 다운로드, 표준 결산 양식 변환, 검토 후 업로드 파일 생성까지의 왕복 자동화 흐름입니다.</p>
+        </div>
+      </div>
     </div>
-  </main>
+  </div>
 
   <script>
-    const sourceUrl = "https://kind.krx.co.kr/external/2026/03/19/002039/20260319008528/11011.htm";
-    let currentMaterialFilter = "all";
-    let currentNoteType = "연결";
-    let currentNoteStatusFilter = "all";
-    let currentScheduleStage = "final";
-    const companyPeople = ["김민준", "박서연", "이도윤", "최지우", "정하늘", "한유진", "오지훈", "윤서아", "강태오", "서지민"];
-    const auditPeople = ["장현우", "문수아", "조은재", "임하준", "신예린", "백도현", "남지안", "권서준", "홍유나", "유지호"];
-
-    const schedulePlans = {
-      planning: {
-        title: "감사계획 일정",
-        badge: "07.15-07.31",
-        intro: "감사계획, 주요 위험, 요청자료 기준을 확정하는 일정입니다.",
-        footer: "감사계획 단계에서는 요청자료 목록, 담당자, 제출 기준을 먼저 확정합니다.",
-        days: [
-          ["7월", "15일(목)", "장현우<br>문수아", "착수 회의", false],
-          ["7월", "22일(목)", "장현우<br>문수아", "자료 기준", false],
-          ["7월", "31일(토)", "조은재<br>유지호", "마감 확인", true]
-        ]
-      },
-      semi: {
-        title: "반기검토 일정",
-        badge: "08.02-08.13",
-        intro: "반기 결산자료와 주석 초안을 검토하는 일정입니다.",
-        footer: "반기검토 전에는 반기 TB, 주요 계정 변동, 주석 초안 제출 상태를 먼저 맞춥니다.",
-        days: [
-          ["8월", "02일(월)", "조은재<br>유지호", "착수", false],
-          ["8월", "09일(월)", "조은재<br>유지호", "쟁점 검토", false],
-          ["8월", "13일(금)", "장현우<br>문수아", "마감 확인", true]
-        ]
-      },
-      interim: {
-        title: "중간감사 일정",
-        badge: "10.18-10.22",
-        intro: "중간감사 현장 투입 기간의 내부통제, 주요 거래, 계정별 변동 검토 일정입니다.",
-        footer: "중간감사 현장 투입 전에는 매출, 리스, 자산, 약정 관련 표본과 증빙 위치를 정리합니다.",
-        days: [
-          ["10월", "18일(월)", "장현우<br>백도현", "착수", false],
-          ["10월", "19일(화)", "장현우<br>백도현", "매출·계약", false],
-          ["10월", "20일(수)", "문수아<br>신예린", "리스·자산", false],
-          ["10월", "21일(목)", "문수아<br>신예린", "내부통제", false],
-          ["10월", "22일(금)", "장현우<br>백도현", "마감 확인", true]
-        ]
-      },
-      internal: {
-        title: "내부회계감사 일정",
-        badge: "11.01-12.17",
-        intro: "내부회계 설계·운영평가와 미비점 보완 일정을 관리합니다.",
-        footer: "내부회계감사 전에는 통제별 모집단, 샘플, 운영 증빙 담당자를 확정합니다.",
-        days: [
-          ["11월", "01일(월)", "문수아<br>신예린", "설계평가", false],
-          ["11월", "29일(월)", "문수아<br>신예린", "운영평가", false],
-          ["12월", "17일(금)", "장현우<br>조은재", "보완 확인", true]
-        ]
-      },
-      external: {
-        title: "외부조회·기말 준비 일정",
-        badge: "12.14-01.20",
-        intro: "외부조회 발송, 회신 추적, 기말감사 준비자료 확정 일정입니다.",
-        footer: "기말 준비 단계에서는 조회처 목록, 회신 현황, 미회신 대체절차를 함께 관리합니다.",
-        days: [
-          ["12월", "14일(화)", "백도현<br>유지호", "조회 발송", false],
-          ["1월", "06일(목)", "백도현<br>유지호", "회신 추적", false],
-          ["1월", "20일(목)", "장현우<br>문수아", "기말 준비", true]
-        ]
-      },
-      final: {
-        title: "현장감사 일정",
-        badge: "월·화·수",
-        intro: "현장감사 예정일과 감사인 배정을 한 화면에서 확인합니다.",
-        footer: "현장감사 전일까지 자료 제출 상태와 담당자 배정을 업데이트합니다.",
-        days: [
-          ["2월", "21일(월)", "장현우<br>문수아", "방문 예정", false],
-          ["2월", "22일(화)", "장현우<br>문수아", "방문 예정", false],
-          ["2월", "23일(수)", "조은재<br>유지호", "마감 확인", true]
-        ]
-      },
-      report: {
-        title: "보고서 마감 일정",
-        badge: "02.24-03.20",
-        intro: "재무제표, 주석, 감사보고서 문안 검토와 마감 일정을 표시합니다.",
-        footer: "보고서 단계에서는 주석 수치, 문안 변경, 최종 승인 이력을 한 번에 관리합니다.",
-        days: [
-          ["2월", "24일(목)", "조은재<br>유지호", "초안 검토", false],
-          ["3월", "09일(목)", "장현우<br>문수아", "쟁점 반영", false],
-          ["3월", "20일(월)", "조은재<br>유지호", "최종 마감", true]
-        ]
-      }
+    const schedules = {
+      planning: { title: "감사계획 일정", badge: "07.15-07.31", intro: "감사계획, 주요 위험, 요청자료 기준을 확정하는 일정입니다.", footer: "감사계획 단계에서는 요청자료 목록, 담당자, 제출 기준을 먼저 확정합니다.", days: [["07.15(목)", "장현우<br>문수아", "착수 회의"], ["07.22(목)", "장현우<br>문수아", "자료 기준"], ["07.31(토)", "조은재<br>유지호", "마감 확인"]] },
+      semi: { title: "반기검토 일정", badge: "08.02-08.13", intro: "반기 결산자료와 주석 초안을 검토하는 일정입니다.", footer: "반기검토 전에는 반기 TB, 주요 계정 변동, 주석 초안 제출 상태를 먼저 맞춥니다.", days: [["08.02(월)", "조은재<br>유지호", "착수"], ["08.09(월)", "조은재<br>유지호", "쟁점 검토"], ["08.13(금)", "장현우<br>문수아", "마감 확인"]] },
+      interim: { title: "중간감사 일정", badge: "10.18-10.22", intro: "중간감사 현장 투입 기간의 내부통제, 주요 거래, 계정별 변동 검토 일정입니다.", footer: "중간감사 현장 투입 전에는 매출, 리스, 자산, 약정 관련 표본과 증빙 위치를 정리합니다.", days: [["10.18(월)", "장현우<br>백도현", "착수"], ["10.19(화)", "장현우<br>백도현", "매출·계약"], ["10.20(수)", "문수아<br>신예린", "리스·자산"], ["10.21(목)", "문수아<br>신예린", "내부통제"], ["10.22(금)", "장현우<br>백도현", "마감 확인"]] },
+      internal: { title: "내부회계감사 일정", badge: "11.01-12.17", intro: "내부회계 설계·운영평가와 미비점 보완 일정을 관리합니다.", footer: "통제별 모집단, 샘플, 운영 증빙 담당자를 확정합니다.", days: [["11.01(월)", "문수아<br>신예린", "설계평가"], ["11.29(월)", "문수아<br>신예린", "운영평가"], ["12.17(금)", "장현우<br>조은재", "보완 확인"]] },
+      external: { title: "외부조회·기말 준비 일정", badge: "12.14-01.20", intro: "외부조회 발송, 회신 추적, 기말감사 준비자료 확정 일정입니다.", footer: "조회처 목록, 회신 현황, 미회신 대체절차를 함께 관리합니다.", days: [["12.14(화)", "백도현<br>유지호", "조회 발송"], ["01.06(목)", "백도현<br>유지호", "회신 추적"], ["01.20(목)", "장현우<br>문수아", "기말 준비"]] },
+      final: { title: "현장감사 일정", badge: "02.21-02.23", intro: "현장감사 예정일과 감사인 배정을 한 화면에서 확인합니다.", footer: "현장감사 전일까지 자료 제출 상태와 담당자 배정을 업데이트합니다.", days: [["02.21(월)", "장현우<br>문수아", "방문 예정"], ["02.22(화)", "장현우<br>문수아", "방문 예정"], ["02.23(수)", "조은재<br>유지호", "마감 확인"]] },
+      report: { title: "보고서 마감 일정", badge: "02.24-03.20", intro: "재무제표, 주석, 감사보고서 문안 검토와 마감 일정을 표시합니다.", footer: "주석 수치, 문안 변경, 최종 승인 이력을 한 번에 관리합니다.", days: [["02.24(목)", "조은재<br>유지호", "초안 검토"], ["03.09(목)", "장현우<br>문수아", "쟁점 반영"], ["03.20(월)", "조은재<br>유지호", "최종 마감"]] }
     };
 
-    const materialRows = [
-      ["연결 패키지 총괄", "연결대상 종속기업 18개, 당기 중 3개 신규 연결 및 1개 연결 제외", "김민준", "장현우", "자료 요청", "request", "샘플: 01_GOLFZON_연결패키지_2025.xlsx"],
-      ["종속기업별 TB·재무제표", "18개 종속기업의 기말 TB와 연결 조정 전 재무제표 확인", "김민준", "장현우", "자료 요청", "request", "현지법인별 마감일, 환산 환율, 검토자 표시"],
-      ["종속기업 재무제표 승인자료", "현지 감사보고서, 이사회 승인, 결산 확정 일정 확인", "김민준", "유지호", "요청 예정", "ready", "법인별 파일명과 승인일자 표준화"],
-      ["내부거래 채권·채무 대사", "연결 내부거래 제거와 상계 차이 검토", "서지민", "장현우", "검토 중", "progress", "거래처별 불일치 항목과 조정분개 연결"],
-      ["내부매출·매입 및 미실현손익", "연결 제거분개와 재고 미실현손익 계산 확인", "서지민", "장현우", "검토 중", "progress", "품목별 마진율, 기말재고 잔량 근거 보완"],
-      ["연결조정분개 전체", "연결재무제표 작성 과정의 조정분개 모집단 확인", "김민준", "유지호", "자료 요청", "request", "분개번호, 작성자, 검토자, 근거자료 링크 포함"],
-      ["외화환산·환율 적용표", "해외사업장 환산과 외화 자산·부채 환산 검토", "한유진", "백도현", "제출 완료", "done", "환율 출처, 평균환율, 기말환율 구분"],
-      ["신규 연결·처분·사업결합 자료", "당기 신규 연결, 연결 제외, 사업결합 관련 공시 검토", "김민준", "장현우", "자료 요청", "request", "계약서, 취득대가, 지배력 취득일 확인"],
-      ["비지배지분 및 지분율 변동표", "연결 자본 변동과 비지배지분 계산 확인", "강태오", "신예린", "요청 예정", "ready", "법인별 지분율, 유상증자, 처분 내역 표시"],
-      ["연결 현금흐름 비현금거래", "현금흐름표 주석과 비현금 투자·재무활동 대사", "서지민", "유지호", "검토 중", "progress", "리스, 미지급 취득, 사업결합 비현금 효과 구분"],
-      ["매출 월별 집계표", "고객과의 계약에서 생기는 수익 4,827억원", "박서연", "문수아", "제출 완료", "done", "샘플: 10_매출월별_제품서비스별_집계.xlsx"],
-      ["상품·용역별 매출 브릿지", "한 시점 인식 2,478억원, 기간에 걸쳐 인식 2,350억원", "박서연", "문수아", "제출 완료", "done", "전표 계정과 주석 수익 구분 대사"],
-      ["주요 고객·거래처별 매출 명세", "매출 집중도, 특수관계자 거래, 대손위험 검토", "박서연", "문수아", "자료 요청", "request", "상위 거래처, 신규 거래처, 취소 거래 표시"],
-      ["계약 원장 및 계약 변경 이력", "주요 계약 조건과 수행의무 식별 확인", "박서연", "문수아", "검토 중", "progress", "계약 시작일, 변경일, 해지 조건 보완"],
-      ["계약자산·계약부채 Roll-forward", "기간 인식 수익과 선수금·계약부채 변동 대사", "박서연", "문수아", "제출 완료", "done", "이월, 증가, 수익인식, 환율효과 구분"],
-      ["매출 컷오프 표본", "한 시점 인식 매출의 출고·설치·검수 기준 확인", "박서연", "문수아", "검토 중", "progress", "12월·1월 거래 표본과 증빙 파일 연결"],
-      ["반품·할인·리베이트 산정표", "변동대가 추정과 매출 차감 항목 확인", "박서연", "문수아", "자료 요청", "request", "정책서, 승인자료, 사후정산 내역 요청"],
-      ["미청구·선수금 대사표", "미청구 수익, 선수금, 계약부채의 계정 대사", "박서연", "문수아", "검토 중", "progress", "계약별 청구일과 수익인식일 비교"],
-      ["매출채권 연령분석", "매출채권 727억원 및 대손충당금 검토", "박서연", "백도현", "자료 요청", "request", "장기미수, 회수내역, 충당금 산정표 보완"],
-      ["리스계약 마스터", "리스부채 668억원, 유동 155억원 및 비유동 513억원", "이도윤", "조은재", "검토 중", "progress", "샘플: 20_리스계약_마스터_2025.xlsx"],
-      ["신규·변경·종료 리스계약", "당기 리스 신규, 변경, 종료 계약의 완전성 확인", "이도윤", "조은재", "자료 요청", "request", "계약서 PDF와 시스템 등록번호 연결"],
-      ["사용권자산 Roll-forward", "사용권자산 취득, 감가상각, 처분 및 환산 효과 확인", "이도윤", "조은재", "검토 중", "progress", "기초, 증가, 감소, 감가상각, 기말 칼럼"],
-      ["리스부채 상환스케줄", "리스부채 상환 162억원과 잔여 만기분석 확인", "이도윤", "조은재", "제출 완료", "done", "월별 지급액, 이자, 원금, 현재가치 구분"],
-      ["할인율·리스기간 판단 근거", "연장선택권, 종료선택권, 증분차입이자율 판단 확인", "이도윤", "조은재", "자료 요청", "request", "계약별 판단 메모와 승인자 표시"],
-      ["단기·소액리스 비용 명세", "리스 인식 예외 적용의 완전성 확인", "이도윤", "조은재", "요청 예정", "ready", "소액 기준, 단기 기준, 비용 계정 대사"],
-      ["유형자산 취득·처분 명세", "유형자산 1,346억원, 당기 취득 263억원", "최지우", "임하준", "검토 중", "progress", "샘플: 30_CAPEX_취득처분_명세.xlsx"],
-      ["CAPEX 승인 품의·검수증빙", "주요 유형자산 취득의 자본적 지출 판단 확인", "최지우", "임하준", "자료 요청", "request", "품의서, 발주서, 검수확인서, 세금계산서 연결"],
-      ["건설중인자산·프로젝트별 집계", "프로젝트별 대체, 완성, 미완료 자산 검토", "최지우", "임하준", "자료 요청", "request", "프로젝트 코드, 예산, 누적투입액 표시"],
-      ["감가상각 계산 파일", "유형자산 감가상각비와 내용연수 변경 여부 확인", "최지우", "임하준", "제출 완료", "done", "자산번호별 취득일, 내용연수, 잔존가치 포함"],
-      ["유형자산 손상징후 검토", "영업장, 장비, 투자자산의 손상 징후 확인", "최지우", "임하준", "검토 중", "progress", "유휴자산, 폐점, 수익성 하락 항목 표시"],
-      ["무형자산 취득·상각 명세", "영업권및무형자산 257억원, 무형자산 취득 52억원", "최지우", "임하준", "자료 요청", "request", "샘플: 35_무형자산_취득상각_명세.xlsx"],
-      ["개발비·소프트웨어 자본화 판단", "무형자산 인식요건과 상각 개시일 확인", "최지우", "임하준", "자료 요청", "request", "프로젝트별 산출물, 승인, 사용가능일 표시"],
-      ["영업권 손상검토 자료", "영업권 손상검사 가정과 회수가능액 검토", "서지민", "임하준", "검토 중", "progress", "CGU, 할인율, 성장률, 민감도 자료 요청"],
-      ["금융기관 약정 현황", "주석 37 우발부채 및 약정사항 등: 차입 약정 확인", "한유진", "남지안", "요청 예정", "ready", "약정한도, 실행액, 만기, 담보 제공 여부 정리"],
-      ["담보제공자산·지급보증 현황", "담보 제공 자산과 지급보증의 완전성 확인", "한유진", "남지안", "자료 요청", "request", "보증처, 보증금액, 만기, 관련 채무 연결"],
-      ["법무확인서·소송 현황", "주석 37 우발부채 및 약정사항 등: 소송·우발사항 확인", "정하늘", "남지안", "요청 예정", "ready", "샘플: 40_약정우발_법무확인.zip"],
-      ["이사회·계약서·후속사건 점검", "보고기간 후 사건, 주요 계약, 약정 변경 확인", "정하늘", "남지안", "자료 요청", "request", "이사회 의사록, 계약서, 공시 전 업데이트"]
+    const materials = [
+      ["연결 패키지 총괄","연결대상 종속기업 18개, 당기 중 3개 신규 연결 및 1개 연결 제외","07.15","07.22","김민준","장현우","제출 완료","01_GOLFZON_연결패키지_2025.xlsx"],
+      ["종속기업별 TB·재무제표","18개 종속기업 기말 TB와 연결 조정 전 재무제표 확인","07.15","07.22","김민준","장현우","제출 완료","현지법인별 마감일, 환산 환율 표시"],
+      ["종속기업 재무제표 승인자료","현지 감사보고서, 이사회 승인, 결산 확정 일정 확인","07.16","예정","김민준","유지호","요청 예정","법인별 승인일자 표준화"],
+      ["내부거래 채권·채무 대사","연결 내부거래 제거와 상계 차이 검토","07.16","07.24","서지민","장현우","검토 중","거래처별 불일치 항목 보완"],
+      ["내부매출·매입 및 미실현손익","연결 제거분개와 재고 미실현손익 계산 확인","07.16","07.25","서지민","장현우","검토 중","품목별 마진율 근거 보완"],
+      ["연결조정분개 전체","연결재무제표 작성 과정의 조정분개 모집단 확인","07.17","미제공","김민준","유지호","자료 요청","분개번호, 작성자, 검토자 포함"],
+      ["외화환산·환율 적용표","해외사업장 환산과 외화 자산·부채 환산 검토","07.17","07.23","한유진","백도현","제출 완료","환율 출처와 평균환율 구분"],
+      ["신규 연결·처분·사업결합 자료","당기 신규 연결, 연결 제외, 사업결합 관련 공시 검토","07.18","미제공","김민준","장현우","자료 요청","계약서, 취득대가, 지배력 취득일"],
+      ["비지배지분 및 지분율 변동표","연결 자본 변동과 비지배지분 계산 확인","07.18","예정","강태오","신예린","요청 예정","법인별 지분율 변동 표시"],
+      ["연결 현금흐름 비현금거래","현금흐름표 주석과 비현금 투자·재무활동 대사","07.18","07.26","서지민","유지호","검토 중","리스, 미지급 취득 효과 구분"],
+      ["매출 월별 집계표","고객과의 계약에서 생기는 수익 4,827억원","07.19","07.22","박서연","문수아","제출 완료","10_매출월별_제품서비스별_집계.xlsx"],
+      ["상품·용역별 매출 브릿지","한 시점 인식 2,478억원, 기간에 걸쳐 인식 2,350억원","07.19","07.23","박서연","문수아","제출 완료","전표 계정과 주석 수익 구분 대사"],
+      ["주요 고객·거래처별 매출 명세","매출 집중도, 특수관계자 거래, 대손위험 검토","07.19","미제공","박서연","문수아","자료 요청","상위 거래처와 신규 거래처 표시"],
+      ["계약 원장 및 계약 변경 이력","주요 계약 조건과 수행의무 식별 확인","07.20","07.26","박서연","문수아","검토 중","계약 시작일, 변경일, 해지 조건"],
+      ["계약부채 Roll-forward","기간 인식 수익과 선수금·계약부채 변동 대사","07.20","07.24","박서연","문수아","제출 완료","증가, 수익인식, 환율효과 구분"],
+      ["매출 컷오프 표본","한 시점 인식 매출의 출고·설치·검수 기준 확인","07.20","07.27","박서연","문수아","검토 중","12월·1월 거래 표본 연결"],
+      ["반품·할인·리베이트 산정표","변동대가 추정과 매출 차감 항목 확인","07.21","미제공","박서연","문수아","자료 요청","정책서, 승인자료, 사후정산 내역"],
+      ["미청구·선수금 대사표","미청구 수익, 선수금, 계약부채의 계정 대사","07.21","07.28","박서연","문수아","검토 중","계약별 청구일과 수익인식일"],
+      ["매출채권 연령분석","매출채권 727억원 및 대손충당금 검토","07.21","미제공","박서연","백도현","자료 요청","장기미수, 회수내역, 충당금 산정"],
+      ["리스계약 마스터","리스부채 668억원, 유동 155억원 및 비유동 513억원","07.22","07.29","이도윤","조은재","검토 중","20_리스계약_마스터_2025.xlsx"],
+      ["신규·변경·종료 리스계약","당기 리스 신규, 변경, 종료 계약의 완전성 확인","07.22","미제공","이도윤","조은재","자료 요청","계약서 PDF와 시스템 등록번호"],
+      ["사용권자산 Roll-forward","사용권자산 취득, 감가상각, 처분 및 환산 효과 확인","07.22","07.29","이도윤","조은재","검토 중","기초, 증가, 감소, 감가상각 칼럼"],
+      ["리스부채 상환스케줄","리스부채 상환 162억원과 잔여 만기분석 확인","07.23","07.30","이도윤","조은재","검토 중","월별 지급액, 이자, 원금 구분"],
+      ["할인율·리스기간 판단 근거","연장선택권, 종료선택권, 증분차입이자율 판단 확인","07.23","미제공","이도윤","조은재","자료 요청","계약별 판단 메모와 승인자 표시"],
+      ["단기·소액리스 비용 명세","리스 인식 예외 적용의 완전성 확인","07.23","예정","이도윤","조은재","요청 예정","소액 기준, 단기 기준, 비용 계정"],
+      ["유형자산 취득·처분 명세","유형자산 1,346억원, 당기 취득 263억원","07.24","07.31","최지우","임하준","검토 중","30_CAPEX_취득처분_명세.xlsx"],
+      ["CAPEX 승인 품의·검수증빙","주요 유형자산 취득의 자본적 지출 판단 확인","07.24","미제공","최지우","임하준","자료 요청","품의서, 발주서, 검수확인서"],
+      ["건설중인자산·프로젝트별 집계","프로젝트별 대체, 완성, 미완료 자산 검토","07.24","미제공","최지우","임하준","자료 요청","프로젝트 코드, 예산, 누적투입액"],
+      ["감가상각 계산 파일","유형자산 감가상각비와 내용연수 변경 여부 확인","07.25","미제공","최지우","임하준","자료 요청","자산번호별 취득일, 내용연수 포함"],
+      ["유형자산 손상징후 검토","영업장, 장비, 투자자산의 손상 징후 확인","07.25","08.01","최지우","임하준","검토 중","유휴자산, 폐점, 수익성 하락 항목"],
+      ["무형자산 취득·상각 명세","영업권및무형자산 257억원, 무형자산 취득 52억원","07.25","미제공","최지우","임하준","자료 요청","35_무형자산_취득상각_명세.xlsx"],
+      ["개발비·소프트웨어 자본화 판단","무형자산 인식요건과 상각 개시일 확인","07.26","미제공","최지우","임하준","자료 요청","프로젝트별 산출물, 사용가능일"],
+      ["영업권 손상검토 자료","영업권 손상검사 가정과 회수가능액 검토","07.26","08.02","서지민","임하준","검토 중","CGU, 할인율, 성장률, 민감도 자료"],
+      ["금융기관 약정 현황","주석 37 우발부채 및 약정사항 등: 차입 약정 확인","07.26","예정","한유진","남지안","요청 예정","약정한도, 실행액, 만기, 담보 여부"],
+      ["담보제공자산·지급보증 현황","담보 제공 자산과 지급보증의 완전성 확인","07.27","미제공","한유진","남지안","자료 요청","보증처, 보증금액, 만기"],
+      ["법무확인서·소송 현황","주석 37 우발부채 및 약정사항 등: 소송·우발사항 확인","07.27","예정","정하늘","남지안","요청 예정","40_약정우발_법무확인.zip"],
+      ["이사회·계약서·후속사건 점검","보고기간 후 사건, 주요 계약, 약정 변경 확인","07.28","미제공","정하늘","남지안","자료 요청","이사회 의사록, 계약서, 공시 전 업데이트"]
     ];
 
-    const connectedNotes = [
-      "1. 일반사항",
-      "2. 재무제표 작성기준 및 중요한 회계정책",
-      "3. 중요한 회계추정 및 판단",
-      "4. 부문정보",
-      "5. 현금및현금성자산",
-      "6. 금융상품",
-      "7. 금융상품의 공정가치",
-      "8. 장단기투자자산",
-      "9. 사용이 제한된 금융자산",
-      "10. 매출채권 및 기타금융자산",
-      "11. 재고자산",
-      "12. 기타자산",
-      "13. 공동기업투자",
-      "14. 사용권자산 및 리스부채",
-      "15. 유형자산",
-      "16. 투자부동산",
-      "17. 영업권및무형자산",
-      "18. 담보로 제공된 자산",
-      "19. 매입채무 및 기타금융부채",
-      "20. 차입금",
-      "21. 충당부채",
-      "22. 기타부채",
-      "23. 퇴직급여",
-      "24. 자본",
-      "25. 주식기준보상",
-      "26. 기타포괄손익누계액",
-      "27. 이익잉여금",
-      "28. 배당금",
-      "29. 매출액",
-      "30. 비용의 성격별 분류",
-      "31. 판매비와관리비",
-      "32. 금융수익 및 금융비용",
-      "33. 기타영업외수익 및 기타영업외비용",
-      "34. 법인세비용",
-      "35. 주당이익",
-      "36. 특수관계자거래",
-      "37. 우발부채 및 약정사항 등",
-      "38. 종속기업의 처분",
-      "39. 현금흐름표",
-      "40. 위험관리",
-      "41. 사업결합"
-    ];
-
-    const separateNotes = [
-      "1. 당사의 개요",
-      "2. 재무제표 작성기준 및 중요한 회계정책",
-      "3. 중요한 회계추정 및 판단",
-      "4. 현금및현금성자산",
-      "5. 금융상품",
-      "6. 금융상품의 공정가치",
-      "7. 장단기투자자산",
-      "8. 사용이 제한된 금융자산",
-      "9. 매출채권 및 기타금융자산",
-      "10. 재고자산",
-      "11. 기타자산",
-      "12. 종속기업 및 공동기업 투자주식",
-      "13. 사용권자산 및 리스부채",
-      "14. 유형자산",
-      "15. 투자부동산",
-      "16. 영업권및무형자산",
-      "17. 담보로 제공된 자산",
-      "18. 매입채무 및 기타금융부채",
-      "19. 충당부채",
-      "20. 기타부채",
-      "21. 퇴직급여",
-      "22. 자본",
-      "23. 주식기준보상",
-      "24. 이익잉여금",
-      "25. 배당금",
-      "26. 매출액",
-      "27. 비용의 성격별 분류",
-      "28. 판매비와관리비",
-      "29. 금융수익 및 금융비용",
-      "30. 기타영업외수익 및 기타영업외비용",
-      "31. 법인세비용",
-      "32. 주당이익",
-      "33. 특수관계자거래",
-      "34. 우발부채 및 약정사항 등",
-      "35. 현금흐름표",
-      "36. 위험관리"
-    ];
-
-    function countMaterialStatus(statuses) {
-      return materialRows.filter(row => statuses.includes(row[4])).length;
-    }
-
-    function materialKpis() {
-      const done = countMaterialStatus(["제출 완료"]);
-      const progress = countMaterialStatus(["검토 중"]);
-      const missing = countMaterialStatus(["자료 요청", "요청 예정"]);
-      return [
-        { label: "요청 자료", value: `${materialRows.length}개`, note: "전체 PBC 관리 단위", filter: "all" },
-        { label: "제출 완료", value: `${done}건`, note: "매출·리스·감가상각 등", filter: "done" },
-        { label: "미제출", value: `${missing}건`, note: "자료 요청·요청 예정", filter: "missing", tone: "missing" },
-        { label: "검토 중", value: `${progress}건`, note: "연결·리스·자산 등", filter: "progress" },
-        { label: "공시 기준", value: "2025", note: "사업보고서 기준" }
-      ];
-    }
-
-    const noteKpis = [
-      ["연결 주석", `${connectedNotes.length}개`, "전체 목록 표시"],
-      ["별도 주석", `${separateNotes.length}개`, "전체 목록 표시"],
-      ["수익", "4,827억원", "연결 고객과의 계약 수익"],
-      ["리스부채", "668억원", "연결 유동+비유동"],
-      ["자산 취득", "315억원", "유형 263억 + 무형 52억"]
-    ];
-
-    const assetCards = [
-      {
-        index: "01",
-        title: "ERP·엑셀 왕복 자동화",
-        bullets: ["ERP 다운로드 자료를 표준 결산 양식으로 자동 정리", "계정별 검토 파일과 업로드 파일을 같은 기준으로 생성", "수작업 복사, 열 맞춤, 파일명 정리 시간을 축소"],
-        result: "결산 담당자는 자료 형식 정리보다 예외 항목 확인에 시간을 씁니다."
-      },
-      {
-        index: "02",
-        title: "결산·계정대사 자동화",
-        bullets: ["TB, GL, 보조부, 계정명세서를 연결해 잔액 차이를 표시", "전기 대비 변동과 월별 이상 항목을 자동 선별", "감사 요청자료와 회사 검토 파일의 대사 기준을 일치"],
-        result: "감사 대응 전에 회사 내부 검토 품질을 먼저 끌어올립니다."
-      },
-      {
-        index: "03",
-        title: "재사용 템플릿·매뉴얼",
-        bullets: ["골프존 계정 구조와 결산 일정에 맞춘 템플릿 제공", "담당자 변경에도 따라 할 수 있는 작업 매뉴얼 축적", "다음 분기·연말 결산에 바로 다시 쓰는 업무 자산화"],
-        result: "AI 교육은 일회성 강의가 아니라 회사에 남는 반복업무 감축 도구입니다."
-      }
-    ];
-
+    const connectedNotes = ["1. 일반사항","2. 재무제표 작성기준 및 중요한 회계정책","3. 중요한 회계추정 및 판단","4. 부문정보","5. 현금및현금성자산","6. 금융상품","7. 금융상품의 공정가치","8. 장단기투자자산","9. 사용이 제한된 금융자산","10. 매출채권 및 기타금융자산","11. 재고자산","12. 기타자산","13. 공동기업투자","14. 사용권자산 및 리스부채","15. 유형자산","16. 투자부동산","17. 영업권및무형자산","18. 담보로 제공된 자산","19. 매입채무 및 기타금융부채","20. 차입금","21. 충당부채","22. 기타부채","23. 퇴직급여","24. 자본","25. 주식기준보상","26. 기타포괄손익누계액","27. 이익잉여금","28. 배당금","29. 매출액","30. 비용의 성격별 분류","31. 판매비와관리비","32. 금융수익 및 금융비용","33. 기타영업외수익 및 기타영업외비용","34. 법인세비용","35. 주당이익","36. 특수관계자거래","37. 우발부채 및 약정사항 등","38. 종속기업의 처분","39. 현금흐름표","40. 위험관리","41. 사업결합"];
+    const separateNotes = ["1. 당사의 개요","2. 재무제표 작성기준 및 중요한 회계정책","3. 중요한 회계추정 및 판단","4. 현금및현금성자산","5. 금융상품","6. 금융상품의 공정가치","7. 장단기투자자산","8. 사용이 제한된 금융자산","9. 매출채권 및 기타금융자산","10. 재고자산","11. 기타자산","12. 종속기업 및 공동기업 투자주식","13. 사용권자산 및 리스부채","14. 유형자산","15. 투자부동산","16. 영업권및무형자산","17. 담보로 제공된 자산","18. 매입채무 및 기타금융부채","19. 충당부채","20. 기타부채","21. 퇴직급여","22. 자본","23. 주식기준보상","24. 이익잉여금","25. 배당금","26. 매출액","27. 비용의 성격별 분류","28. 판매비와관리비","29. 금융수익 및 금융비용","30. 기타영업외수익 및 기타영업외비용","31. 법인세비용","32. 주당이익","33. 특수관계자거래","34. 우발부채 및 약정사항 등","35. 현금흐름표","36. 위험관리"];
+    const people = ["김민준","박서연","이도윤","최지우","정하늘","한유진","서지민","강태오"];
+    const auditors = ["장현우","문수아","조은재","백도현","임하준","신예린","남지안","유지호"];
     const assetDetails = {
       erp: {
         kicker: "01 · ERP ↔ EXCEL",
@@ -1634,590 +250,109 @@
       }
     };
 
-    function noteProfile(type, item, index) {
-      const text = item.replace(/^\d+\.\s*/, "");
-      const isConnected = type === "연결";
-      let point = `${type} 재무제표 주석 원문 항목`;
-      let company = companyPeople[index % companyPeople.length];
-      let auditor = auditPeople[index % auditPeople.length];
-      let status = ["자료 요청", "검토 중", "요청 예정", "제출 완료"][index % 4];
-      let statusClass = ["request", "progress", "ready", "done"][index % 4];
-      let note = "주석 원문, 명세서, 전표 및 증빙 대사";
-
-      if (text.includes("일반사항")) {
-        point = isConnected ? "연결대상 종속기업 18개, 당기 중 3개 신규 연결 및 1개 연결 제외" : "당사의 개요와 주요 사업 내용 공시";
-        company = "김민준"; auditor = "장현우"; status = "자료 요청"; statusClass = "request";
-        note = isConnected ? "연결범위 변동 사유와 신규 취득·설립 자료 확인" : "사업 현황, 정관, 주요 조직 변경 확인";
-      } else if (text.includes("당사의 개요")) {
-        point = "당사의 개요와 주요 사업 내용 공시";
-        company = "서지민"; auditor = "유지호"; status = "자료 요청"; statusClass = "request";
-        note = "정관, 사업 현황, 주요 조직 변경 확인";
-      } else if (text.includes("작성기준") || text.includes("회계추정")) {
-        point = "K-IFRS 작성기준, 주요 회계정책, 추정과 판단 공시";
-        company = "서지민"; auditor = "유지호"; status = "검토 중"; statusClass = "progress";
-        note = "전기 대비 정책 변경과 경영진 판단 근거 확인";
-      } else if (text.includes("부문정보")) {
-        point = "영업부문과 주요 수익 구성 검토 대상";
-        company = "서지민"; auditor = "문수아"; status = "검토 중"; statusClass = "progress";
-        note = "부문별 내부보고자료와 재무제표 금액 대사";
-      } else if (text.includes("현금") || text.includes("금융상품") || text.includes("투자자산") || text.includes("제한된") || text.includes("차입금") || text.includes("위험관리")) {
-        point = text.includes("현금") && isConnected ? "연결 재무상태표상 현금및현금성자산 901억원" : `${type} 금융상품, 투자자산, 위험관리 관련 공시`;
-        company = "한유진"; auditor = "백도현"; status = text.includes("현금") ? "제출 완료" : "자료 요청"; statusClass = text.includes("현금") ? "done" : "request";
-        note = "은행조회서, 평가자료, 만기분석, 담보·제한 내역 확인";
-      } else if (text.includes("매출채권")) {
-        point = isConnected ? "연결 재무상태표상 매출채권 727억원 등 채권 명세 검토" : "별도 매출채권 및 기타금융자산 명세 검토";
-        company = "박서연"; auditor = "백도현"; status = "검토 중"; statusClass = "progress";
-        note = "연령분석, 회수내역, 대손충당금 산정 확인";
-      } else if (text.includes("재고")) {
-        point = isConnected ? "연결 재무상태표상 재고자산 534억원" : "별도 재고자산 수량·평가 명세 검토";
-        company = "최지우"; auditor = "임하준"; status = "자료 요청"; statusClass = "request";
-        note = "실사 결과, 평가충당금, 장기체화 재고 검토";
-      } else if (text.includes("기타자산")) {
-        point = `${type} 기타유동자산 및 기타비유동자산 공시`;
-        company = "서지민"; auditor = "임하준"; status = "요청 예정"; statusClass = "ready";
-        note = "선급금, 선급비용, 미수금 구성 확인";
-      } else if (text.includes("공동기업") || text.includes("종속기업 및 공동기업") || text.includes("사업결합") || text.includes("종속기업의 처분")) {
-        point = isConnected ? "공동기업, 종속기업 처분, 사업결합 관련 공시" : "종속기업 및 공동기업 투자주식 명세 공시";
-        company = "김민준"; auditor = "장현우"; status = "자료 요청"; statusClass = "request";
-        note = "계약서, 투자주식 명세, 손상 징후, 처분손익 확인";
-      } else if (text.includes("리스")) {
-        point = isConnected ? "리스부채 668억원. 유동 155억원, 비유동 513억원" : "별도 사용권자산 및 리스부채 공시";
-        company = "이도윤"; auditor = "조은재"; status = "검토 중"; statusClass = "progress";
-        note = "리스계약, 상환스케줄, 할인율, 리스기간 판단 확인";
-      } else if (text.includes("유형자산")) {
-        point = isConnected ? "연결 유형자산 1,346억원. 현금흐름표상 취득 263억원" : "별도 유형자산 취득·처분·상각 명세 공시";
-        company = "최지우"; auditor = "임하준"; status = "검토 중"; statusClass = "progress";
-        note = "취득·처분 승인, 감가상각, 손상 징후 검토";
-      } else if (text.includes("투자부동산")) {
-        point = isConnected ? "연결 투자부동산 74억원" : "별도 투자부동산 보유 및 임대수익 공시";
-        company = "최지우"; auditor = "임하준"; status = "요청 예정"; statusClass = "ready";
-        note = "임대수익, 공정가치, 담보 제공 여부 확인";
-      } else if (text.includes("영업권") || text.includes("무형자산")) {
-        point = isConnected ? "연결 영업권및무형자산 257억원. 무형자산 취득 52억원" : "별도 영업권및무형자산 취득·상각 공시";
-        company = "최지우"; auditor = "임하준"; status = "자료 요청"; statusClass = "request";
-        note = "영업권 손상검토, 개발비 자본화, 상각 개시일 확인";
-      } else if (text.includes("담보")) {
-        point = `${type} 담보 제공 자산 관련 공시`;
-        company = "한유진"; auditor = "남지안"; status = "자료 요청"; statusClass = "request";
-        note = "담보 약정서와 제공 자산 원장 대사";
-      } else if (text.includes("매입채무") || text.includes("충당부채") || text.includes("기타부채")) {
-        point = `${type} 금융부채, 충당부채, 기타부채 공시`;
-        company = "서지민"; auditor = "권서준"; status = "검토 중"; statusClass = "progress";
-        note = "거래처별 명세, 전입·사용·환입, 컷오프 확인";
-      } else if (text.includes("퇴직급여")) {
-        point = "확정급여채무, 사외적립자산, 퇴직급여비용 공시";
-        company = "윤서아"; auditor = "홍유나"; status = "자료 요청"; statusClass = "request";
-        note = "보험수리보고서, 주요 가정, 지급 내역 확인";
-      } else if (text.includes("자본") || text.includes("주식기준") || text.includes("이익잉여금") || text.includes("배당") || text.includes("주당이익")) {
-        point = `${type} 자본, 배당, 주식기준보상, 주당이익 공시`;
-        company = "강태오"; auditor = "신예린"; status = text.includes("배당") || text.includes("주당이익") ? "제출 완료" : "요청 예정"; statusClass = text.includes("배당") || text.includes("주당이익") ? "done" : "ready";
-        note = "주식수, 주총 승인, 자기주식, 희석효과 계산 확인";
-      } else if (text.includes("매출액")) {
-        point = isConnected ? "고객과의 계약에서 생기는 수익 4,827억원. 한 시점 2,478억원, 기간에 걸쳐 2,350억원" : "별도 매출액 및 고객과의 계약 수익 공시";
-        company = "박서연"; auditor = "문수아"; status = "제출 완료"; statusClass = "done";
-        note = "수익 구분, 계약부채, 주요 계약 조건과 재무제표 금액 대사";
-      } else if (text.includes("비용") || text.includes("판매비") || text.includes("기타영업외")) {
-        point = `${type} 손익 계정의 성격별 분류와 영업외손익 공시`;
-        company = "서지민"; auditor = "문수아"; status = "검토 중"; statusClass = "progress";
-        note = "월별 손익, 일회성 거래, 재분류 항목 확인";
-      } else if (text.includes("금융수익")) {
-        point = "이자수익, 이자비용, 평가손익 등 금융손익 공시";
-        company = "한유진"; auditor = "백도현"; status = "자료 요청"; statusClass = "request";
-        note = "이자계산서, 평가손익, 외화 관련 분개 확인";
-      } else if (text.includes("법인세")) {
-        point = "당기법인세, 이연법인세, 유효세율 공시";
-        company = "오지훈"; auditor = "권서준"; status = "자료 요청"; statusClass = "request";
-        note = "세무조정계산서, 이연법인세 회수가능성 확인";
-      } else if (text.includes("특수관계자")) {
-        point = "특수관계자 거래, 채권·채무, 주요 경영진 보상 공시";
-        company = "서지민"; auditor = "남지안"; status = "검토 중"; statusClass = "progress";
-        note = "거래 승인, 미결제 잔액, 누락 여부 확인";
-      } else if (text.includes("우발부채")) {
-        point = `${type} 주석의 우발부채 및 약정사항 등 전체 검토`;
-        company = "정하늘"; auditor = "남지안"; status = "요청 예정"; statusClass = "ready";
-        note = "은행조회서, 법무법인 조회, 보증·담보 변동 및 후속사건 확인";
-      } else if (text.includes("현금흐름표")) {
-        point = isConnected ? "유형자산 취득 263억원, 무형자산 취득 52억원 등 현금흐름 공시" : "별도 현금흐름표 보충정보 공시";
-        company = "서지민"; auditor = "유지호"; status = "검토 중"; statusClass = "progress";
-        note = "비현금거래, 투자·재무활동 현금흐름 대사";
-      }
-
-      return [type, item, point, company, auditor, status, statusClass, note];
+    function chip(status) {
+      const cls = status === "제출 완료" ? "status-submitted" : status === "검토 중" ? "status-review" : status === "요청 예정" ? "status-request" : "status-missing";
+      return `<span class="${cls} px-2 py-1 rounded-full">${status}</span>`;
     }
-
-    const connectedNoteRows = connectedNotes.map((item, index) => noteProfile("연결", item, index));
-    const separateNoteRows = separateNotes.map((item, index) => noteProfile("별도", item, index + connectedNotes.length));
-
-    function renderKpis(kpis, scope) {
-      return `<div class="kpis">${kpis.map(kpi => {
-        const label = kpi.label ?? kpi[0];
-        const value = kpi.value ?? kpi[1];
-        const note = kpi.note ?? kpi[2];
-        const active = scope === "materials" && kpi.filter && currentMaterialFilter === kpi.filter;
-        const tone = kpi.tone ? ` ${kpi.tone}` : "";
-        const body = `<div class="kpi-label">${label}</div><div class="kpi-value">${value}</div><div class="kpi-note">${note}</div>`;
-        if (!kpi.filter) return `<div class="kpi">${body}</div>`;
-        return `<button class="kpi kpi-button${tone} ${active ? "active" : ""}" type="button" onclick="setMaterialFilter('${kpi.filter}')">${body}</button>`;
-      }).join("")}</div>`;
+    function notePoint(item, type) {
+      if (item.includes("일반사항")) return "종속기업 18개, 당기 중 3개 신규 연결 및 1개 연결 제외";
+      if (item.includes("당사의 개요")) return "당사의 개요와 주요 사업 내용 공시";
+      if (item.includes("매출액")) return "고객과의 계약에서 생기는 수익 4,827억원";
+      if (item.includes("리스")) return "리스부채 668억원, 유동 155억원 및 비유동 513억원";
+      if (item.includes("유형자산")) return "유형자산 1,346억원, 당기 취득 263억원";
+      if (item.includes("무형자산") || item.includes("영업권")) return "영업권및무형자산 257억원, 무형자산 취득 52억원";
+      if (item.includes("우발부채")) return `${type} 주석 우발부채 및 약정사항 등`;
+      if (item.includes("현금")) return "현금및현금성자산, 제한 예금, 은행조회 대사";
+      if (item.includes("매출채권")) return "매출채권 727억원 및 대손충당금 검토";
+      return `${type} 재무제표 주석 원문 항목`;
     }
-
-    function materialFilterRows() {
-      if (currentMaterialFilter === "done") return materialRows.filter(row => row[4] === "제출 완료");
-      if (currentMaterialFilter === "progress") return materialRows.filter(row => row[4] === "검토 중");
-      if (currentMaterialFilter === "missing") return materialRows.filter(row => ["자료 요청", "요청 예정"].includes(row[4]));
-      return materialRows;
+    function renderMaterialKpis() {
+      const done = materials.filter(r => r[6] === "제출 완료").length;
+      const progress = materials.filter(r => r[6] === "검토 중").length;
+      const missing = materials.length - done - progress;
+      const data = [["요청 자료", `${materials.length}개`, "전체 PBC 관리 단위", "all"], ["제출 완료", `${done}건`, "제공일자 입력 완료", "done"], ["미제출", `${missing}건`, "자료 요청·요청 예정", "missing"], ["검토 중", `${progress}건`, "감사인 검토 진행", "progress"]];
+      document.getElementById("material-kpis").innerHTML = data.map(k => `<button class="filter-btn text-left bg-white border border-[#d9e3f0] rounded-md p-4" type="button" data-material-filter="${k[3]}"><b class="text-[12px]">${k[0]}</b><strong class="block text-[28px] text-[#0b4fc5]">${k[1]}</strong><span class="text-[11px] text-[#617188]">${k[2]}</span></button>`).join("");
     }
-
-    function materialFilterLabel() {
-      if (currentMaterialFilter === "done") return "제출 완료";
-      if (currentMaterialFilter === "progress") return "검토 중";
-      if (currentMaterialFilter === "missing") return "미제출";
-      return "전체";
+    function renderMaterials(filter = "all") {
+      let rows = materials;
+      if (filter === "done") rows = materials.filter(r => r[6] === "제출 완료");
+      if (filter === "progress") rows = materials.filter(r => r[6] === "검토 중");
+      if (filter === "missing") rows = materials.filter(r => r[6] === "자료 요청" || r[6] === "요청 예정");
+      document.getElementById("material-body").innerHTML = rows.map(r => `<tr><td class="p-2 font-bold text-[#0b2c60]">${r[0]}</td><td>${r[1]}</td><td>${r[2]}</td><td>${r[3]}</td><td>${r[4]}</td><td>${r[5]}</td><td>${chip(r[6])}</td><td>${r[7]}</td></tr>`).join("");
     }
-
-    function setMaterialFilter(filter) {
-      currentMaterialFilter = filter;
-      document.getElementById("screen").innerHTML = renderMaterials();
+    function renderNotes(type = "connected") {
+      const label = type === "connected" ? "연결" : "별도";
+      const list = type === "connected" ? connectedNotes : separateNotes;
+      document.getElementById("note-body").innerHTML = list.map((item, i) => {
+        const status = ["검토 중", "자료 요청", "요청 예정", "제출 완료"][i % 4];
+        return `<tr><td class="p-2 font-bold text-[#0b2c60]">${item}</td><td>${notePoint(item, label)}</td><td>${people[i % people.length]}</td><td>${auditors[i % auditors.length]}</td><td>${chip(status)}</td><td>주석 문안, 금액 대사, 근거자료 연결 확인</td></tr>`;
+      }).join("");
     }
-
-    function formatMaterialDate(offset) {
-      const date = new Date(2027, 6, 15 + offset);
-      const year = date.getFullYear();
-      const month = String(date.getMonth() + 1).padStart(2, "0");
-      const day = String(date.getDate()).padStart(2, "0");
-      return `${year}.${month}.${day}`;
+    function renderSchedule(key = "planning") {
+      const data = schedules[key];
+      document.getElementById("schedule-title").textContent = data.title;
+      document.getElementById("schedule-badge").textContent = data.badge;
+      document.getElementById("schedule-intro").textContent = data.intro;
+      document.getElementById("schedule-footer").textContent = data.footer;
+      document.getElementById("schedule-days").innerHTML = data.days.map(day => `<div class="border border-[#d9e3f0] rounded-md p-3 flex items-center justify-between"><div><b class="text-[#0b2c60]">${day[0]}</b><div class="text-[12px] text-[#617188]">${day[1]}</div></div><span class="text-[12px] font-bold text-[#1456cf]">${day[2]}</span></div>`).join("");
     }
-
-    function materialTimeline(row) {
-      const index = Math.max(materialRows.indexOf(row), 0);
-      const requestOffset = Math.floor(index / 2);
-      const requestDate = formatMaterialDate(requestOffset);
-
-      if (row[4] === "요청 예정") {
-        return { requestDate, providedDate: "예정", providedClass: "pending" };
-      }
-
-      if (row[4] === "자료 요청") {
-        return { requestDate, providedDate: "미제공", providedClass: "missing" };
-      }
-
-      const lag = row[4] === "제출 완료" ? (index % 3) + 1 : (index % 4) + 2;
-      return { requestDate, providedDate: formatMaterialDate(requestOffset + lag), providedClass: "" };
+    function activateTab(tab) {
+      document.querySelectorAll("[data-panel]").forEach(panel => panel.hidden = panel.dataset.panel !== tab);
+      document.querySelectorAll("[data-tab]").forEach(btn => btn.classList.toggle("active", btn.dataset.tab === tab));
+      history.replaceState(null, "", "#" + tab);
     }
-
-    function renderSchedule() {
-      return `<section class="schedule-card schedule-page" aria-labelledby="schedule-title">
-        <div class="schedule-scroll">
-          <div class="schedule-kicker">AUDIT SCHEDULE & FIELDWORK PLAN</div>
-          <section class="schedule-titleline">
-            <h2 id="schedule-title">감사 일정과 현장 일정을<br><span>하나의 화면에서 관리합니다.</span></h2>
-            <p>회사와 감사인이 예정 시작일·예정 완료일·실제 완료일 및 담당자를 같은 기준으로 확인해, 자료 준비와 현장감사 일정을 예측 가능하게 관리합니다.</p>
-          </section>
-
-          <section class="schedule-metrics" aria-label="일정 현황">
-            <div class="schedule-metric"><b>전체 감사 단계</b><strong>7 <em>개</em></strong></div>
-            <div class="schedule-metric"><b>다음 예정 마감</b><strong>07.31</strong></div>
-            <div class="schedule-metric"><b>이번 현장감사</b><strong>3 <em>일</em></strong></div>
-            <div class="schedule-metric alert"><b>회사 준비 확인</b><strong>5 <em>건</em></strong></div>
-          </section>
-
-          <section class="schedule-layout">
-            <section class="schedule-panel" aria-label="2027 사업연도 감사 일정">
-              <div class="schedule-panel-head">
-                <div>
-                  <div class="schedule-panel-kicker">2027 AUDIT ROADMAP</div>
-                  <h3>2027 사업연도 감사 일정</h3>
-                </div>
-                <div class="schedule-legend"><span class="schedule-dot"></span> 예정 <span class="schedule-dot green"></span> 완료 <span class="schedule-dot orange"></span> 진행 중</div>
-              </div>
-              <div class="schedule-table-wrap">
-                <table class="schedule-table">
-                  <thead>
-                    <tr><th>감사 단계</th><th>예정 시작</th><th>예정 완료</th><th>실제 완료</th><th>감사인</th><th>상태</th></tr>
-                  </thead>
-                  <tbody>
-                    <tr class="schedule-row" data-schedule-stage="planning" tabindex="0" aria-selected="false"><td>감사계획</td><td>2027.07.15</td><td>2027.07.31</td><td>미정</td><td class="schedule-auditors">장현우 · 문수아</td><td><span class="schedule-status ongoing">진행 중</span></td></tr>
-                    <tr class="schedule-row" data-schedule-stage="semi" tabindex="0" aria-selected="false"><td>반기검토</td><td>2027.08.02</td><td>2027.08.13</td><td>미정</td><td class="schedule-auditors">조은재 · 유지호</td><td><span class="schedule-status scheduled">예정</span></td></tr>
-                    <tr class="schedule-row" data-schedule-stage="interim" tabindex="0" aria-selected="false"><td>중간감사</td><td>2027.10.18</td><td>2027.10.22</td><td>미정</td><td class="schedule-auditors">장현우 · 백도현</td><td><span class="schedule-status scheduled">예정</span></td></tr>
-                    <tr class="schedule-row" data-schedule-stage="internal" tabindex="0" aria-selected="false"><td>내부회계감사</td><td>2027.11.01</td><td>2027.12.17</td><td>미정</td><td class="schedule-auditors">문수아 · 신예린</td><td><span class="schedule-status scheduled">예정</span></td></tr>
-                    <tr class="schedule-row" data-schedule-stage="external" tabindex="0" aria-selected="false"><td>외부조회 · 기말 준비</td><td>2027.12.14</td><td>2028.01.20</td><td>미정</td><td class="schedule-auditors">백도현 · 유지호</td><td><span class="schedule-status scheduled">예정</span></td></tr>
-                    <tr class="schedule-row active" data-schedule-stage="final" tabindex="0" aria-selected="true"><td>기말 현장감사</td><td>2028.02.21</td><td>2028.02.23</td><td>미정</td><td class="schedule-auditors">장현우 · 문수아</td><td><span class="schedule-status scheduled">예정</span></td></tr>
-                    <tr class="schedule-row" data-schedule-stage="report" tabindex="0" aria-selected="false"><td>재무제표·주석 및 보고서</td><td>2028.02.24</td><td>2028.03.20</td><td>미정</td><td class="schedule-auditors">조은재 · 유지호</td><td><span class="schedule-status scheduled">예정</span></td></tr>
-                  </tbody>
-                </table>
-              </div>
-              <div class="schedule-roadmap">
-                <div class="schedule-roadmap-top"><b>연간 일정 흐름</b><span>현장감사 일정은 월·화·수 3일 연속 표시</span></div>
-                <div class="schedule-months">
-                  <div class="schedule-month active">7월</div>
-                  <div class="schedule-month active">8월</div>
-                  <div class="schedule-month">9월</div>
-                  <div class="schedule-month active">10월</div>
-                  <div class="schedule-month active">11월</div>
-                  <div class="schedule-month active">12월</div>
-                  <div class="schedule-month active">1월</div>
-                  <div class="schedule-month field">2월</div>
-                  <div class="schedule-month active">3월</div>
-                </div>
-              </div>
-            </section>
-
-            <aside class="schedule-panel schedule-field-panel" aria-label="현장감사 일정">
-              <div class="schedule-panel-head">
-                <div>
-                  <div class="schedule-panel-kicker">FIELDWORK</div>
-                  <h3 id="schedule-field-title">현장감사 일정</h3>
-                </div>
-                <span class="schedule-status scheduled" id="schedule-field-badge">월·화·수</span>
-              </div>
-              <p class="schedule-field-intro" id="schedule-field-intro">현장감사 예정일과 감사인 배정을 한 화면에서 확인합니다.</p>
-              <div class="schedule-field-days" id="schedule-field-days">
-                <div class="schedule-field-day"><div class="schedule-day"><span>2월</span><strong>21일(월)</strong></div><div class="schedule-names">장현우<br>문수아</div><span class="schedule-state">방문 예정</span></div>
-                <div class="schedule-field-day"><div class="schedule-day"><span>2월</span><strong>22일(화)</strong></div><div class="schedule-names">장현우<br>문수아</div><span class="schedule-state">방문 예정</span></div>
-                <div class="schedule-field-day"><div class="schedule-day"><span>2월</span><strong>23일(수)</strong></div><div class="schedule-names">조은재<br>유지호</div><span class="schedule-state end">마감 확인</span></div>
-              </div>
-              <div class="schedule-field-footer" id="schedule-field-footer"><b>회사 확인 포인트</b><br>현장감사 전일까지 자료 제출 상태와 담당자 배정을 업데이트합니다.</div>
-            </aside>
-          </section>
-
-          <footer class="schedule-foot">
-            <span>※ 일정 및 감사인 배정은 제안 기준 예시이며, 수임 후 골프존 결산·공시 일정에 맞춰 확정합니다.</span>
-            <strong>언제 무엇을 준비해야 하는지, 누가 현장에 오는지를 미리 알 수 있습니다.</strong>
-          </footer>
-        </div>
-      </section>`;
+    function showAssetDetail(key) {
+      const detail = assetDetails[key] || assetDetails.erp;
+      document.getElementById("asset-kicker").textContent = detail.kicker;
+      document.getElementById("asset-title").textContent = detail.title;
+      const image = document.getElementById("asset-image");
+      image.src = detail.src;
+      image.alt = detail.alt;
+      document.getElementById("asset-caption").textContent = detail.caption;
+      document.getElementById("asset-overlay").hidden = false;
     }
-
-    function renderMaterials() {
-      const rows = materialFilterRows();
-      return `<section class="panel">
-        <div class="panel-head">
-          <div>
-            <div class="section-kicker">01 · COMPANY REQUEST TRACKER</div>
-            <h2>회사 자료 진행 사항</h2>
-          </div>
-          <div class="notice">담당자명, 요청자료 파일명, 요청·제공일자는 PT 시연용 예시입니다. 현재 ${materialFilterLabel()} ${rows.length}건을 표시합니다.</div>
-        </div>
-        ${renderKpis(materialKpis(), "materials")}
-        <div class="table-wrap">
-          <table class="material-table">
-            <colgroup>
-              <col style="width: 15%">
-              <col style="width: 25%">
-              <col style="width: 8%">
-              <col style="width: 8%">
-              <col style="width: 10%">
-              <col style="width: 10%">
-              <col style="width: 8%">
-              <col style="width: 16%">
-            </colgroup>
-            <thead>
-              <tr>
-                <th>요청 자료</th>
-                <th>골프존 공시 기준 포인트</th>
-                <th>요청일자</th>
-                <th>제공일자</th>
-                <th>회사 담당자</th>
-                <th>감사인 담당</th>
-                <th>진행 상태</th>
-                <th>보완 사항</th>
-              </tr>
-            </thead>
-            <tbody>
-              ${rows.map(row => {
-                const timeline = materialTimeline(row);
-                return `<tr>
-                <td>${row[0]}</td>
-                <td><span class="point">${row[1]}</span></td>
-                <td class="date-cell">${timeline.requestDate}</td>
-                <td class="date-cell ${timeline.providedClass}">${timeline.providedDate}</td>
-                <td class="owner">${row[2]}</td>
-                <td class="owner">${row[3]}</td>
-                <td><span class="status ${row[5]}">${row[4]}</span></td>
-                <td>${row[6]}</td>
-              </tr>`;
-              }).join("")}
-            </tbody>
-          </table>
-        </div>
-        <div class="footnote">
-          <span>미제출은 자료 요청 또는 요청 예정 상태입니다. 요청일자·제공일자는 발표 시연용 예시이며, 공시 기준 포인트는 골프존 2025 사업보고서의 별도·연결 주석 항목과 주요 수치를 반영했습니다.</span>
-          <a target="_blank" rel="noopener" href="${sourceUrl}">2025 사업보고서 원문</a>
-        </div>
-      </section>`;
-    }
-
-    function renderNoteRows(rows) {
-      return rows.map(row => `<tr>
-        <td>${row[1]}</td>
-        <td><span class="point">${row[2]}</span></td>
-        <td class="owner">${row[3]}</td>
-        <td class="owner">${row[4]}</td>
-        <td><span class="status ${row[6]}">${row[5]}</span></td>
-        <td>${row[7]}</td>
-      </tr>`).join("");
-    }
-
-    function noteStatusRows(rows) {
-      if (currentNoteStatusFilter === "all") return rows;
-      return rows.filter(row => row[5] === currentNoteStatusFilter);
-    }
-
-    function countNoteStatus(rows, status) {
-      return rows.filter(row => row[5] === status).length;
-    }
-
-    function renderNoteStatusFilters(rows) {
-      const filters = [
-        ["all", "전체", rows.length],
-        ["제출 완료", "제출 완료", countNoteStatus(rows, "제출 완료")],
-        ["검토 중", "검토 중", countNoteStatus(rows, "검토 중")],
-        ["자료 요청", "자료 요청", countNoteStatus(rows, "자료 요청")],
-        ["요청 예정", "요청 예정", countNoteStatus(rows, "요청 예정")]
-      ];
-      return filters.map(filter => `<button class="note-subtab ${currentNoteStatusFilter === filter[0] ? "active" : ""}" type="button" onclick="switchNoteStatus('${filter[0]}')">${filter[1]}<span>${filter[2]}개</span></button>`).join("");
-    }
-
-    function noteStatusLabel() {
-      return currentNoteStatusFilter === "all" ? "전체" : currentNoteStatusFilter;
-    }
-
-    function renderNotes() {
-      const allRows = currentNoteType === "연결" ? connectedNoteRows : separateNoteRows;
-      const rows = noteStatusRows(allRows);
-      const count = rows.length;
-      return `<section class="panel">
-        <div class="panel-head">
-          <div>
-            <div class="section-kicker">02 · DISCLOSURE NOTE REVIEW</div>
-            <h2>골프존 주석 검토 진행 사항</h2>
-          </div>
-          <div class="notice">주석명은 실제 공시 항목입니다. 현재 ${currentNoteType} 주석 중 ${noteStatusLabel()} ${count}개를 표시합니다.</div>
-        </div>
-        ${renderKpis(noteKpis)}
-        <div class="note-subtabs" aria-label="주석 구분">
-          <button class="note-subtab ${currentNoteType === "연결" ? "active" : ""}" type="button" onclick="switchNoteType('연결')">연결 주석<span>${connectedNoteRows.length}개</span></button>
-          <button class="note-subtab ${currentNoteType === "별도" ? "active" : ""}" type="button" onclick="switchNoteType('별도')">별도 주석<span>${separateNoteRows.length}개</span></button>
-          <span class="filter-divider"></span>
-          <span class="filter-label">진행 상태</span>
-          ${renderNoteStatusFilters(allRows)}
-        </div>
-        <div class="table-wrap">
-          <table class="note-table">
-            <colgroup>
-              <col style="width: 23%">
-              <col style="width: 31%">
-              <col style="width: 12%">
-              <col style="width: 12%">
-              <col style="width: 8%">
-              <col style="width: 14%">
-            </colgroup>
-            <thead>
-              <tr>
-                <th>주석 항목</th>
-                <th>2025 공시 주요 내용</th>
-                <th>회사 담당자</th>
-                <th>감사인 담당</th>
-                <th>진행 상태</th>
-                <th>검토·보완 사항</th>
-              </tr>
-            </thead>
-            <tbody>${renderNoteRows(rows)}</tbody>
-          </table>
-        </div>
-        <div class="footnote">
-          <span>출처: 골프존 2025 사업보고서. 현재 화면은 ${currentNoteType} 주석의 ${noteStatusLabel()} 상태 ${count}개 목록입니다.</span>
-          <a target="_blank" rel="noopener" href="${sourceUrl}">수치·주석 출처 링크</a>
-        </div>
-      </section>`;
-    }
-
-    function switchNoteType(type) {
-      currentNoteType = type;
-      document.getElementById("screen").innerHTML = renderNotes();
-    }
-
-    function switchNoteStatus(status) {
-      currentNoteStatusFilter = status;
-      document.getElementById("screen").innerHTML = renderNotes();
-    }
-
-    function renderAssets() {
-      return `<section class="assets">
-        <div class="asset-head">
-          <div>
-            <div class="section-kicker">03 · AUTOMATION ASSETS</div>
-            <div class="asset-headline">AI 교육·자동화 자산</div>
-          </div>
-          <div class="asset-lead">목표는 AI 홍보가 아니라, 회계팀 반복업무를 줄이고 다음 결산에도 계속 쓰는 회사 내부 자산을 남기는 것입니다.</div>
-        </div>
-        <div class="asset-grid">
-          <article class="asset-card">
-            <div class="asset-card-title">
-              <div class="asset-index">01</div>
-              <span class="asset-num">01</span>
-              <h3>ERP·엑셀 왕복 자동화</h3>
-            </div>
-            <div class="asset-body">
-              <ul>
-                <li>ERP 다운로드 자료를 표준 결산 양식으로 자동 정리</li>
-                <li>계정별 검토 파일과 업로드 파일을 같은 기준으로 생성</li>
-                <li>수작업 복사, 열 맞춤, 파일명 정리 시간을 축소</li>
-              </ul>
-            </div>
-            <div class="asset-example"><b>예시</b> 매출·리스·자산 자료 다운로드 → 형식 변환 → ERP 업로드</div>
-            <div class="asset-result with-action"><span>결산 담당자는 자료 형식 정리보다 예외 항목 확인에 시간을 씁니다.</span><button type="button" onclick="showAssetDetail('erp')">상세 이미지 보기</button></div>
-          </article>
-
-          <article class="asset-card">
-            <div class="asset-card-title">
-              <div class="asset-index">02</div>
-              <span class="asset-num">02</span>
-              <h3>결산·계정대사 자동화</h3>
-            </div>
-            <div class="asset-body">
-              <ul>
-                <li>TB, GL, 보조부, 계정명세서를 연결해 잔액 차이를 표시</li>
-                <li>전기 대비 변동과 월별 이상 항목을 자동 선별</li>
-                <li>감사 요청자료와 회사 검토 파일의 대사 기준을 일치</li>
-              </ul>
-            </div>
-            <div class="asset-example"><b>예시</b> 잔액·증빙·전기 대비 변동을 자동 비교하고 차이 항목 선별</div>
-            <div class="asset-result with-action"><span>감사 대응 전에 회사 내부 검토 품질을 먼저 끌어올립니다.</span><button type="button" onclick="showAssetDetail('closing')">상세 이미지 보기</button></div>
-          </article>
-
-          <article class="asset-card">
-            <div class="asset-card-title">
-              <div class="asset-index">03</div>
-              <span class="asset-num">03</span>
-              <h3>재사용 템플릿·매뉴얼</h3>
-            </div>
-            <div class="asset-body">
-              <ul>
-                <li>골프존 계정 구조와 결산 일정에 맞춘 템플릿 제공</li>
-                <li>담당자 변경에도 따라 할 수 있는 작업 매뉴얼 축적</li>
-                <li>다음 분기·연말 결산에 바로 다시 쓰는 업무 자산화</li>
-              </ul>
-            </div>
-            <div class="asset-example"><b>예시</b> 계정·컬럼 매핑, 대사 기준, 담당자별 작업 순서와 사용법 축적</div>
-            <div class="asset-result with-action"><span>AI 교육은 일회성 강의가 아니라 회사에 남는 반복업무 감축 도구입니다.</span><button type="button" onclick="showAssetDetail('templates')">상세 이미지 보기</button></div>
-          </article>
-        </div>
-        <div class="asset-detail-overlay" id="asset-detail-overlay" hidden onclick="if (event.target === this) hideAssetDetail()">
-          <div class="asset-detail-card" role="dialog" aria-modal="true" aria-labelledby="asset-detail-title">
-            <div class="asset-detail-head">
-              <div>
-                <div class="asset-detail-kicker" id="asset-detail-kicker">01 · ERP ↔ EXCEL</div>
-                <div class="asset-detail-title" id="asset-detail-title">ERP·엑셀 왕복 자동화 상세</div>
-              </div>
-              <button class="asset-detail-close" type="button" onclick="hideAssetDetail()">닫기</button>
-            </div>
-            <div class="asset-detail-body">
-              <img id="asset-detail-img" src="assets/golfzon_automation_01_erp_excel.svg" alt="ERP 자료를 표준 엑셀 양식으로 자동 정리하고 검토 결과를 업로드 파일로 되돌리는 상세 업무 흐름">
-              <div class="asset-detail-caption" id="asset-detail-caption">ERP 원장·보조부 다운로드, 표준 결산 양식 변환, 검토 후 업로드 파일 생성까지의 왕복 자동화 흐름입니다.</div>
-            </div>
-          </div>
-        </div>
-        <div class="workflow" aria-label="자동화 자산 활용 흐름">
-          <div class="flow-step"><span>INPUT</span>ERP 원장·보조부·엑셀 자료</div>
-          <div class="flow-step"><span>PROCESS</span>표준화·대사·예외 추출</div>
-          <div class="flow-step"><span>OUTPUT</span>결산·세무 검토와 감사 대응 자료</div>
-          <div class="flow-step"><span>ASSET</span>템플릿·매뉴얼·사용 규칙</div>
-        </div>
-        <div class="asset-foot">
-          <span>업무 예시는 골프존의 실제 ERP·결산 체계 확정 후 구체화합니다.</span>
-          <strong>결산·세무 작업이 빨라지면 감사 대응도 더 빨라집니다.</strong>
-        </div>
-      </section>`;
-    }
-
-    function showAssetDetail(detailId = "erp") {
-      const detail = assetDetails[detailId] || assetDetails.erp;
-      const overlay = document.getElementById("asset-detail-overlay");
-      if (!overlay) return;
-      const kicker = document.getElementById("asset-detail-kicker");
-      const title = document.getElementById("asset-detail-title");
-      const image = document.getElementById("asset-detail-img");
-      const caption = document.getElementById("asset-detail-caption");
-
-      if (kicker) kicker.textContent = detail.kicker;
-      if (title) title.textContent = detail.title;
-      if (image) {
-        image.src = detail.src;
-        image.alt = detail.alt;
-      }
-      if (caption) caption.textContent = detail.caption;
-
-      overlay.hidden = false;
-      const closeButton = overlay.querySelector(".asset-detail-close");
-      if (closeButton) closeButton.focus({ preventScroll: true });
-    }
-
     function hideAssetDetail() {
-      const overlay = document.getElementById("asset-detail-overlay");
-      if (!overlay) return;
-      overlay.hidden = true;
+      document.getElementById("asset-overlay").hidden = true;
     }
-
-    function renderScheduleDays(days) {
-      return days.map(([month, date, names, state, isEnd]) => `
-        <div class="schedule-field-day">
-          <div class="schedule-day"><span>${month}</span><strong>${date}</strong></div>
-          <div class="schedule-names">${names}</div>
-          <span class="schedule-state${isEnd ? " end" : ""}">${state}</span>
-        </div>
-      `).join("");
-    }
-
-    function selectScheduleStage(stageId) {
-      const plan = schedulePlans[stageId];
-      if (!plan) return;
-      currentScheduleStage = stageId;
-
-      const title = document.getElementById("schedule-field-title");
-      const badge = document.getElementById("schedule-field-badge");
-      const intro = document.getElementById("schedule-field-intro");
-      const days = document.getElementById("schedule-field-days");
-      const footer = document.getElementById("schedule-field-footer");
-
-      if (title) title.textContent = plan.title;
-      if (badge) badge.textContent = plan.badge;
-      if (intro) intro.textContent = plan.intro;
-      if (days) days.innerHTML = renderScheduleDays(plan.days);
-      if (footer) footer.innerHTML = `<b>회사 확인 포인트</b><br>${plan.footer}`;
-
-      document.querySelectorAll("[data-schedule-stage]").forEach(row => {
-        const active = row.dataset.scheduleStage === stageId;
-        row.classList.toggle("active", active);
-        row.setAttribute("aria-selected", active ? "true" : "false");
-      });
-    }
-
     document.addEventListener("click", event => {
-      const row = event.target.closest ? event.target.closest("[data-schedule-stage]") : null;
-      if (row) selectScheduleStage(row.dataset.scheduleStage);
+      const tabButton = event.target.closest("[data-tab]");
+      if (tabButton) activateTab(tabButton.dataset.tab);
+      const assetButton = event.target.closest("[data-asset-detail]");
+      if (assetButton) showAssetDetail(assetButton.dataset.assetDetail);
+      if (event.target.closest("[data-close-asset]") || event.target.id === "asset-overlay") hideAssetDetail();
+      const scheduleButton = event.target.closest("[data-schedule]");
+      if (scheduleButton) {
+        document.querySelectorAll("[data-schedule]").forEach(btn => btn.classList.remove("active"));
+        scheduleButton.classList.add("active");
+        renderSchedule(scheduleButton.dataset.schedule);
+      }
+      const materialButton = event.target.closest("[data-material-filter]");
+      if (materialButton) {
+        document.querySelectorAll("[data-material-filter]").forEach(btn => btn.classList.remove("active"));
+        materialButton.classList.add("active");
+        renderMaterials(materialButton.dataset.materialFilter);
+      }
+      const noteButton = event.target.closest("[data-note-type]");
+      if (noteButton) {
+        document.querySelectorAll("[data-note-type]").forEach(btn => btn.classList.remove("active"));
+        noteButton.classList.add("active");
+        renderNotes(noteButton.dataset.noteType);
+      }
     });
-
     document.addEventListener("keydown", event => {
-      if (event.key === "Escape") {
-        hideAssetDetail();
-      }
-      const row = event.target.closest ? event.target.closest("[data-schedule-stage]") : null;
-      if (row && (event.key === "Enter" || event.key === " ")) {
-        event.preventDefault();
-        selectScheduleStage(row.dataset.scheduleStage);
-      }
+      if (event.key === "Escape") hideAssetDetail();
     });
-
-    function view(id, element) {
-      document.querySelectorAll(".tab").forEach(tab => tab.classList.remove("active"));
-      element.classList.add("active");
-      document.getElementById("screen").innerHTML = id === "schedule" ? renderSchedule() : id === "materials" ? renderMaterials() : id === "notes" ? renderNotes() : renderAssets();
-      if (id === "schedule") selectScheduleStage(currentScheduleStage);
+    renderMaterialKpis();
+    renderMaterials();
+    renderNotes();
+    renderSchedule();
+    const initialTab = location.hash.replace("#", "");
+    if (initialTab.startsWith("automation-")) {
+      activateTab("automation");
+      showAssetDetail(initialTab.replace("automation-", ""));
+    } else if (["dashboard", "schedule", "materials", "notes", "automation"].includes(initialTab)) {
+      activateTab(initialTab);
     }
-
-    view("materials", document.querySelector(".tab.active"));
   </script>
 </body>
 </html>
-
